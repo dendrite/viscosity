@@ -17,8 +17,6 @@ public class CamelSQL {
         CamelContext camelContext = createCamelContext();
         System.out.println("Camel context:" + camelContext);
 
-
-
         camelContext.addRoutes(new RouteBuilder() {
             public void configure() {
 
