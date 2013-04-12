@@ -1,0 +1,21 @@
+(ns ru.ttk.clojure.jodatime.testjoda
+  (:import
+    [org.joda.time DateTime]
+    [java.util Date]
+    [java.text SimpleDateFormat]))
+
+
+(defn current-time []
+  (DateTime. ))
+
+(print (str current-time "\n\n"))
+
+(defn date-from-date-string [date-string]
+  (let [sdf (SimpleDateFormat. "yyyy-MM-dd")]
+    (.parse sdf date-string)))
+
+
+(println (date-from-date-string "2013-01-01"))
+
+
+(def fff (map #(.getBytes %) ["amit" "rob" "kyle"]))
