@@ -54,6 +54,15 @@ public class ObjectKryoClient {
         System.out.println("Some words");
         if(this.clientBootstrap != null){
             this.clientBootstrap.shutdown();
+
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+
+            this.clientBootstrap.connect(new InetSocketAddress("localhost", 7000));
         }
         return "yet another words";
     }
