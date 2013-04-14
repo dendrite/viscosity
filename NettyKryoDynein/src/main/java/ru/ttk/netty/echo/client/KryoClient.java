@@ -54,6 +54,7 @@ public class KryoClient {
         //future.getChannel().getCloseFuture().await(10000L);// .awaitUninterruptibly();
         future.getChannel().getCloseFuture().awaitUninterruptibly();
 
+
         // Shut down thread pools to exit.
         bootstrap.releaseExternalResources();
     }
