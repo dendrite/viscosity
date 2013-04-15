@@ -1,8 +1,8 @@
 package test.proxy.test;
 
-import com.test.proxy.PStreet;
-import com.test.proxy.local.City;
-import com.test.proxy.local.House;
+import test.proxy.PStreet;
+import test.proxy.local.City;
+import test.proxy.local.House;
 
 import java.util.ArrayList;
 import java.util.List;

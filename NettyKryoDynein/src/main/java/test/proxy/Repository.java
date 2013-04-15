@@ -1,8 +1,7 @@
 package test.proxy;
 
-import com.test.proxy.IRepository;
-import com.test.proxy.IStreet;
-import com.test.proxy.remote.Street;
+
+import test.proxy.remote.Street;
 
 /**
  *
