@@ -25,7 +25,6 @@ public class RemoteServer {
         mapRegisteredInterfaces.put(IPCity.class, CityServer.class);
     }
 
-
     public byte[] conversation(byte[] bytesIn){
         KryoPayload kryoPayload = new KryoSerializer().deserialize(bytesIn);
 
@@ -45,11 +44,13 @@ public class RemoteServer {
 
             if(selectedMethod != null){
                 try {
-                    Object result = selectedMethod.invoke(new CityServer(), kryoPayload.getArgs());
+                    Object result = selectedMethod.invoke(toProcess.newInstance(), kryoPayload.getArgs());
                     kryoPayload.setResult(result);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 } catch (InvocationTargetException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (InstantiationException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
             }

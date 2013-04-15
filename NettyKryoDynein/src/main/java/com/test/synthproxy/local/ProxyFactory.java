@@ -25,13 +25,11 @@ public class ProxyFactory {
         return proxyFactory;
     }
 
-    public Object newProxyInstance(Class clazz){
+    public Object newProxyInstance(Class interfaceClass){
 
-        if(map.get(clazz) != null){
-            ClassLoader classLoader = clazz.getClassLoader();
-            IPCity proxy = (IPCity) Proxy.newProxyInstance(classLoader,
-                    new Class[]{IPCity.class}, new CityHandlerRemote(clazz));
-            return proxy;
+        if(map.get(interfaceClass) != null){
+            ClassLoader classLoader = interfaceClass.getClassLoader();
+            return Proxy.newProxyInstance(classLoader, new Class[]{interfaceClass}, new CityHandlerRemote(interfaceClass));
         }
 
         return null;

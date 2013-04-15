@@ -18,8 +18,7 @@ public class ClientTestProxy {
 
         IPCity c = new PCity();
 
-        IPCity proxy = (IPCity) Proxy.newProxyInstance(classLoader,
-                new Class[]{IPCity.class},new CityHandler(c));
+        IPCity proxy = (IPCity) Proxy.newProxyInstance(classLoader,new Class[]{IPCity.class},new CityHandler(c));
 
         System.out.println(proxy.createString("FFF"));
 
