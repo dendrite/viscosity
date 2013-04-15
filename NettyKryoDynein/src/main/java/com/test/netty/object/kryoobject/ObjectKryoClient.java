@@ -51,18 +51,18 @@ public class ObjectKryoClient {
 
     public String listener(){
         System.out.println("Some words");
-        if(this.clientBootstrap != null){
-            this.clientBootstrap.shutdown();
-
-
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-
-            this.clientBootstrap.connect(new InetSocketAddress("localhost", 7000));
-        }
+//        if(this.clientBootstrap != null){
+//            this.clientBootstrap.shutdown();
+//
+//
+//            try {
+//                Thread.sleep(5000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//            }
+//
+//            this.clientBootstrap.connect(new InetSocketAddress("localhost", 7000));
+//        }
         return "yet another words";
     }
 
@@ -116,7 +116,7 @@ public class ObjectKryoClient {
                                 // Echo back the received object to the server.
                                 transferredMessages.incrementAndGet();
                                 listener();
-                                e.getChannel().write(e.getMessage());
+                                //e.getChannel().write(e.getMessage());
                             }
 
                             @Override

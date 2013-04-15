@@ -1,16 +1,11 @@
 package com.test.synthproxy.remote;
 
-import com.test.synthproxy.local.PCity;
 import com.test.synthproxy.shared.IPCity;
 import com.test.synthproxy.shared.KryoPayload;
 import com.test.synthproxy.shared.KryoSerializer;
 
-import java.io.ByteArrayInputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,10 +14,22 @@ import java.util.Map;
  */
 public class RemoteServer {
 
-    private Map<Class,Class> mapRegisteredInterfaces = new HashMap<Class, Class>();
+    private Map<Class,Class> mapPOJORegisteredInterfaces = new HashMap<Class, Class>();
+    private Map<Class,String> mapEJBRegisteredInterfaces = new HashMap<Class, String>();
 
     {
-        mapRegisteredInterfaces.put(IPCity.class, CityServer.class);
+        mapPOJORegisteredInterfaces.put(IPCity.class, CityServer.class);
+        mapEJBRegisteredInterfaces.put(IPCity.class, "Local LOOK up - so need correct initial context lookup");
+    }
+
+
+    private Class findPOJOClass(Class interfaceClass){
+        Class toProcess = mapPOJORegisteredInterfaces.get(interfaceClass);
+        return toProcess;
+    }
+
+    public void registerPOJO(Class interfaceClass, Class pojoClass){
+        mapPOJORegisteredInterfaces.put(interfaceClass,pojoClass);
     }
 
     public byte[] conversation(byte[] bytesIn){
@@ -31,7 +38,10 @@ public class RemoteServer {
         if(kryoPayload != null){
             Class interfaceClass = kryoPayload.getInterfaceClass();
 
-            Class toProcess = mapRegisteredInterfaces.get(interfaceClass);
+
+
+            Class toProcess = this.findPOJOClass(interfaceClass);
+
             Method[] methods = toProcess.getMethods();
             Method selectedMethod = null;
             for(Method method: methods){
