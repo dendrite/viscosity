@@ -50,6 +50,12 @@
         (println "@exceptionCaught" throwable))
       (-> e .getChannel .close))))
 
+(defn srvr [starter port handler]
+  (apply starter port handler))
+
+(defn srvr2 [port]
+  (start port make-handler))
+
 (defn -main []
   (start 5000 make-handler))
 
