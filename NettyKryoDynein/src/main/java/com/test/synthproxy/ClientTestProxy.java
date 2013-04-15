@@ -1,5 +1,10 @@
 package com.test.synthproxy;
 
+import com.test.synthproxy.remote.CityHandler;
+import com.test.synthproxy.shared.IPCity;
+import com.test.synthproxy.local.PCity;
+import com.test.synthproxy.local.ProxyFactory;
+
 import java.lang.reflect.Proxy;
 
 /**
@@ -18,10 +23,8 @@ public class ClientTestProxy {
 
         System.out.println(proxy.createString("FFF"));
 
-
-
-        IPCity proxyRemote = (IPCity)ProxyFactory.getInstance().newProxyInstance(IPCity.class);
-        System.out.println(proxyRemote.createString("EEE"));
+        IPCity proxyRemote = (IPCity) ProxyFactory.getInstance().newProxyInstance(IPCity.class);
+        System.out.println("Remote server response:" + proxyRemote.createString("EEE"));
 
     }
 

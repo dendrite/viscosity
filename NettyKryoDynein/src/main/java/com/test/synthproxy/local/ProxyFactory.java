@@ -1,4 +1,7 @@
-package com.test.synthproxy;
+package com.test.synthproxy.local;
+
+import com.test.synthproxy.remote.CityHandler;
+import com.test.synthproxy.shared.IPCity;
 
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
@@ -27,7 +30,7 @@ public class ProxyFactory {
         if(map.get(clazz) != null){
             ClassLoader classLoader = clazz.getClassLoader();
             IPCity proxy = (IPCity) Proxy.newProxyInstance(classLoader,
-                    new Class[]{IPCity.class}, new CityHandlerRemote());
+                    new Class[]{IPCity.class}, new CityHandlerRemote(clazz));
             return proxy;
         }
 
