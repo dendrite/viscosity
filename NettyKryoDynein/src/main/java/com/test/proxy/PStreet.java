@@ -1,7 +1,4 @@
-package test.proxy;
-
-import com.test.proxy.IStreet;
-import com.test.proxy.Proxyable;
+package com.test.proxy;
 
 import java.io.Serializable;
 

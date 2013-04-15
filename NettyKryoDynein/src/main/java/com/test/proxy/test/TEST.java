@@ -1,4 +1,4 @@
-package test.proxy.test;
+package com.test.proxy.test;
 
 import com.test.proxy.PStreet;
 import com.test.proxy.local.City;

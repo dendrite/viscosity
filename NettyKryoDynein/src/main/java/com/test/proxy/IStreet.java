@@ -1,12 +1,10 @@
-package test.proxy;
-
-import com.test.proxy.Proxyable;
+package com.test.proxy;
 
 /**
  *
  *
  */
-public interface IStreet extends Proxyable {
+public interface IStreet extends Proxyable{
 
     public String getId();
 

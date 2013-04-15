@@ -1,12 +1,8 @@
-package test.proxy.local;
+package com.test.proxy.local;
 
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
-import com.test.proxy.IRepository;
-import com.test.proxy.PStreet;
-import com.test.proxy.RemoteLazyProxy;
-import com.test.proxy.Repository;
-import com.test.proxy.local.House;
+import com.test.proxy.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,7 +17,7 @@ public class City implements Serializable {
     private String id;
     private String name;
     private Date date;
-    private List<com.test.proxy.local.House> houses;
+    private List<House> houses;
     private PStreet street;
 
     public String getId() {
@@ -49,7 +45,7 @@ public class City implements Serializable {
     }
 
 
-    public List<com.test.proxy.local.House> getHouses() {
+    public List<House> getHouses() {
         return houses;
     }
 

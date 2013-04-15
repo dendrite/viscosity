@@ -1,14 +1,12 @@
-package test.proxy;
+package com.test.proxy;
 
-import com.test.proxy.IRepository;
-import com.test.proxy.IStreet;
 import com.test.proxy.remote.Street;
 
 /**
  *
  *
  */
-public class Repository implements IRepository {
+public class Repository implements IRepository{
 
     @Override
     public IStreet getProxy(String id) {

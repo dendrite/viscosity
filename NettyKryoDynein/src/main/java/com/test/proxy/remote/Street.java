@@ -1,4 +1,4 @@
-package test.proxy;
+package com.test.proxy.remote;
 
 import com.test.proxy.IStreet;
 import com.test.proxy.Proxyable;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  *
  */
-public class PStreet implements Serializable, Proxyable, IStreet {
+public class Street implements Serializable, Proxyable, IStreet {
 
     private String id;
     private String name;

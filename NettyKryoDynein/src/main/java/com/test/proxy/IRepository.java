@@ -1,6 +1,4 @@
-package test.proxy;
-
-import com.test.proxy.IStreet;
+package com.test.proxy;
 
 /**
  *
