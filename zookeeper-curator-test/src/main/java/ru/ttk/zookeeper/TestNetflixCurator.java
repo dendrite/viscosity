@@ -39,26 +39,21 @@ public class TestNetflixCurator implements Serializable {
 
         String connectionString = "localhost:2181";
         CuratorFramework client = CuratorFrameworkFactory.newClient(connectionString, new ExponentialBackoffRetry(500, 3));
-
-
         client.start();
-
 
         System.out.println(client.getNamespace());
 
-        String path = "/zookeeper/testNode_EPH_" + System.currentTimeMillis();
+        //String path = "/zookeeper/testNode_EPH_" + System.currentTimeMillis();
+        String path = "/testNode_EPH_" + System.currentTimeMillis();
         String value = "simple data";
 
-        //client.create().forPath(path, value.getBytes());
         client.create().withMode(CreateMode.EPHEMERAL).forPath(path, value.getBytes());
-
-
 
         byte[] some = client.getData().forPath(path);
         System.out.println("Get back is:" + new String(some));
 
-
-        Thread.sleep(30000);
+        // Let's check that EPHEMERAL will be deleted at the end of client session
+        Thread.sleep(10000);
         client.close();
 
     }
