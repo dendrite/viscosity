@@ -66,10 +66,10 @@
 
 
 (defn init-client [addr]
-  (zk/mk-zk-cli addr))
+  (mk-zk-cli addr))
 
 
 (def cli (init-client "localhost:2181"))
 
 (def pt
-  (zk/ls cli "/"))
+  (ls cli "/"))
