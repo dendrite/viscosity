@@ -117,6 +117,7 @@ public class ObjectKryoClient {
                                 transferredMessages.incrementAndGet();
                                 listener();
                                 //e.getChannel().write(e.getMessage());
+                                e.getChannel().close();
                             }
 
                             @Override
@@ -134,7 +135,17 @@ public class ObjectKryoClient {
         });
 
         // Start the connection attempt.
-        this.clientBootstrap.connect(new InetSocketAddress(host, port));
+        ChannelFuture channelFuture = this.clientBootstrap.connect(new InetSocketAddress(host, port));
+
+        channelFuture.awaitUninterruptibly();
+        if (!channelFuture.isSuccess()) {
+            channelFuture.getCause().printStackTrace();
+        }
+
+        channelFuture.getChannel().getCloseFuture().awaitUninterruptibly();
+
+//        channelFuture.getChannel().getCloseFuture().awaitUninterruptibly();
+//        factory.releaseExternalResources();
 
     }
 

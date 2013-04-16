@@ -47,11 +47,20 @@ public class ObjectKryoServerHandler extends SimpleChannelUpstreamHandler {
     }
 
     @Override
-    public void messageReceived(
-            ChannelHandlerContext ctx, MessageEvent e) {
+    public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
         // Echo back the received object to the client.
         transferredMessages.incrementAndGet();
-        e.getChannel().write(e.getMessage());
+        ChannelFuture channelFuture = e.getChannel().write(e.getMessage());
+
+        // see here - http://netty.io/3.6/guide/
+        // Close connection right after sending
+        channelFuture.addListener(new ChannelFutureListener() {
+            public void operationComplete(ChannelFuture future) {
+                Channel ch = future.getChannel();
+                ch.close();
+                }
+        });
+
     }
 
     @Override
