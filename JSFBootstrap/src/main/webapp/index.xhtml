@@ -26,7 +26,7 @@
 			<h:form id="reg" styleClass="form-horizontal">
                 
                 <ui:repeat value="#{typeViewer.list}" var="element">
-                    <a href="#" class="label #{element.cssClass}">#{element.name}</a>
+                    <a href="#" class="label #{element.cssClass}">#{element.name} <i class="icon-ok-circle" ></i></a><a class="btn btn-large" href="#"><i class="icon-star"></i> Star</a>
                 </ui:repeat>
 
 				<fieldset>
