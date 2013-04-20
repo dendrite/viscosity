@@ -1,0 +1,406 @@
+Index: src/main/java/test/proxy/Proxyable.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/test/proxy/Proxyable.java	(revision )
++++ src/main/java/test/proxy/Proxyable.java	(revision )
+@@ -0,0 +1,10 @@
++package test.proxy;
++
++import java.io.Serializable;
++
++/**
++ *
++ */
++public interface Proxyable extends Serializable {
++    public String getId();
++}
+Index: src/main/java/test/proxy/local/City.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/test/proxy/local/City.java	(revision )
++++ src/main/java/test/proxy/local/City.java	(revision )
+@@ -0,0 +1,92 @@
++package test.proxy.local;
++
++import org.dozer.DozerBeanMapper;
++import org.dozer.Mapper;
++import ru.ttk.proxy.IRepository;
++import ru.ttk.proxy.PStreet;
++import ru.ttk.proxy.RemoteLazyProxy;
++import ru.ttk.proxy.Repository;
++import ru.ttk.proxy.local.House;
++
++import java.io.Serializable;
++import java.util.Date;
++import java.util.List;
++
++/**
++ *
++ *
++ */
++public class City implements Serializable {
++
++    private String id;
++    private String name;
++    private Date date;
++    private List<ru.ttk.proxy.local.House> houses;
++    private PStreet street;
++
++    public String getId() {
++        return id;
++    }
++
++    public void setId(String id) {
++        this.id = id;
++    }
++
++    public String getName() {
++        return name;
++    }
++
++    public void setName(String name) {
++        this.name = name;
++    }
++
++    public Date getDate() {
++        return date;
++    }
++
++    public void setDate(Date date) {
++        this.date = date;
++    }
++
++
++    public List<ru.ttk.proxy.local.House> getHouses() {
++        return houses;
++    }
++
++    public void setHouses(List<House> houses) {
++        this.houses = houses;
++    }
++
++    @RemoteLazyProxy
++    public PStreet getStreet() {
++        IRepository repository = new Repository();
++        Object object = repository.getProxy(this.street.getId());
++
++        // select p from City p where p.street.name like ('bla-bla')
++        Mapper mapper = new DozerBeanMapper();
++        PStreet ppStreet = mapper.map(object, PStreet.class);
++        return  ppStreet;
++
++        /*
++        select p from City p where p.street.id in(
++        select p from Street p where p.name like ('bla-bla')
++        )
++
++         */
++    }
++
++    public void setStreet(PStreet street) {
++        this.street = street;
++    }
++
++    @Override
++    public String toString() {
++        return "City{" +
++                "id='" + id + '\'' +
++                ", name='" + name + '\'' +
++                ", date=" + date +
++                ", houses=" + houses +
++                ", street=" + this.getStreet() +
++                '}';
++    }
++}
+Index: src/main/java/test/proxy/IStreet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/test/proxy/IStreet.java	(revision )
++++ src/main/java/test/proxy/IStreet.java	(revision )
+@@ -0,0 +1,16 @@
++package test.proxy;
++
++import ru.ttk.proxy.Proxyable;
++
++/**
++ *
++ *
++ */
++public interface IStreet extends Proxyable {
++
++    public String getId();
++
++    public void setId(String id);
++    public String getName();
++    public void setName(String name);
++}
+Index: src/main/java/test/proxy/IRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/test/proxy/IRepository.java	(revision )
++++ src/main/java/test/proxy/IRepository.java	(revision )
+@@ -0,0 +1,10 @@
++package test.proxy;
++
++import ru.ttk.proxy.IStreet;
++
++/**
++ *
++ */
++public interface IRepository {
++    public IStreet getProxy(String id);
++}
+Index: src/main/java/test/proxy/remote/Street.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/test/proxy/remote/Street.java	(revision )
++++ src/main/java/test/proxy/remote/Street.java	(revision )
+@@ -0,0 +1,39 @@
++package test.proxy.remote;
++
++import ru.ttk.proxy.IStreet;
++import ru.ttk.proxy.Proxyable;
++
++import java.io.Serializable;
++
++/**
++ *
++ */
++public class Street implements Serializable, Proxyable, IStreet {
++
++    private String id;
++    private String name;
++
++    public String getId() {
++        return id;
++    }
++
++    public void setId(String id) {
++        this.id = id;
++    }
++
++    public String getName() {
++        return name;
++    }
++
++    public void setName(String name) {
++        this.name = name;
++    }
++
++    @Override
++    public String toString() {
++        return "Street{" +
++                "id='" + id + '\'' +
++                ", name='" + name + '\'' +
++                '}';
++    }
++}
+Index: src/main/java/test/proxy/RemoteLazyProxy.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/test/proxy/RemoteLazyProxy.java	(revision )
++++ src/main/java/test/proxy/RemoteLazyProxy.java	(revision )
+@@ -0,0 +1,7 @@
++package test.proxy;
++
++/**
++ *
++ */
++public @interface RemoteLazyProxy {
++}
+Index: src/main/java/test/proxy/PStreet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/test/proxy/PStreet.java	(revision )
++++ src/main/java/test/proxy/PStreet.java	(revision )
+@@ -0,0 +1,39 @@
++package test.proxy;
++
++import ru.ttk.proxy.IStreet;
++import ru.ttk.proxy.Proxyable;
++
++import java.io.Serializable;
++
++/**
++ *
++ */
++public class PStreet implements Serializable, Proxyable, IStreet {
++
++    private String id;
++    private String name;
++
++    public String getId() {
++        return id;
++    }
++
++    public void setId(String id) {
++        this.id = id;
++    }
++
++    public String getName() {
++        return name;
++    }
++
++    public void setName(String name) {
++        this.name = name;
++    }
++
++    @Override
++    public String toString() {
++        return "Street{" +
++                "id='" + id + '\'' +
++                ", name='" + name + '\'' +
++                '}';
++    }
++}
+Index: src/main/java/test/netty/object/kryoobject/ObjectKryoClient.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/*\n * Copyright 2012 The Netty Project\n *\n * The Netty Project licenses this file to you under the Apache License,\n * version 2.0 (the \"License\"); you may not use this file except in compliance\n * with the License. You may obtain a copy of the License at:\n *\n *   http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT\n * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the\n * License for the specific language governing permissions and limitations\n * under the License.\n */\npackage test.netty.object.kryoobject;\n\nimport org.jboss.netty.bootstrap.ClientBootstrap;\nimport org.jboss.netty.channel.*;\nimport org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;\nimport org.jboss.netty.handler.codec.serialization.ClassResolvers;\nimport org.jboss.netty.handler.codec.serialization.ObjectDecoder;\nimport org.jboss.netty.handler.codec.serialization.ObjectEncoder;\nimport test.netty.object.ObjectEchoClientHandler;\n\nimport java.net.InetSocketAddress;\nimport java.util.ArrayList;\nimport java.util.List;\nimport java.util.concurrent.Executors;\nimport java.util.concurrent.atomic.AtomicLong;\nimport java.util.logging.Level;\nimport java.util.logging.Logger;\n\n/**\n *\n *\n */\npublic class ObjectKryoClient {\n\n    private static final Logger logger = Logger.getLogger(ObjectKryoClient.class.getName());\n\n    private final String host;\n    private final int port;\n    private final int firstMessageSize;\n    private ClientBootstrap clientBootstrap;\n\n    public ObjectKryoClient(String host, int port, int firstMessageSize) {\n        this.host = host;\n        this.port = port;\n        this.firstMessageSize = firstMessageSize;\n    }\n\n    public String listener(){\n        System.out.println(\"Some words\");\n        if(this.clientBootstrap != null){\n            this.clientBootstrap.shutdown();\n        }\n        return \"yet another words\";\n    }\n\n    public void run() {\n        // Configure the client.\n        this.clientBootstrap = new ClientBootstrap(\n                new NioClientSocketChannelFactory(\n                        Executors.newCachedThreadPool(),\n                        Executors.newCachedThreadPool()));\n\n        // Set up the pipeline factory.\n        this.clientBootstrap.setPipelineFactory(new ChannelPipelineFactory() {\n            public ChannelPipeline getPipeline() throws Exception {\n                return Channels.pipeline(\n                        new ObjectEncoder(),\n                        new ObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader()))\n                        ,\n                        new SimpleChannelUpstreamHandler(){\n\n                            private final List<Integer> firstMessage;\n                            private final AtomicLong transferredMessages = new AtomicLong();\n\n                            {\n                                if (firstMessageSize <= 0) {\n                                    throw new IllegalArgumentException(\n                                            \"firstMessageSize: \" + firstMessageSize);\n                                }\n                                firstMessage = new ArrayList<Integer>(firstMessageSize);\n                                for (int i = 0; i < firstMessageSize; i ++) {\n                                    firstMessage.add(i);\n                                }\n                            }\n\n                            @Override\n                            public void handleUpstream(ChannelHandlerContext ctx, ChannelEvent e) throws Exception {\n                                if (e instanceof ChannelStateEvent &&\n                                        ((ChannelStateEvent) e).getState() != ChannelState.INTEREST_OPS) {\n                                    logger.info(e.toString());\n                                }\n                                super.handleUpstream(ctx, e);\n                            }\n\n                            @Override\n                            public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) {\n                                // Send the first message if this handler is a client-side handler.\n                                e.getChannel().write(firstMessage);\n                            }\n\n                            @Override\n                            public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {\n                                // Echo back the received object to the server.\n                                transferredMessages.incrementAndGet();\n                                listener();\n                                e.getChannel().write(e.getMessage());\n                            }\n\n                            @Override\n                            public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) {\n                                logger.log(\n                                        Level.WARNING,\n                                        \"Unexpected exception from downstream.\",\n                                        e.getCause());\n                                e.getChannel().close();\n                            }\n                        }\n                        //new ObjectEchoClientHandler(firstMessageSize)\n                );\n            }\n        });\n\n        // Start the connection attempt.\n        this.clientBootstrap.connect(new InetSocketAddress(host, port));\n\n    }\n\n    public static void main(String[] args) throws Exception {\n        final String host = \"localhost\";\n        final int port = 7000;\n        final int firstMessageSize = 100;\n\n        ObjectKryoClient objectKryoClient = new ObjectKryoClient(host, port, firstMessageSize);\n        objectKryoClient.run();\n    }\n}\n
+===================================================================
+--- src/main/java/test/netty/object/kryoobject/ObjectKryoClient.java	(revision d0abdc49373abcf3074a820f94b924d53f9b0527)
++++ src/main/java/test/netty/object/kryoobject/ObjectKryoClient.java	(revision )
+@@ -54,6 +54,15 @@
+         System.out.println("Some words");
+         if(this.clientBootstrap != null){
+             this.clientBootstrap.shutdown();
++
++
++            try {
++                Thread.sleep(5000);
++            } catch (InterruptedException e) {
++                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
++            }
++
++            this.clientBootstrap.connect(new InetSocketAddress("localhost", 7000));
+         }
+         return "yet another words";
+     }
+Index: src/main/java/test/proxy/test/TEST.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/test/proxy/test/TEST.java	(revision )
++++ src/main/java/test/proxy/test/TEST.java	(revision )
+@@ -0,0 +1,40 @@
++package test.proxy.test;
++
++import ru.ttk.proxy.PStreet;
++import ru.ttk.proxy.local.City;
++import ru.ttk.proxy.local.House;
++
++import java.util.ArrayList;
++import java.util.List;
++
++/**
++ *
++ */
++public class TEST {
++
++
++    public static void main(String[] argv){
++
++        City city = new City();
++        city.setId("1");
++        city.setName("Москва");
++
++        PStreet pStreet = new PStreet();
++        pStreet.setId("123");
++
++        House house = new House();
++        house.setName("Дом.1");
++
++        List<House> list = new ArrayList<House>();
++        list.add(house);
++
++        city.setHouses(list);
++         city.setStreet(pStreet);
++
++
++        System.out.println(city);
++        System.out.println(city.getStreet());
++
++    }
++
++}
+Index: src/main/java/test/proxy/Repository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/test/proxy/Repository.java	(revision )
++++ src/main/java/test/proxy/Repository.java	(revision )
+@@ -0,0 +1,22 @@
++package test.proxy;
++
++import ru.ttk.proxy.IRepository;
++import ru.ttk.proxy.IStreet;
++import ru.ttk.proxy.remote.Street;
++
++/**
++ *
++ *
++ */
++public class Repository implements IRepository {
++
++    @Override
++    public IStreet getProxy(String id) {
++        // find(.class,id);
++        // select * from bla_bla where id = :id
++        IStreet street = new Street();
++        street.setId(id);
++        street.setName("Тверская");
++        return (IStreet)street;
++    }
++}
+Index: src/main/java/test/proxy/local/House.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/test/proxy/local/House.java	(revision )
++++ src/main/java/test/proxy/local/House.java	(revision )
+@@ -0,0 +1,26 @@
++package test.proxy.local;
++
++import java.io.Serializable;
++
++/**
++ *
++ */
++public class House implements Serializable {
++
++    private String name;
++
++    public String getName() {
++        return name;
++    }
++
++    public void setName(String name) {
++        this.name = name;
++    }
++
++    @Override
++    public String toString() {
++        return "House{" +
++                "name='" + name + '\'' +
++                '}';
++    }
++}
