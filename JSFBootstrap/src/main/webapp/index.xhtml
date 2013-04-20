@@ -22,20 +22,22 @@
 
                 <div id="rrr" class="collapse in">
                     <ui:repeat value="#{typeViewer.list}" var="element">
-                        <h:outputLabel  class="label #{element.cssClass}" data-toggle="collapse" data-target="#demo">
-                         "#{element.name}" <i class="icon-ok-circle" ></i>
-
+                        <h:outputLabel level-id="#{element.id}" value="#{element.name}" class="label #{element.cssClass}" data-toggle="collapse" data-target="#demo">
+                         <i class="icon-ok-circle" ></i>
+                            <f:ajax update="reg:rrr" listener="#{typeViewer.attrListener}" event="click" />
                         </h:outputLabel>
 
                     </ui:repeat>
                 </div>
-                <div id="demo" class="collapse" > …e.resource.webcontainer.jsf.config] (MSC service thread 1-8) Initializing Mojarra 2.1.18 ( 20130204-2125 https://svn.java.net/svn/mojarra~svn/tags/2.1.18@11564) for context '/jsfbootstrap'
-                    14:43:38,456 INFO  [org.jboss.web] (MSC service thread 1-8) JBAS018210: Registering web context: /jsfbootstrap
-                    14:43:38,517 INFO  [org.jboss.as.server] (management-handler-thread - 2) JBAS018559: Deployed "jsfboot
+                <div id="demo" class="collapse" >
 
-                <ui:repeat value="#{typeViewer.list}" var="element">
-                    <button type="button" class="btn label #{element.cssClass}" data-toggle="collapse" data-target="#demo">#{element.name} <i class="icon-ok-circle" ></i></button><a class="btn btn-large" href="#"><i class="icon-star"></i> Star</a>
-                </ui:repeat>
+                    <h:outputLabel value="#{typeViewer.selectedLevel3}"  class="label #{element.cssClass}" data-toggle="collapse" data-target="#demo">
+                        <i class="icon-ok-circle" ></i>
+
+                    </h:outputLabel>
+                         <br/>
+                    <h:inputText value="#{typeViewer.inpText}" />
+
                 </div>
 
 

@@ -22,6 +22,27 @@ public class TypeViewer {
     private String nnn = "ggg";
     private boolean lvl = true;
 
+    private String inpText;
+
+
+    private String selectedLevel3;
+
+    public String getSelectedLevel3() {
+        return selectedLevel3;
+    }
+
+    public void setSelectedLevel3(String selectedLevel3) {
+        this.selectedLevel3 = selectedLevel3;
+    }
+
+    public String getInpText() {
+        return inpText;
+    }
+
+    public void setInpText(String inpText) {
+        this.inpText = inpText;
+    }
+
     public boolean isLvl() {
         return lvl;
     }
@@ -65,6 +86,8 @@ public class TypeViewer {
         System.out.println("VV:" + vv);
         System.out.println((String)event.getComponent().getAttributes().get("username"));
        lvl = false;
+        selectedLevel3 = "fff";
+
     }
 
     public List<HouseType> getList() {
@@ -79,7 +102,7 @@ public class TypeViewer {
         for(int i=0; i<10; i++){
             HouseType houseType = new HouseType();
             houseType.setName(str[i]);
-            houseType.setId("1" + i);
+            houseType.setId("ff1" + i);
             houseType.setCssClass(css[i]);
             list.add(houseType);
         }

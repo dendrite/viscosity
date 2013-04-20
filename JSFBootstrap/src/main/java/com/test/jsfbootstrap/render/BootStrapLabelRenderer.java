@@ -28,6 +28,8 @@ public class BootStrapLabelRenderer extends LabelRenderer{
         Object dataToggle = component.getAttributes().get("data-toggle");
         Object dataTarget = component.getAttributes().get("data-target");
 
+        Object levelId = component.getAttributes().get("level-id");
+
         ResponseWriter writer = context.getResponseWriter();
         assert(writer != null);
 
@@ -58,6 +60,10 @@ public class BootStrapLabelRenderer extends LabelRenderer{
 
         if (dataToggle != null) {
             context.getResponseWriter().writeAttribute("data-toggle", dataToggle, null);
+        }
+
+        if (levelId != null) {
+            context.getResponseWriter().writeAttribute("level-id", levelId, null);
         }
 
         if (forClientId != null) {
