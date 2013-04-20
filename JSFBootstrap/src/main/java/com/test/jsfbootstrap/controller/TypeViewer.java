@@ -1,18 +1,71 @@
 package com.test.jsfbootstrap.controller;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
  */
 @Named("typeViewer")
-@RequestScoped
+@ViewScoped
 public class TypeViewer {
 
     private List<HouseType> list;
+
+    private String nnn = "ggg";
+    private boolean lvl = true;
+
+    public boolean isLvl() {
+        return lvl;
+    }
+
+    public void setLvl(boolean lvl) {
+        this.lvl = lvl;
+    }
+
+    public String getNnn() {
+        return nnn;
+    }
+
+    public void setter(String v){
+        vv = v;
+    }
+
+    public void setNnn(String nnn) {
+        this.nnn = nnn;
+    }
+
+    private String vv;
+
+    public String getVv() {
+        return vv;
+    }
+
+    public void setVv(String vv) {
+        this.vv = vv;
+    }
+
+    //action listener event
+    public void attrListener(AjaxBehaviorEvent event){
+        System.out.println("CLICKED");
+        System.out.println(event.getComponent().getAttributes());
+        Map<String, Object> mp =  event.getComponent().getAttributes();
+        Set<String> set = mp.keySet();
+        for(String str:set){
+            System.out.println("" + str + ":" + mp.get(str));
+        }
+
+        System.out.println("VV:" + vv);
+        System.out.println((String)event.getComponent().getAttributes().get("username"));
+       lvl = false;
+    }
 
     public List<HouseType> getList() {
 
