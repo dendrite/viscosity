@@ -1,4 +1,4 @@
-package com.test.synthproxy.remote;
+package com.test.synthproxy.local.hide;
 
 import com.test.synthproxy.shared.IPCity;
 

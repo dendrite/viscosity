@@ -1,8 +1,8 @@
 package com.test.synthproxy.remote;
 
 import com.test.synthproxy.shared.IPCity;
-import com.test.synthproxy.shared.KryoPayload;
-import com.test.synthproxy.shared.KryoSerializer;
+import com.test.synthproxy.shared.tools.KryoPayload;
+import com.test.synthproxy.shared.tools.KryoSerializer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

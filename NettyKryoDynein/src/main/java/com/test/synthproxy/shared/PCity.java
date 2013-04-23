@@ -1,4 +1,4 @@
-package com.test.synthproxy.local;
+package com.test.synthproxy.shared;
 
 import com.test.synthproxy.shared.IPCity;
 import com.test.synthproxy.shared.PClient;

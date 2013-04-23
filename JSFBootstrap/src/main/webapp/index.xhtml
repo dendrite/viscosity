@@ -23,9 +23,9 @@
                 <div id="rrr" class="collapse in">
                     <ui:repeat value="#{typeViewer.list}" var="element">
                         <h:outputLabel level-id="#{element.id}" value="#{element.name}" class="label #{element.cssClass}" data-toggle="collapse" data-target="#demo">
-                         <i class="icon-ok-circle" ></i>
+                            <span>×</span><i class="icon-ok-circle" ></i>
                             <f:ajax update="reg:rrr" listener="#{typeViewer.attrListener}" event="click" />
-                        </h:outputLabel>
+                        </h:outputLabel><h:outputText value=" " /><h:outputText value=" " />
 
                     </ui:repeat>
                 </div>

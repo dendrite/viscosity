@@ -1,8 +1,8 @@
-package com.test.synthproxy.local;
+package com.test.synthproxy.local.hide;
 
 import com.test.synthproxy.remote.RemoteServer;
-import com.test.synthproxy.shared.KryoPayload;
-import com.test.synthproxy.shared.KryoSerializer;
+import com.test.synthproxy.shared.tools.KryoPayload;
+import com.test.synthproxy.shared.tools.KryoSerializer;
 
 /**
  *

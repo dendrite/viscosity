@@ -1,11 +1,8 @@
 package com.test.synthproxy.local;
 
-import com.test.synthproxy.remote.RemoteServer;
-import com.test.synthproxy.shared.KryoPayload;
+import com.test.synthproxy.local.hide.Client;
+import com.test.synthproxy.shared.tools.KryoPayload;
 
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 

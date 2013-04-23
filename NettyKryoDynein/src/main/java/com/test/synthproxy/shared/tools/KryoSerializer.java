@@ -1,4 +1,4 @@
-package com.test.synthproxy.shared;
+package com.test.synthproxy.shared.tools;
 
 import java.io.*;
 

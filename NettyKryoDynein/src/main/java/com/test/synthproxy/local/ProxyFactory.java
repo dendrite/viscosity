@@ -1,6 +1,6 @@
 package com.test.synthproxy.local;
 
-import com.test.synthproxy.remote.CityHandler;
+import com.test.synthproxy.local.hide.CityHandler;
 import com.test.synthproxy.shared.IPCity;
 
 import java.lang.reflect.Proxy;
