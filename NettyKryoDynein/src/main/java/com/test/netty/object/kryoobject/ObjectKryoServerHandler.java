@@ -54,12 +54,12 @@ public class ObjectKryoServerHandler extends SimpleChannelUpstreamHandler {
 
         // see here - http://netty.io/3.6/guide/
         // Close connection right after sending
-        channelFuture.addListener(new ChannelFutureListener() {
-            public void operationComplete(ChannelFuture future) {
-                Channel ch = future.getChannel();
-                ch.close();
-                }
-        });
+//        channelFuture.addListener(new ChannelFutureListener() {
+//            public void operationComplete(ChannelFuture future) {
+//                Channel ch = future.getChannel();
+//                ch.close();
+//                }
+//        });
 
     }
 

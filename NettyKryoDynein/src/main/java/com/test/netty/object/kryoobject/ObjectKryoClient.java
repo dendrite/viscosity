@@ -43,6 +43,10 @@ public class ObjectKryoClient {
     private final int firstMessageSize;
     private ClientBootstrap clientBootstrap;
 
+    private Channel channel;
+    private ChannelFuture channelFuture;
+    private ChannelFactory channelFactory;
+
     public ObjectKryoClient(String host, int port, int firstMessageSize) {
         this.host = host;
         this.port = port;
@@ -66,11 +70,60 @@ public class ObjectKryoClient {
         return "yet another words";
     }
 
-    public void run() throws InterruptedException {
+    public void sendAgain(){
+        if(this.channel != null){
+
+            System.out.println("Connected:" + this.channel.isConnected());
+
+            List<Integer> firstMessage = new ArrayList<Integer>();
+            for(int i=0;i<10;i++){
+                firstMessage.add(i);
+            }
+            this.channel.write(firstMessage);
+        }
+    }
+
+
+    public void connectAgain(){
+
+        if( this.clientBootstrap != null){
+            //.getPipelineFactory().getPipeline().getChannel().disconnect();
+            try {
+                ChannelPipelineFactory pipelineFactory = this.clientBootstrap.getPipelineFactory();
+                pipelineFactory.getPipeline().getChannel().connect(new InetSocketAddress(host, port));
+                logger.info("CONNECTED AGAIN");
+            } catch (Exception e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+
+    }
+
+
+    public void disconnect(){
+
+        if( this.clientBootstrap != null){
+            //.getPipelineFactory().getPipeline().getChannel().disconnect();
+            try {
+                ChannelPipelineFactory pipelineFactory = this.clientBootstrap.getPipelineFactory();
+
+                ChannelPipeline pipeline = pipelineFactory.getPipeline();
+
+
+                logger.info("DIS-CONNECTED AGAIN");
+            } catch (Exception e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+
+    }
+
+
+    public void run() throws Exception {
         // Configure the client.
 
 
-        ChannelFactory channelFactory = new NioClientSocketChannelFactory(
+        channelFactory = new NioClientSocketChannelFactory(
                 Executors.newCachedThreadPool(),
                 Executors.newCachedThreadPool());
 
@@ -111,6 +164,7 @@ public class ObjectKryoClient {
 
                             @Override
                             public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent e) {
+                                channel = e.getChannel();
                                 // Send the first message if this handler is a client-side handler.
                                 e.getChannel().write(firstMessage);
                             }
@@ -120,8 +174,9 @@ public class ObjectKryoClient {
                                 // Echo back the received object to the server.
                                 transferredMessages.incrementAndGet();
                                 listener();
+                                ctx.sendUpstream(e);
                                 //e.getChannel().write(e.getMessage());
-                                e.getChannel().close();
+                                //e.getChannel().close();
                             }
 
                             @Override
@@ -143,7 +198,8 @@ public class ObjectKryoClient {
         this.clientBootstrap.setPipelineFactory(channelPipelineFactory);
 
         // Start the connection attempt.
-        ChannelFuture channelFuture = this.clientBootstrap.connect(new InetSocketAddress(host, port));
+        //ChannelFuture channelFuture = this.clientBootstrap.connect(new InetSocketAddress(host, port));
+        this.channelFuture = this.clientBootstrap.connect(new InetSocketAddress(host, port));
 
 
         // correct shut down a client
@@ -165,15 +221,19 @@ public class ObjectKryoClient {
 
 
         // !!! see also - http://massapi.com/class/cl/ClientBootstrap.html
-
+        System.out.println("1");
         // just wait for server connection for 3sec.
         channelFuture.await(3000);
         if (!channelFuture.isSuccess()) {
             channelFuture.getCause().printStackTrace();
+            channelFactory.releaseExternalResources();
         }
 
-        channelFuture.getChannel().getCloseFuture().awaitUninterruptibly();
-        channelFactory.releaseExternalResources();
+        System.out.println("2");
+//        channelFuture.getChannel().getCloseFuture().awaitUninterruptibly();
+//        channelFactory.releaseExternalResources();
+        System.out.println("3");
+
 
     }
 
@@ -183,7 +243,28 @@ public class ObjectKryoClient {
         final int firstMessageSize = 100;
 
         ObjectKryoClient objectKryoClient = new ObjectKryoClient(host, port, firstMessageSize);
+        System.out.println("4");
         objectKryoClient.run();
+        System.out.println("5");
+
+        Thread.sleep(100);
+        System.out.println("6");
+        objectKryoClient.sendAgain();
+        System.out.println("7");
+        Thread.sleep(100);
+        System.out.println("8");
+        objectKryoClient.sendAgain();
+        System.out.println("9");
+
+//        Thread.sleep(10000);
+//        objectKryoClient.disconnect();
+//
+//        Thread.sleep(2000);
+//        objectKryoClient.connectAgain();
+
+
+        objectKryoClient.channelFuture.getChannel().close();
+        objectKryoClient.channelFactory.releaseExternalResources();
 
         Thread.sleep(20000);
         objectKryoClient.run();
