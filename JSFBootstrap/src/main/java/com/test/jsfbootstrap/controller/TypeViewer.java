@@ -2,6 +2,7 @@ package com.test.jsfbootstrap.controller;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.html.HtmlOutputLabel;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Named;
@@ -82,7 +83,7 @@ public class TypeViewer {
         for(String str:set){
             System.out.println("" + str + ":" + mp.get(str));
         }
-
+        //((HtmlOutputLabel)event.getComponent()).getValue()
         System.out.println("VV:" + vv);
         System.out.println((String)event.getComponent().getAttributes().get("username"));
        lvl = false;
