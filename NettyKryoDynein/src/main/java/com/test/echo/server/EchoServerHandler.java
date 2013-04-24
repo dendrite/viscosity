@@ -42,7 +42,7 @@ public class EchoServerHandler extends SimpleChannelUpstreamHandler {
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
 
-        //System.out.println("MessageEvent:" + e.getMessage());
+        //System.out.println("MessageEvent:" + e.getStatus());
 
         // Send back the received message to the remote peer.
         transferredBytes.addAndGet(((ChannelBuffer) e.getMessage()).readableBytes());

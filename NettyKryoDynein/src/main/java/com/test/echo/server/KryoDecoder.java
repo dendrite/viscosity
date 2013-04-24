@@ -27,7 +27,7 @@ import com.test.echo.kryo.KryoValueDeserializer;
  * as a message:
  * <pre>
  * void messageReceived({@link ChannelHandlerContext} ctx, {@link org.jboss.netty.channel.MessageEvent} e) {
- *     String msg = (String) e.getMessage();
+ *     String msg = (String) e.getStatus();
  *     ch.write("Did you say '" + msg + "'?\n");
  * }
  * </pre>

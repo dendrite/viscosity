@@ -31,8 +31,6 @@ public class CityHandlerRemote implements InvocationHandler {
         kryoPayload.setArgs(args);
         kryoPayload.setInterfaceClass(this.interfaceClass);
 
-
-
         Client client = new Client();
         kryoPayload = client.send(kryoPayload);
 

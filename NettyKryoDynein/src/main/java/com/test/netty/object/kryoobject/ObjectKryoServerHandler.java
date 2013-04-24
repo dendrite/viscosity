@@ -50,6 +50,14 @@ public class ObjectKryoServerHandler extends SimpleChannelUpstreamHandler {
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
         // Echo back the received object to the client.
         transferredMessages.incrementAndGet();
+
+
+        try {
+            Thread.sleep(8000);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
         ChannelFuture channelFuture = e.getChannel().write(e.getMessage());
 
         // see here - http://netty.io/3.6/guide/

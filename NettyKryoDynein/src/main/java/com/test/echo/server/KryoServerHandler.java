@@ -70,7 +70,7 @@ public class KryoServerHandler extends SimpleChannelUpstreamHandler {
 
 
         // Discard received data silently by doing nothing.
-        // transferredBytes += ((ChannelBuffer) e.getMessage()).readableBytes();
+        // transferredBytes += ((ChannelBuffer) e.getStatus()).readableBytes();
     }
 
     @Override

@@ -71,7 +71,7 @@ public class EchoClientHandler extends SimpleChannelUpstreamHandler {
 
 
         transferredBytes.addAndGet(((ChannelBuffer) e.getMessage()).readableBytes());
-        //e.getChannel().write(e.getMessage());
+        //e.getChannel().write(e.getStatus());
         }catch(Exception ex){
             ex.printStackTrace();
         }

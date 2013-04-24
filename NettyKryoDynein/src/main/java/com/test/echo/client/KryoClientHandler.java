@@ -69,7 +69,7 @@ public class KryoClientHandler extends SimpleChannelUpstreamHandler {
                 kryoMessageHere.setStatus( kryoMessageHere.getStatus() + " client:" + System.currentTimeMillis() );
 
 //            ChannelBuffer cb;
-//            cb = ((ChannelBuffer) e.getMessage());
+//            cb = ((ChannelBuffer) e.getStatus());
 //              cb.writeBytes(kryoValueSerializer.serialize(kryoMessageHere));
 
                 byte[] bytes = kryoValueSerializer.serialize(kryoMessageHere);
@@ -82,8 +82,8 @@ public class KryoClientHandler extends SimpleChannelUpstreamHandler {
 
            // new Exception("Client get message from server");
 //            // Send back the received message to the remote peer.
-//            transferredBytes.addAndGet(((ChannelBuffer) e.getMessage()).readableBytes());
-//            e.getChannel().write(e.getMessage());
+//            transferredBytes.addAndGet(((ChannelBuffer) e.getStatus()).readableBytes());
+//            e.getChannel().write(e.getStatus());
 
         } catch (IOException e1) {
             e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

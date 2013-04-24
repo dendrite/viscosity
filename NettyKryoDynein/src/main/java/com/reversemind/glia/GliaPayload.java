@@ -1,4 +1,4 @@
-package ru.ttk.glia;
+package com.reversemind.glia;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -19,6 +19,8 @@ public class GliaPayload implements Serializable {
 
     private long clientTimestamp;
     private long serverTimestamp;
+
+    private GliaPayloadStatus status;
 
     public Object getResultResponse() {
         return resultResponse;
@@ -68,6 +70,14 @@ public class GliaPayload implements Serializable {
         this.serverTimestamp = serverTimestamp;
     }
 
+    public GliaPayloadStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(GliaPayloadStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "GliaPayload{" +
@@ -77,6 +87,7 @@ public class GliaPayload implements Serializable {
                 ", interfaceClass=" + interfaceClass +
                 ", clientTimestamp=" + clientTimestamp +
                 ", serverTimestamp=" + serverTimestamp +
+                ", status=" + status +
                 '}';
     }
 }

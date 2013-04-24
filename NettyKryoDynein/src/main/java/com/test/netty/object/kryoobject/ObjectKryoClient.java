@@ -53,6 +53,10 @@ public class ObjectKryoClient {
         this.firstMessageSize = firstMessageSize;
     }
 
+    public void newListener(){
+        System.out.println("\n\n\n\n\n\n\n aswrgregewrgergewrgergergerg");
+    }
+
     public String listener(){
         System.out.println("Some words");
 //        if(this.clientBootstrap != null){
@@ -79,7 +83,7 @@ public class ObjectKryoClient {
             for(int i=0;i<10;i++){
                 firstMessage.add(i);
             }
-            this.channel.write(firstMessage);
+            ChannelFuture writeChannelFuture = this.channel.write(firstMessage);
         }
     }
 
@@ -173,9 +177,33 @@ public class ObjectKryoClient {
                             public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
                                 // Echo back the received object to the server.
                                 transferredMessages.incrementAndGet();
+
+                                ChannelFuture cf = e.getFuture();
+//                                cf.addListener( new ChannelFutureListener(){
+//                                    @Override
+//                                    public void operationComplete(ChannelFuture future) throws Exception {
+//                                        newListener();
+//                                    }
+//                                });
+
+                                try {
+                                    if(cf.await(1000)){
+                                        System.out.println("TRUE TRUE TRUE TRUE TRUE");
+                                    }else{
+                                        System.out.println("FALSE FALSE FALSE FALSE FALSE");
+                                    }
+                                } catch (InterruptedException e1) {
+                                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                                }
+
+                                if (cf.isSuccess()) {
+                                    System.out.println("YEAR!!!");
+                                }
+
                                 listener();
                                 ctx.sendUpstream(e);
-                                //e.getChannel().write(e.getMessage());
+
+                                //e.getChannel().write(e.getStatus());
                                 //e.getChannel().close();
                             }
 
@@ -247,14 +275,14 @@ public class ObjectKryoClient {
         objectKryoClient.run();
         System.out.println("5");
 
-        Thread.sleep(100);
-        System.out.println("6");
-        objectKryoClient.sendAgain();
-        System.out.println("7");
-        Thread.sleep(100);
-        System.out.println("8");
-        objectKryoClient.sendAgain();
-        System.out.println("9");
+//        Thread.sleep(100);
+//        System.out.println("6");
+//        objectKryoClient.sendAgain();
+//        System.out.println("7");
+//        Thread.sleep(100);
+//        System.out.println("8");
+//        objectKryoClient.sendAgain();
+//        System.out.println("9");
 
 //        Thread.sleep(10000);
 //        objectKryoClient.disconnect();
@@ -263,8 +291,8 @@ public class ObjectKryoClient {
 //        objectKryoClient.connectAgain();
 
 
-        objectKryoClient.channelFuture.getChannel().close();
-        objectKryoClient.channelFactory.releaseExternalResources();
+//        objectKryoClient.channelFuture.getChannel().close();
+//        objectKryoClient.channelFactory.releaseExternalResources();
 
         Thread.sleep(20000);
         objectKryoClient.run();
