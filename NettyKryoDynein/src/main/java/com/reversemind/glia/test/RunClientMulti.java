@@ -28,24 +28,38 @@ public class RunClientMulti implements Serializable {
         client = new GliaClient(serverHost,serverPort);
         client.run();
 
+        Thread[] threadArray = new Thread[10];
+
         for(int i=0; i<10;i++){
-            new Thread(){
+            threadArray[i] = new Thread(){
                 long vl = System.currentTimeMillis();
                 public void run() {
-                    ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance(client).newProxyInstance(ISimplePojo.class);
 
-                    List<PAddressNode> list = simplePojoProxy.searchAddress("Москва");
+                    for(int i=0;i<1;i++){
+                        ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance(client).newProxyInstance(ISimplePojo.class);
 
-                    if (list != null && list.size() > 0) {
-                        for (PAddressNode addressNode : list) {
-                            System.out.println("" + this.getName() +"-node:" + addressNode);
+                        List<PAddressNode> list = simplePojoProxy.searchAddress(this.getName());
+
+                        if (list != null && list.size() > 0) {
+                            for (PAddressNode addressNode : list) {
+                                System.out.println("" + this.getName() +"-node:" + addressNode);
+                            }
+                        }
+                        try {
+                            Thread.sleep(2);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                         }
                     }
+
                 }
-            }.run();
-            Thread.sleep(10);
+            };
+            //Thread.sleep(1);
         }
 
+        for(int i=0; i<10;i++){
+            threadArray[i].start();
+        }
 
 
 

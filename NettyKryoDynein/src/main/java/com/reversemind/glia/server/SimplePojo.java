@@ -20,7 +20,7 @@ public class SimplePojo implements ISimplePojo, Serializable {
     public List<PAddressNode> searchAddress(String query) {
         List<PAddressNode> list = new ArrayList<PAddressNode>();
         for(int i=0;i<10;i++){
-            list.add(new PAddressNode("" + i, " city - query - " + i));
+            list.add(new PAddressNode("" + i, " city - " + query + "_" + i));
         }
         return list;
     }

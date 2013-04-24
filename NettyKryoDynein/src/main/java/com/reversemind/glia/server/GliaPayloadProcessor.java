@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -25,6 +26,23 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
     private static final Logger LOG = Logger.getLogger(GliaPayloadProcessor.class.getName());
 
     private static Map<Class,Class> mapPOJORegisteredInterfaces = new HashMap<Class, Class>();
+
+    @Override
+    public Map<Class, Class> getPojoMap() {
+        return mapPOJORegisteredInterfaces;
+    }
+
+    @Override
+    public void setPojoMap(Map<Class, Class> map) {
+        if (map != null && map.size() > 0) {
+            Set<Class> set = map.keySet();
+            for (Class interfaceClass : set) {
+                synchronized (mapPOJORegisteredInterfaces) {
+                    mapPOJORegisteredInterfaces.put(interfaceClass, map.get(interfaceClass));
+                }
+            }
+        }
+    }
 
     @Override
     public void registerPOJO(Class interfaceClass, Class pojoClass) {

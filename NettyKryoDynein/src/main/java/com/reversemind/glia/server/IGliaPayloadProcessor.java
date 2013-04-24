@@ -3,6 +3,7 @@ package com.reversemind.glia.server;
 import com.reversemind.glia.GliaPayload;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Date: 4/24/13
@@ -13,6 +14,8 @@ import java.io.Serializable;
  */
 public interface IGliaPayloadProcessor extends Serializable {
 
+    public Map<Class,Class> getPojoMap();
+    public void setPojoMap(Map<Class, Class> map);
     public void registerPOJO(Class interfaceClass, Class pojoClass);
 
     /**
