@@ -57,6 +57,8 @@ public class GliaServer implements Serializable {
 
         // Bind and start to accept incoming connections.
         bootstrap.bind(new InetSocketAddress(port));
+
+        System.out.println("Server started!");
     }
 
     public static void main(String[] args) throws Exception {

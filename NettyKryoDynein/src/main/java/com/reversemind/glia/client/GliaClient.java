@@ -77,6 +77,8 @@ public class GliaClient implements Serializable {
                 LOG.info("Send from gliaPayload:" + gliaPayloadSend.toString());
                 gliaPayloadSend.setClientTimestamp(System.currentTimeMillis());
                 this.channel.write(gliaPayloadSend);
+
+                return;
             }
         }
         throw new IOException("Channel is closed");

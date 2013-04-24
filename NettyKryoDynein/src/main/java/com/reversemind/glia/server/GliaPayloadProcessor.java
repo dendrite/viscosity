@@ -47,6 +47,10 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
         }
 
         GliaPayload gliaPayload = ((GliaPayload) gliaPayloadObject);
+
+
+        System.out.println("Get from client:" + gliaPayload);
+
         Class interfaceClass = gliaPayload.getInterfaceClass();
         Class pojoClass = this.findPOJOClass(interfaceClass);
 
@@ -70,7 +74,8 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
             Object result = selectedMethod.invoke(pojoClass.newInstance(), gliaPayload.getArguments());
             gliaPayload.setResultResponse(result);
-
+            gliaPayload.setStatus(GliaPayloadStatus.OK);
+            System.out.println("\n\n find result: " + result + " \n\n");
             return gliaPayload;
 
             // TODO make correct Exception processing

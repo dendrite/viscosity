@@ -40,6 +40,10 @@ public class ProxyHandler implements InvocationHandler {
             System.out.println("arguments: " + obj.getClass().getCanonicalName() + " value:" + obj);
         }
 
+        if(method.getName().equalsIgnoreCase("toString")){
+            return "GET IT FROM - INVOKE METHOD";
+        }
+
         GliaPayload gliaPayload = this.makePayload();
 
         gliaPayload.setClientTimestamp(System.currentTimeMillis());
@@ -49,13 +53,18 @@ public class ProxyHandler implements InvocationHandler {
 
         gliaClient.send(gliaPayload);
 
-        Thread.sleep(100);
+        System.out.println("==1");
+        Thread.sleep(700);
+        System.out.println("==2");
         GliaPayload fromServer = gliaClient.getGliaPayload();
 
-        if(fromServer!=null && fromServer.getStatus() == GliaPayloadStatus.OK){
+        System.out.println("==3");
+
+        if(fromServer!=null && fromServer.getStatus() != null && fromServer.getStatus().equals(GliaPayloadStatus.OK)){
+            System.out.println("fromServer.getResultResponse()\n\n" + fromServer.getResultResponse());
             return fromServer.getResultResponse();
         }
 
-        throw new Exception("Something wrong with server");
+        return null;
     }
 }
