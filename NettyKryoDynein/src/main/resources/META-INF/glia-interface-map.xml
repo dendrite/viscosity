@@ -10,18 +10,12 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <context:property-placeholder location="META-INF/glia.properties"/>
+    <util:map id="pojoMap" map-class="java.util.HashMap" key-type="java.lang.Class" value-type="java.lang.Class">
+        <entry key="com.reversemind.glia.shared.ISimplePojo" value="com.reversemind.glia.server.SimplePojo"/>
+    </util:map>
 
-    <import resource="glia-interface-map.xml" />
-
-    <bean id="serverPayloadProcessor" class="com.reversemind.glia.server.GliaPayloadProcessor">
-        <property name="pojoMap" ref="pojoMap"/>
-    </bean>
-
-    <bean id="gliaServer" class="com.reversemind.glia.server.GliaServer">
-        <constructor-arg type="int" value="${glia.server.port}"/>
-        <constructor-arg type="boolean" value="${drop.client.connection}"/>
-        <constructor-arg type="com.reversemind.glia.server.IGliaPayloadProcessor" ref="serverPayloadProcessor"/>
-    </bean>
+    <util:map id="ejbMap" map-class="java.util.HashMap" key-type="java.lang.Class" value-type="java.lang.String">
+    <entry key="com.reversemind.glia.shared.ISimplePojo" value="java:/EJB-LOCAL"/>
+    </util:map>
 
 </beans>
