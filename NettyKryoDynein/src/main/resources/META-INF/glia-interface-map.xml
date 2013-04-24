@@ -15,7 +15,7 @@
     </util:map>
 
     <util:map id="ejbMap" map-class="java.util.HashMap" key-type="java.lang.Class" value-type="java.lang.String">
-    <entry key="com.reversemind.glia.shared.ISimplePojo" value="java:/EJB-LOCAL"/>
+        <entry key="com.reversemind.glia.shared.ISimplePojo" value="java:/EJB-LOCAL"/>
     </util:map>
 
 </beans>
