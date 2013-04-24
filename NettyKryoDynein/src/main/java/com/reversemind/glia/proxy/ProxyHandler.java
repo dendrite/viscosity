@@ -54,7 +54,7 @@ public class ProxyHandler implements InvocationHandler {
         gliaClient.send(gliaPayload);
 
         System.out.println("==1");
-        Thread.sleep(700);
+        Thread.sleep(10);
         System.out.println("==2");
         GliaPayload fromServer = gliaClient.getGliaPayload();
 
