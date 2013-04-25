@@ -14,6 +14,7 @@ public enum GliaPayloadStatus {
     ERROR_UNKNOWN("ERROR_UNKNOWN", -1),                                     // Неизвестная ошибка
     ERROR_CLIENT_PAYLOAD("ERROR_CLIENT_PAYLOAD", -100),                      // Unknown client payload
     ERROR_PAYLOAD_UNKNOWN_METHOD("ERROR_PAYLOAD_UNKNOWN_METHOD", -111),                      // Unknown client payload
+    ERROR_COULD_NOT_INIT_JNDI_CONTEXT("ERROR_COULD_NOT_INIT_JNDI_CONTEXT", -222),                      // Unknown client payload
     OK("OK",0);
 
     private String message;
@@ -50,6 +51,8 @@ public enum GliaPayloadStatus {
                 return ERROR_CLIENT_PAYLOAD;
             case -111:
                 return ERROR_PAYLOAD_UNKNOWN_METHOD;
+            case -222:
+                return ERROR_COULD_NOT_INIT_JNDI_CONTEXT;
             default:
                 return ERROR_UNKNOWN;
         }

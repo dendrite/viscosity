@@ -15,7 +15,17 @@
     </util:map>
 
     <util:map id="ejbMap" map-class="java.util.HashMap" key-type="java.lang.Class" value-type="java.lang.String">
-        <entry key="com.reversemind.glia.shared.ISimplePojo" value="java:/EJB-LOCAL"/>
+        <!--LOCAL CALL-->
+        <entry key="cluster.IAddressSearch" value="java:global/address/address-ejb-1.0-SNAPSHOT/AddressSearch!cluster.IAddressSearch"/>
+        <!--REMOTE CALL FROM STANDALONE CONSOLE CLIENT-->
+        <!--<entry key="cluster.IAddressSearch" value="ejb:app/address-ejb-1.0-SNAPSHOT/AddressSearch!cluster.IAddressSearch"/>-->
     </util:map>
+
+    <!--java:global/address/address-ejb-1.0-SNAPSHOT/AddressSearch!cluster.IAddressSearch-->
+    <!--java:app/address-ejb-1.0-SNAPSHOT/AddressSearch!cluster.IAddressSearch-->
+    <!--java:module/AddressSearch!cluster.IAddressSearch-->
+    <!--java:global/address/address-ejb-1.0-SNAPSHOT/AddressSearch-->
+    <!--java:app/address-ejb-1.0-SNAPSHOT/AddressSearch-->
+    <!--java:module/AddressSearch-->
 
 </beans>
