@@ -1,6 +1,6 @@
 package com.reversemind.glia.jndi;
 
-import cluster.IAddressSearch;
+import com.reversemind.glia.cluster.IAddressSearch;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

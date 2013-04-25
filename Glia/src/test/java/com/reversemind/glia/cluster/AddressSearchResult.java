@@ -1,4 +1,4 @@
-package cluster;
+package com.reversemind.glia.cluster;
 
 import java.io.Serializable;
 

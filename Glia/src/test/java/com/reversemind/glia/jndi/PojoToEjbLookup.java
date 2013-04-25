@@ -1,7 +1,7 @@
 package com.reversemind.glia.jndi;
 
-import cluster.AddressSearchResult;
-import cluster.IAddressSearch;
+import com.reversemind.glia.cluster.AddressSearchResult;
+import com.reversemind.glia.cluster.IAddressSearch;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;

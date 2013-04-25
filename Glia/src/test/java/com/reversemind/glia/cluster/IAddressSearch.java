@@ -1,6 +1,5 @@
-package cluster;
+package com.reversemind.glia.cluster;
 
-import javax.ejb.Local;
 import javax.ejb.Remote;
 import java.io.Serializable;
 import java.util.List;
