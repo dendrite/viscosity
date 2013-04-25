@@ -16,6 +16,7 @@ public interface IGliaPayloadProcessor extends Serializable {
 
     public Map<Class,Class> getPojoMap();
     public void setPojoMap(Map<Class, Class> map);
+    public void setEjbMap(Map<Class, String> map);
     public void registerPOJO(Class interfaceClass, Class pojoClass);
 
     /**
