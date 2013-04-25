@@ -15,6 +15,7 @@ for jump start
 http://habrahabr.ru/post/116363/
 
 
+
 3 - Need to make an Arquillian test - ot examples for EJB Glia example
 4 - Also made some pure POJO integration
 
