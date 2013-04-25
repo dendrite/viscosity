@@ -10,7 +10,7 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <context:property-placeholder location="META-INF/glia-server.properties"/>
+    <context:property-placeholder location="glia-server.properties"/>
 
     <import resource="glia-interface-map.xml" />
 
