@@ -1,7 +1,7 @@
 package com.reversemind.glia.remote;
 
-import com.reversemind.glia.cluster.AddressSearchResult;
-import com.reversemind.glia.cluster.IAddressSearch;
+import cluster.AddressSearchResult;
+import cluster.IAddressSearch;
 import com.reversemind.glia.client.GliaClient;
 import com.reversemind.glia.proxy.ProxyFactory;
 
