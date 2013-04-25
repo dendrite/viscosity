@@ -49,10 +49,22 @@ public class GliaClient implements Serializable {
         return running;
     }
 
+    /**
+     * Will wait maximum for a 2 seconds
+     * @return
+     */
     public GliaPayload getGliaPayload() {
+//        // here need make something waiting
+//        while(this.gliaPayload == null){
+//
+//        }
         return this.gliaPayload;
     }
 
+    /**
+     *
+     * @param object
+     */
     private void serverListener(Object object) {
         if(object instanceof GliaPayload){
             LOG.info("Get from server:" + ((GliaPayload) object).toString());
@@ -70,6 +82,7 @@ public class GliaClient implements Serializable {
      */
     public void send(GliaPayload gliaPayloadSend) throws IOException {
         this.gliaPayload = null;
+        // clean & start timer
         if(this.channel != null && this.channel.isConnected()){
             LOG.info("Connected:" + this.channel.isConnected());
 
