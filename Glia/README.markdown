@@ -38,7 +38,7 @@ The use and distribution terms for this software are covered by the Apache Licen
 #### TODO
 
 * Add a control to server through zookeeper
-* Add metrics to the server
+* Add metrics to the server heartbeats & so on...
 * Autodiscover server in zookeeper
 * Glia server correct shutdown
 
