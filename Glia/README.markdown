@@ -19,7 +19,7 @@ Glia using [Netty](http://netty.io/), [Kryo](https://code.google.com/p/kryo/), [
 ## Documentation
 Documentation and tutorials on the [Glia Wiki](https://github.com/dendrite/viscosity/wiki/Glia-Wiki)
 
-## Licence
+## License
 
 The use and distribution terms for this software are covered by the Apache License, Version 2.0 (http://opensource.org/licenses/Apache-2.0) which can be found in the file LICENSE.html at the root of this distribution. By using this software in any fashion, you are agreeing to be bound by the terms of this license. You must not remove this notice, or any other, from this software.
 
