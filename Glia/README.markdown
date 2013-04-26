@@ -1,15 +1,16 @@
-## Glia
+## Glia - is a nervous system of you cluster
 
-Glia is distributed system for cluster node communication.
-Glia is simple, compact, fast, scalable, highly available, supports POJO and EJB model.
-Glia could be run as a standalone console application or inside any container (Servlet, EJB, Spring & etc.)
-Glia could be utilized by any JVM based language (Groovy, Scala, Clojure, JRuby, Jython & etc.)
+* Glia is distributed system for cluster node communication.
+* Glia is simple, compact, fast, scalable, highly available, supports POJO and EJB model.
+* Glia could be run as a standalone console application or inside any container (Servlet, EJB, Spring & etc.)
+* Glia could be utilized by any JVM based language (Groovy, Scala, Clojure, JRuby, Jython & etc.)
+
 
 Wiki definition of the word glia.
+
 Glia (Greek γλία, γλοία "glue"; pronounced in English as either /ˈɡliːə/ or /ˈɡlaɪə/), are non-neuronal cells that maintain homeostasis, form myelin, and provide support and protection for neurons in the brain, and for neurons in other parts of the nervous system such as in the autonomic nervous system
 
-
-Glias using [Netty](http://netty.io/) and [Kryo](https://code.google.com/p/kryo/)
+Glia using [Netty](http://netty.io/), [Kryo](https://code.google.com/p/kryo/), [Zookeeper](http://zookeeper.apache.org/)
 
 
 ## Getting started
