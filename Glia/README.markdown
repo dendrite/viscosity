@@ -1,4 +1,4 @@
-## Glia - is a nervous system of you cluster
+# Glia - is a nervous system of you cluster
 
 * Glia is distributed system for cluster node communication.
 * Glia is simple, compact, fast, scalable, highly available, supports POJO and EJB model.
@@ -13,13 +13,13 @@ Glia (Greek γλία, γλοία "glue"; pronounced in English as either /ˈɡli
 Glia using [Netty](http://netty.io/), [Kryo](https://code.google.com/p/kryo/), [Zookeeper](http://zookeeper.apache.org/)
 
 
-## Getting started
+#### Getting started
 
 
-## Documentation
+#### Documentation
 Documentation and tutorials on the [Glia Wiki](https://github.com/dendrite/viscosity/wiki/Glia-Wiki)
 
-## License
+#### License
 
 The use and distribution terms for this software are covered by the Apache License, Version 2.0 (http://opensource.org/licenses/Apache-2.0) which can be found in the file LICENSE.html at the root of this distribution. By using this software in any fashion, you are agreeing to be bound by the terms of this license. You must not remove this notice, or any other, from this software.
 
@@ -35,25 +35,21 @@ The use and distribution terms for this software are covered by the Apache Licen
  See the License for the specific language governing permissions and
  limitations under the License.
 
-## TODO
+#### TODO
 
-*1 - Glia server correct shutdown
-*2 - Client correct wait - for a period - something like Future
+* Glia server correct shutdown
 
-Look through - FutureTask
-http://stackoverflow.com/questions/1247390/java-native-process-timeout/1249984#1249984
+* How to get from server number of client connected??
 
-http://stackoverflow.com/questions/1234429/best-ways-to-handle-maximum-execution-time-for-threads-in-java
-
-for jump start
-http://habrahabr.ru/post/116363/
+* Client correct wait - for a period - something like Future
+** Need look through all cases - but first situation looks pretty good
+** CASE: if Server will send but Clint is down?
+** Need to make a stress loading from a lot of clients
 
 
+* 3 - Need to make an Arquillian test - ot examples for EJB Glia example
 
-3 - Need to make an Arquillian test - ot examples for EJB Glia example
-4 - Also made some pure POJO integration
-
-
+* 4 - Also made some pure POJO example integration
 
 
 -- if You get something like that during deployment on Jboss 7.1.1.Final
@@ -71,3 +67,14 @@ And pojo domain
 <subsystem xmlns="urn:jboss:domain:naming:1.0" />
 <!--subsystem xmlns="urn:jboss:domain:pojo:1.0" /-->
 <subsystem xmlns="urn:jboss:domain:osgi:1.0" activation="lazy">
+
+
+
+
+Look through - FutureTask
+
+http://stackoverflow.com/questions/1247390/java-native-process-timeout/1249984#1249984
+
+http://stackoverflow.com/questions/1234429/best-ways-to-handle-maximum-execution-time-for-threads-in-java
+
+for jump start = http://habrahabr.ru/post/116363/

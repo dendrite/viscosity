@@ -1,9 +1,6 @@
 package com.reversemind.glia.future;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 
 /**
  *
@@ -20,7 +17,7 @@ public class FutureTaskExample {
 
     }
 
-    public static void main(String... args){
+    public static void main(String... args) throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(2);
         FutureTask<String> futureOne = new FutureTask<String>(
                 new Callable<String>() {
@@ -45,6 +42,8 @@ public class FutureTaskExample {
                 e.printStackTrace();
             }
         }
+
+        System.out.println("FUTURE GET:" + futureOne.get());
         executor.shutdown();
     }
 

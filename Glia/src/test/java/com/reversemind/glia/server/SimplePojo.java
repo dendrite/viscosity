@@ -18,6 +18,13 @@ public class SimplePojo implements ISimplePojo, Serializable {
 
     @Override
     public List<PAddressNode> searchAddress(String query) {
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         List<PAddressNode> list = new ArrayList<PAddressNode>();
         for(int i=0;i<10;i++){
             list.add(new PAddressNode("" + i, " city - " + query + "_" + i));

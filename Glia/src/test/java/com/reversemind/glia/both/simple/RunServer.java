@@ -1,4 +1,4 @@
-package com.reversemind.glia;
+package com.reversemind.glia.both.simple;
 
 import com.reversemind.glia.server.GliaPayloadProcessor;
 import com.reversemind.glia.server.GliaServer;

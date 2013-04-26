@@ -1,6 +1,7 @@
 package com.reversemind.glia.server;
 
 import com.reversemind.glia.GliaPayload;
+import com.reversemind.glia.GliaPayloadBuilder;
 import com.reversemind.glia.GliaPayloadStatus;
 import org.apache.commons.lang3.StringUtils;
 
@@ -99,12 +100,12 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
         if (gliaPayloadObject == null) {
             LOG.info("ERROR: " + GliaPayloadStatus.ERROR_CLIENT_PAYLOAD);
-            return this.generateErrorPayload(GliaPayloadStatus.ERROR_CLIENT_PAYLOAD);
+            return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_CLIENT_PAYLOAD);
         }
 
         if (!(gliaPayloadObject instanceof GliaPayload)) {
             LOG.info("ERROR: " + GliaPayloadStatus.ERROR_CLIENT_PAYLOAD);
-            return this.generateErrorPayload(GliaPayloadStatus.ERROR_CLIENT_PAYLOAD);
+            return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_CLIENT_PAYLOAD);
         }
 
         GliaPayload gliaPayload = ((GliaPayload) gliaPayloadObject);
@@ -136,7 +137,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
             }
         }
 
-        return this.generateErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN);
+        return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN);
     }
 
     private GliaPayload invokeMethod(GliaPayload gliaPayload, Class pojoOrEjbClass, String methodName, Object[] arguments){
@@ -145,7 +146,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
         if (selectedMethod == null) {
             LOG.info("ERROR :" + GliaPayloadStatus.ERROR_PAYLOAD_UNKNOWN_METHOD);
-            return this.generateErrorPayload(GliaPayloadStatus.ERROR_PAYLOAD_UNKNOWN_METHOD);
+            return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_PAYLOAD_UNKNOWN_METHOD);
         }
 
         try {
@@ -167,7 +168,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        return this.generateErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN);
+        return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN);
     }
 
     private GliaPayload invokeEjbMethod(GliaPayload gliaPayload, Object instance, String methodName, Object[] arguments){
@@ -176,7 +177,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
         if (selectedMethod == null) {
             LOG.info("ERROR :" + GliaPayloadStatus.ERROR_PAYLOAD_UNKNOWN_METHOD);
-            return this.generateErrorPayload(GliaPayloadStatus.ERROR_PAYLOAD_UNKNOWN_METHOD);
+            return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_PAYLOAD_UNKNOWN_METHOD);
         }
 
         try {
@@ -196,7 +197,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        return this.generateErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN);
+        return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN);
     }
 
     private Method findMethod(Class interfaceClass, String methodName){
@@ -232,18 +233,5 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
         return this.mapEJBRegisteredInterfaces.get(interfaceClass);
     }
 
-    private GliaPayload generateErrorPayload(GliaPayloadStatus status){
 
-        GliaPayload gliaPayload = new GliaPayload();
-        gliaPayload.setServerTimestamp(System.currentTimeMillis());
-
-        gliaPayload.setArguments(null);
-        gliaPayload.setMethodName(null);
-        gliaPayload.setInterfaceClass(null);
-
-        gliaPayload.setResultResponse(null);
-        gliaPayload.setStatus(status);
-
-        return gliaPayload;
-    }
 }

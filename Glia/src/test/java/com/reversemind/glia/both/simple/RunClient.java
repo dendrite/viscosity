@@ -1,4 +1,4 @@
-package com.reversemind.glia;
+package com.reversemind.glia.both.simple;
 
 import com.reversemind.glia.client.GliaClient;
 import com.reversemind.glia.proxy.ProxyFactory;
@@ -36,6 +36,7 @@ public class RunClient {
                 System.out.println("node:" + addressNode);
             }
         }
+
 
     }
 

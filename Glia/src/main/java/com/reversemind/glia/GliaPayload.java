@@ -22,6 +22,16 @@ public class GliaPayload implements Serializable {
 
     private GliaPayloadStatus status;
 
+    public GliaPayload() {
+        this.resultResponse = null;
+        this.methodName = null;
+        this.arguments = null;
+        this.interfaceClass = null;
+        this.clientTimestamp = System.currentTimeMillis();
+        this.serverTimestamp = System.currentTimeMillis();
+        this.status = GliaPayloadStatus.ERROR_UNKNOWN;
+    }
+
     public Object getResultResponse() {
         return resultResponse;
     }
