@@ -14,7 +14,9 @@ import java.io.Serializable;
  * @author konilovsky
  * @since 1.0
  */
-public class RunServer implements Serializable {
+public class RunServer
+
+        implements Serializable {
 
     public static void main(String... args) {
 
@@ -22,7 +24,7 @@ public class RunServer implements Serializable {
         gliaPayloadProcessor.registerPOJO(ISimplePojo.class, SimplePojo.class);
 
         int port = 7000;
-        GliaServer server = new GliaServer(gliaPayloadProcessor, false);
+        GliaServer server = new GliaServer("ETT.GLIA.SERVER", 1000, gliaPayloadProcessor, false);
         System.out.println("Started on port:" + server.getPort());
         server.run();
 

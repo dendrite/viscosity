@@ -13,15 +13,18 @@ public class TestAutoDiscoverAvailablePort {
 
     @Ignore
     @Test
-    public void testFindFreePort(){
+    public void testFindFreePort() {
         try {
+
             ServerSocket serverSocket = new ServerSocket(0);
             System.out.println("serverSocket.isBound():" + serverSocket.isBound());
-            System.out.println( "port:" + serverSocket.getLocalPort());
+            System.out.println("port:" + serverSocket.getLocalPort());
+
             serverSocket.close();
             System.out.println("serverSocket.isBound():" + serverSocket.isBound());
+
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
     }
