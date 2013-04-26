@@ -9,9 +9,12 @@ import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.serialization.ClassResolvers;
 import org.jboss.netty.handler.codec.serialization.ObjectDecoder;
 import org.jboss.netty.handler.codec.serialization.ObjectEncoder;
+import sun.util.LocaleServiceProviderPool;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.util.concurrent.Executors;
 
 /**
@@ -28,10 +31,63 @@ public class GliaServer implements Serializable {
     private boolean dropClientConnection = false;
     private IGliaPayloadProcessor gliaPayloadWorker;
 
+    /**
+     * Autodiscover an available port and start GliaServer
+     *
+     * @param gliaPayloadWorker
+     * @param dropClientConnection
+     */
+    public GliaServer(IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
+        try {
+            ServerSocket serverSocket = new ServerSocket(0);
+            if(serverSocket.getLocalPort() == -1){
+                throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
+            }
+
+            this.port = serverSocket.getLocalPort();
+
+            serverSocket.close();
+            int count = 0;
+            while(!serverSocket.isClosed()){
+                if(count++ > 10){
+                    throw new RuntimeException("Could not start GliaServer");
+                }
+                try {
+                    Thread.sleep(100);
+                    System.out.println("Waiting for closing autodiscovered socket try number#" + count);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException("Could not start GliaServer");
+                }
+            }
+            serverSocket = null;
+        } catch (Exception e) {
+            throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
+        }
+
+        this.dropClientConnection = dropClientConnection;
+        this.gliaPayloadWorker = gliaPayloadWorker;
+        System.out.println("\n\n\n GliaServer started on port:" + this.port + "\n\n\n");
+    }
+
+    /**
+     *
+     * @param port
+     * @param gliaPayloadWorker
+     * @param dropClientConnection
+     */
     public GliaServer(int port, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
         this.port = port;
         this.dropClientConnection = dropClientConnection;
         this.gliaPayloadWorker = gliaPayloadWorker;
+    }
+
+    /**
+     * Get port number of GliaServer
+     *
+     * @return
+     */
+    public int getPort() {
+        return port;
     }
 
     /**

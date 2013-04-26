@@ -22,7 +22,8 @@ public class RunServer implements Serializable {
         gliaPayloadProcessor.registerPOJO(ISimplePojo.class, SimplePojo.class);
 
         int port = 7000;
-        GliaServer server = new GliaServer(7000, gliaPayloadProcessor, false);
+        GliaServer server = new GliaServer(gliaPayloadProcessor, false);
+        System.out.println("Started on port:" + server.getPort());
         server.run();
 
     }
