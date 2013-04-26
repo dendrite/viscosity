@@ -28,6 +28,8 @@ import java.util.concurrent.Executors;
 public class GliaServer implements Serializable {
 
     private String name;
+    private String instanceName;
+
     private final int port;
     private GliaPayload gliaPayload;
     private boolean dropClientConnection = false;
@@ -68,11 +70,17 @@ public class GliaServer implements Serializable {
             throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
         }
 
-        this.name = UUID.randomUUID().toString() + "__" + this.port;
+        this.name = UUID.randomUUID().toString();
         this.dropClientConnection = dropClientConnection;
         this.gliaPayloadWorker = gliaPayloadWorker;
-
-        System.out.println("\n\n\n GliaServer [" + this.name + "] started on port:" + this.port + "\n\n\n");
+        this.instanceName = UUID.randomUUID().toString();
+        System.out.println("\n\n\n" +
+                " GliaServer started " +
+                "\n-------------------" +
+                "\n name:" + this.name +
+                "\n instance:" + this.instanceName +
+                "\n port:" + this.port +
+                "  \n\n\n");
     }
 
     /**
@@ -85,16 +93,30 @@ public class GliaServer implements Serializable {
         this.port = port;
         this.dropClientConnection = dropClientConnection;
         this.gliaPayloadWorker = gliaPayloadWorker;
-        this.name = UUID.randomUUID().toString() + "__" + port;
-        System.out.println("\n\n\n GliaServer [" + this.name + "] started on port:" + this.port + "\n\n\n");
+        this.name = UUID.randomUUID().toString();
+        this.instanceName = UUID.randomUUID().toString();
+        System.out.println("\n\n\n" +
+                " GliaServer started " +
+                "\n-------------------" +
+                "\n name:" + this.name +
+                "\n instance:" + this.instanceName +
+                "\n port:" + this.port +
+                "  \n\n\n");
     }
 
     public GliaServer(String serverName, int port, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
         this.port = port;
         this.dropClientConnection = dropClientConnection;
         this.gliaPayloadWorker = gliaPayloadWorker;
-        this.name = serverName + "_port:" + port;
-        System.out.println("\n\n\n GliaServer [" + this.name + "] started on port:" + this.port + "\n\n\n");
+        this.name = serverName;
+        this.instanceName = UUID.randomUUID().toString();
+        System.out.println("\n\n\n" +
+                " GliaServer started " +
+                "\n-------------------" +
+                "\n name:" + this.name +
+                "\n instance:" + this.instanceName +
+                "\n port:" + this.port +
+                "  \n\n\n");
     }
 
     /**
@@ -106,8 +128,13 @@ public class GliaServer implements Serializable {
         return name;
     }
 
-    private void setName(String name) {
-        this.name = name;
+    /**
+     * Instance name each time is a UUID
+     *
+     * @return
+     */
+    public String getInstanceName() {
+        return instanceName;
     }
 
     /**

@@ -24,7 +24,7 @@ public class RunServer
         gliaPayloadProcessor.registerPOJO(ISimplePojo.class, SimplePojo.class);
 
         int port = 7000;
-        GliaServer server = new GliaServer("ETT.GLIA.SERVER", 1000, gliaPayloadProcessor, false);
+        GliaServer server = new GliaServer(gliaPayloadProcessor, false);
         System.out.println("Started on port:" + server.getPort());
         server.run();
 
