@@ -56,7 +56,9 @@ public class ProxyHandler implements InvocationHandler {
         System.out.println("==1");
         //Thread.sleep(100);
         System.out.println("==2");
+        long bT = System.currentTimeMillis();
         GliaPayload fromServer = gliaClient.getGliaPayload();
+        System.out.println("==2.5 time:" + (System.currentTimeMillis() - bT));
 
         System.out.println("==3");
 

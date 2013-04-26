@@ -105,6 +105,10 @@ public class GliaClient implements Serializable {
             } catch (ExecutionException e) {
                 LOG.log(Level.WARNING,"ExecutionException futureTask == HERE");
                 //e.printStackTrace();
+
+            } catch (Exception e) {
+                LOG.log(Level.WARNING,"GENERAL Exception futureTask == HERE");
+                //e.printStackTrace();
             }
         }
 
@@ -118,8 +122,6 @@ public class GliaClient implements Serializable {
     private void setGliaPayload(GliaPayload inGliaPayload) {
         this.gliaPayload = inGliaPayload;
     }
-
-
 
     /**
      * Send to server GliaPayload

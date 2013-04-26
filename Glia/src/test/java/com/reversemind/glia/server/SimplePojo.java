@@ -20,7 +20,7 @@ public class SimplePojo implements ISimplePojo, Serializable {
     public List<PAddressNode> searchAddress(String query) {
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
