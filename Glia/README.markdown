@@ -42,9 +42,10 @@ The use and distribution terms for this software are covered by the Apache Licen
 * How to get from server number of client connected??
 
 * Client correct wait - for a period - something like Future
-** Need look through all cases - but first situation looks pretty good
-** CASE: if Server will send but Clint is down?
-** Need to make a stress loading from a lot of clients
+* Need look through all cases - but first situation looks pretty good
+* CASE: if Server will send but Clint is down?
+* Need to make a stress loading from a lot of clients
+* If connection from client is still opened - and reuse again and again the proxy - what in this case? - check it
 
 
 * 3 - Need to make an Arquillian test - ot examples for EJB Glia example

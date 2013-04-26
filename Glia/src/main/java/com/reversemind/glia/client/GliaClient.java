@@ -144,7 +144,7 @@ public class GliaClient implements Serializable {
 
                 this.shutDownExecutor();
                 this.executor = this.getExecutor();
-                this.executor.execute(this.getFutureTask());
+                this.executor.execute(this.createFutureTask());
 
                 return;
             }
@@ -363,6 +363,11 @@ public class GliaClient implements Serializable {
 
         return this.futureTask;
     }
+
+    private FutureTask<GliaPayload> createFutureTask() {
+        return this.futureTask = new FutureTask<GliaPayload>(new PayloadCallable(this.gliaPayload));
+    }
+
 
     /**
      *
