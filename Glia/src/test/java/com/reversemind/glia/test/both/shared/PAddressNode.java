@@ -1,4 +1,4 @@
-package com.reversemind.glia.shared;
+package com.reversemind.glia.test.both.shared;
 
 import java.io.Serializable;
 

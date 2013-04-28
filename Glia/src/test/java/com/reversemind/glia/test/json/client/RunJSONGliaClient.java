@@ -15,6 +15,7 @@ import java.util.Set;
 public class RunJSONGliaClient {
 
     public static void main(String... args) throws Exception {
+
         GliaClient client = new GliaClient(Settings.SERVER_HOST, Settings.SERVER_PORT);
         client.run();
 
@@ -24,6 +25,13 @@ public class RunJSONGliaClient {
         String jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago"));
 
         System.out.println("Server response: " + jsonString);
+
+
+
+        for(int i=0;i<100;i++){
+            jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago" + i));
+        }
+
 
         // let's parse a JSON string
         Map<String, Object> serverResponseMap = JSONBuilder.build(jsonString);
@@ -39,7 +47,7 @@ public class RunJSONGliaClient {
             }
         }
 
-        Thread.sleep(3000);
+        //Thread.sleep(3000);
         client.shutdown();
     }
 }

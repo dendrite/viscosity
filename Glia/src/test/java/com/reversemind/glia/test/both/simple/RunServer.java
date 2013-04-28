@@ -3,7 +3,7 @@ package com.reversemind.glia.test.both.simple;
 import com.reversemind.glia.server.GliaPayloadProcessor;
 import com.reversemind.glia.server.GliaServer;
 import com.reversemind.glia.server.SimplePojo;
-import com.reversemind.glia.shared.ISimplePojo;
+import com.reversemind.glia.test.both.shared.ISimplePojo;
 
 import java.io.Serializable;
 

@@ -16,6 +16,7 @@ public class ProxyFactory implements Serializable {
 
     private static final ProxyFactory proxyFactory = new ProxyFactory();
 
+    //TODO make it non-static
     private static GliaClient gliaClient;
 
     private ProxyFactory(){

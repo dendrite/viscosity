@@ -38,6 +38,8 @@ public class TestJSON {
         String jsonString = mapper.writeValueAsString(addressMap);
         System.out.println(jsonString);
 
+
+
         // Read JSON string back
         ObjectMapper mapperBack = new ObjectMapper();
         Map<String, Object> addressMapBack = mapperBack.readValue(jsonString, new TypeReference<Map<String, Object>>() {
