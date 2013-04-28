@@ -45,13 +45,15 @@ The use and distribution terms for this software are covered by the Apache Licen
 * In ProxyFactory - use non-static GliaClient
 * Replace in ProxyFactory using a Interface class into String name of interface class
 * Add a control to server through zookeeper
+
 * Add metrics to the server like a heartbeats & so on...
+
 * Autodiscover server in zookeeper
 * Glia server correct shutdown
 
 * How to get from server number of client connected??
 
-* Client correct wait - for a period - something like Future
+
 ** Need look through all cases - but first situation looks pretty good
 ** CASE: if Server will send but Clint is down?
 ** Need to make a stress loading from a lot of clients
@@ -59,7 +61,8 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 * 3 - Need to make an Arquillian test - ot examples for EJB Glia example
 
-+[DONE] for example a JSON sending - * 4 - Also made some pure POJO example integration
+* [DONE] Client correct wait - for a period - something like Future
+* [DONE] for example a JSON sending - * 4 - Also made some pure POJO example integration
 
 
 -- if You get something like that during deployment on Jboss 7.1.1.Final

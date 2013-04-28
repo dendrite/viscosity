@@ -18,5 +18,14 @@ public class RunJSONGliaServer {
 
         GliaServer server = new GliaServer("GLIA_JSON_SERVER", Settings.SERVER_PORT, gliaPayloadProcessor, false);
         server.run();
+
+        //Thread.sleep(3000);
+        //server.shutdown();
+
+        while(true){
+            Thread.sleep(1000);
+            System.out.println("Metrics:" + server.getMetrics());
+        }
+
     }
 }

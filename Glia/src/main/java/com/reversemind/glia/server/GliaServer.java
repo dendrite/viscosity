@@ -5,6 +5,7 @@ import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
+import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.serialization.ClassResolvers;
 import org.jboss.netty.handler.codec.serialization.ObjectDecoder;
@@ -30,6 +31,10 @@ public class GliaServer implements Serializable {
     private String name;
     private String instanceName;
 
+    private ServerBootstrap serverBootstrap;
+    private SimpleChannelUpstreamHandler handler;
+    private Metrics metrics;
+
     private final int port;
     private GliaPayload gliaPayload;
     private boolean dropClientConnection = false;
@@ -42,6 +47,7 @@ public class GliaServer implements Serializable {
      * @param dropClientConnection
      */
     public GliaServer(IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
+
         try {
             ServerSocket serverSocket = new ServerSocket(0);
             if (serverSocket.getLocalPort() == -1) {
@@ -70,6 +76,7 @@ public class GliaServer implements Serializable {
             throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
         }
 
+        this.metrics = new Metrics();
         this.name = UUID.randomUUID().toString();
         this.dropClientConnection = dropClientConnection;
         this.gliaPayloadWorker = gliaPayloadWorker;
@@ -90,6 +97,7 @@ public class GliaServer implements Serializable {
      * @param dropClientConnection
      */
     public GliaServer(int port, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
+        this.metrics = new Metrics();
         this.port = port;
         this.dropClientConnection = dropClientConnection;
         this.gliaPayloadWorker = gliaPayloadWorker;
@@ -112,6 +120,7 @@ public class GliaServer implements Serializable {
      * @param dropClientConnection - disconnect a client after response
      */
     public GliaServer(String serverName, int port, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
+        this.metrics = new Metrics();
         this.port = port;
         this.dropClientConnection = dropClientConnection;
         this.gliaPayloadWorker = gliaPayloadWorker;
@@ -154,30 +163,51 @@ public class GliaServer implements Serializable {
     }
 
     /**
+     * Get server metrics
+     *
+     * @return
+     */
+    public Metrics getMetrics() {
+        return this.metrics;
+    }
+
+    /**
      *
      */
     public void run() {
         // Configure the server.
-        ServerBootstrap bootstrap = new ServerBootstrap(
+        this.serverBootstrap = new ServerBootstrap(
                 new NioServerSocketChannelFactory(
                         Executors.newCachedThreadPool(),
                         Executors.newCachedThreadPool()));
 
+        this.handler = new GliaServerHandler(gliaPayloadWorker, metrics, dropClientConnection);
+
         // Set up the pipeline factory.
-        bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
+        this.serverBootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {
                 return Channels.pipeline(
                         new ObjectEncoder(),
                         new ObjectDecoder(
                                 ClassResolvers.cacheDisabled(getClass().getClassLoader())),
-                        new GliaServerHandler(gliaPayloadWorker, dropClientConnection));
+                        handler);
             }
         });
 
         // Bind and start to accept incoming connections.
-        bootstrap.bind(new InetSocketAddress(port));
+        this.serverBootstrap.bind(new InetSocketAddress(port));
 
         System.out.println("Server started!");
+    }
+
+    /**
+     * Shutdown server
+     */
+    public void shutdown() {
+        if (this.serverBootstrap != null) {
+            this.serverBootstrap.releaseExternalResources();
+            this.serverBootstrap.shutdown();
+        }
     }
 
     public static void main(String[] args) throws Exception {
