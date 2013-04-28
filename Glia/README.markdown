@@ -40,8 +40,12 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 #### TODO
 
+
+* Additional options for client speed optimisation - http://docs.jboss.org/netty/3.2/api/org/jboss/netty/bootstrap/ClientBootstrap.html
+* In ProxyFactory - use non-static GliaClient
+* Replace in ProxyFactory using a Interface class into String name of interface class
 * Add a control to server through zookeeper
-* Add metrics to the server heartbeats & so on...
+* Add metrics to the server like a heartbeats & so on...
 * Autodiscover server in zookeeper
 * Glia server correct shutdown
 
@@ -55,7 +59,7 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 * 3 - Need to make an Arquillian test - ot examples for EJB Glia example
 
-* 4 - Also made some pure POJO example integration
++[DONE] for example a JSON sending - * 4 - Also made some pure POJO example integration
 
 
 -- if You get something like that during deployment on Jboss 7.1.1.Final

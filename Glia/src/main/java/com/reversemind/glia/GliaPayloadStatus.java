@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public enum GliaPayloadStatus {
 
-    ERROR_UNKNOWN("ERROR_UNKNOWN", -1),                                                 // Неизвестная ошибка
+    ERROR_UNKNOWN("ERROR_UNKNOWN", -1),                                                 //
     ERROR_CLIENT_PAYLOAD("ERROR_CLIENT_PAYLOAD", -100),                                 // Unknown client payload
     ERROR_PAYLOAD_UNKNOWN_METHOD("ERROR_PAYLOAD_UNKNOWN_METHOD", -111),                 // Unknown client payload
     ERROR_COULD_NOT_INIT_JNDI_CONTEXT("ERROR_COULD_NOT_INIT_JNDI_CONTEXT", -222),       // Unknown client payload

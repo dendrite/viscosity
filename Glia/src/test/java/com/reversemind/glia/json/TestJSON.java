@@ -1,0 +1,55 @@
+package com.reversemind.glia.json;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+
+/**
+ *
+ */
+public class TestJSON {
+
+    /**
+     * Generate JSON string from Java Map and read a JSON string back into Map
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testJSON() throws IOException {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Map<String, Object> addressMap = new HashMap<String, Object>();
+
+        addressMap.put("id#1", "St Louis, MO, USA");
+        addressMap.put("id#2", "Cansas Drive, Hopkinsville, KY, United States");
+        addressMap.put("id#3", "Chicago Ridge, IL, United States");
+
+        List<Object> list = new ArrayList<Object>();
+        list.add("001");
+        list.add("002");
+        list.add("003");
+
+        addressMap.put("versions", list);
+
+        String jsonString = mapper.writeValueAsString(addressMap);
+        System.out.println(jsonString);
+
+        // Read JSON string back
+        ObjectMapper mapperBack = new ObjectMapper();
+        Map<String, Object> addressMapBack = mapperBack.readValue(jsonString, new TypeReference<Map<String, Object>>() {});
+
+        Set<String> keys = addressMapBack.keySet();
+        for(String key: keys){
+            System.out.println(key + ":" + addressMapBack.get(key));
+        }
+
+    }
+
+}

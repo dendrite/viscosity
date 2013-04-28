@@ -53,7 +53,7 @@ public class GliaClient implements Serializable {
         this.port = port;
         this.gliaPayload = null;
         this.executor = this.getExecutor();
-
+        System.out.println("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
     }
 
     public boolean isRunning() {
@@ -158,8 +158,9 @@ public class GliaClient implements Serializable {
     public void shutdown(){
         this.shutDownExecutor();
 
-        this.channelFuture.getChannel().close();
+        this.channelFuture.getChannel().close().awaitUninterruptibly();
         this.channelFactory.releaseExternalResources();
+        this.channelFactory.shutdown();
 
         this.clientBootstrap.releaseExternalResources();
         this.clientBootstrap.shutdown();
@@ -338,7 +339,7 @@ public class GliaClient implements Serializable {
      */
     private void shutDownFutureTask(){
         if(this.futureTask != null){
-
+            this.futureTask.cancel(true);
         }
     }
 

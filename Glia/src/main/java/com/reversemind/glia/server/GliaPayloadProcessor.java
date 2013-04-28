@@ -68,14 +68,13 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
         }
     }
 
-
     private void initJndiContext(){
         jndiPropertiesMap = this.getJndiProperties(jndiEnvironment);
         try {
             jndiContext = new InitialContext(jndiPropertiesMap);
             // buildingDAO = InitialContext.doLookup("java:global/ttk-house/ttk-house-ejb-2.0-SNAPSHOT/BuildingDAO!ru.ttk.baloo.house.data.service.building.IBuildingDAO");
         } catch (NamingException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 

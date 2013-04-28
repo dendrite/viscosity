@@ -26,6 +26,13 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.netflix.curator</groupId>
             <artifactId>curator-test</artifactId>
             <version>1.3.3</version>
@@ -35,6 +42,7 @@
                     <artifactId>netty</artifactId>
                 </exclusion>
             </exclusions>
+            <!--<scope>test</scope>-->
         </dependency>
 
         <dependency>

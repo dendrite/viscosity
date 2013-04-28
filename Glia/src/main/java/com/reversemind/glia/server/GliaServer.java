@@ -104,6 +104,13 @@ public class GliaServer implements Serializable {
                 "  \n\n\n");
     }
 
+    /**
+     *
+     * @param serverName
+     * @param port
+     * @param gliaPayloadWorker    -
+     * @param dropClientConnection - disconnect a client after response
+     */
     public GliaServer(String serverName, int port, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
         this.port = port;
         this.dropClientConnection = dropClientConnection;
