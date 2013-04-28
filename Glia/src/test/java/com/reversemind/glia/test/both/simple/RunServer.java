@@ -1,4 +1,4 @@
-package com.reversemind.glia.both.simple;
+package com.reversemind.glia.test.both.simple;
 
 import com.reversemind.glia.server.GliaPayloadProcessor;
 import com.reversemind.glia.server.GliaServer;
@@ -14,9 +14,7 @@ import java.io.Serializable;
  * @author konilovsky
  * @since 1.0
  */
-public class RunServer
-
-        implements Serializable {
+public class RunServer implements Serializable {
 
     public static void main(String... args) {
 

@@ -1,12 +1,9 @@
-package com.reversemind.glia.json;
+package com.reversemind.glia.test.json;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -43,10 +40,11 @@ public class TestJSON {
 
         // Read JSON string back
         ObjectMapper mapperBack = new ObjectMapper();
-        Map<String, Object> addressMapBack = mapperBack.readValue(jsonString, new TypeReference<Map<String, Object>>() {});
+        Map<String, Object> addressMapBack = mapperBack.readValue(jsonString, new TypeReference<Map<String, Object>>() {
+        });
 
         Set<String> keys = addressMapBack.keySet();
-        for(String key: keys){
+        for (String key : keys) {
             System.out.println(key + ":" + addressMapBack.get(key));
         }
 

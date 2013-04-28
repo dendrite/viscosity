@@ -1,19 +1,19 @@
-package com.reversemind.glia.json.server;
+package com.reversemind.glia.test.json.server;
 
-import com.reversemind.glia.json.Settings;
-import com.reversemind.glia.json.shared.IDoSomething;
-import com.reversemind.glia.json.shared.JSONBuilder;
+import com.reversemind.glia.test.json.Settings;
+import com.reversemind.glia.test.json.shared.IDoSomething;
+import com.reversemind.glia.test.json.shared.JSONBuilder;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  POJO on server side to process remote client request through a IDoSomething interface call
+ * POJO on server side to process remote client request through a IDoSomething interface call
  */
 public class ServerPojo implements IDoSomething {
 
-    private static final Map<String, Object> ADDRESS_MAP = new HashMap<String, Object>(){
+    private static final Map<String, Object> ADDRESS_MAP = new HashMap<String, Object>() {
         {
             put("id#1", "St Louis, MO, USA");
             put("id#2", "Cansas Drive, Hopkinsville, KY, United States");
@@ -32,14 +32,14 @@ public class ServerPojo implements IDoSomething {
         try {
 
             System.out.println("JSON string is:" + jsonString);
-            Map<String,Object> queryMap = JSONBuilder.build(jsonString);
+            Map<String, Object> queryMap = JSONBuilder.build(jsonString);
 
             System.out.println("Going to search for address:" + queryMap.get(Settings.ADDRESS_SEARCH));
 
-            Map<String,Object> responseMap = ADDRESS_MAP;
-            responseMap.put("#id4",queryMap.get(Settings.ADDRESS_SEARCH));
+            Map<String, Object> responseMap = ADDRESS_MAP;
+            responseMap.put("#id4", queryMap.get(Settings.ADDRESS_SEARCH));
 
-            responseMap.put(Settings.SEARCH_STATUS,Settings.SEARCH_STATUS_OK);
+            responseMap.put(Settings.SEARCH_STATUS, Settings.SEARCH_STATUS_OK);
 
             return JSONBuilder.build(responseMap);
         } catch (IOException e) {
@@ -47,7 +47,7 @@ public class ServerPojo implements IDoSomething {
         }
 
         // get back an Error
-        return "{"+Settings.SEARCH_STATUS+":"+Settings.SEARCH_STATUS_ERROR+"}";
+        return "{" + Settings.SEARCH_STATUS + ":" + Settings.SEARCH_STATUS_ERROR + "}";
     }
 
 }

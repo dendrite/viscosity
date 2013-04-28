@@ -1,11 +1,10 @@
-package com.reversemind.glia.both.simple;
+package com.reversemind.glia.test.both.simple;
 
 import com.reversemind.glia.client.GliaClient;
 import com.reversemind.glia.proxy.ProxyFactory;
 import com.reversemind.glia.shared.ISimplePojo;
 import com.reversemind.glia.shared.PAddressNode;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ public class RunClient {
         int serverPort = 7000;
         String serverHost = "localhost";
 
-        GliaClient client = new GliaClient(serverHost,serverPort);
+        GliaClient client = new GliaClient(serverHost, serverPort);
         client.run();
 
 
@@ -31,8 +30,8 @@ public class RunClient {
 
         List<PAddressNode> list = simplePojoProxy.searchAddress("Москва");
 
-        if(list != null && list.size() > 0){
-            for(PAddressNode addressNode: list){
+        if (list != null && list.size() > 0) {
+            for (PAddressNode addressNode : list) {
                 System.out.println("node:" + addressNode);
             }
         }

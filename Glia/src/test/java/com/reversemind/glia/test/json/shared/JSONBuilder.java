@@ -1,6 +1,6 @@
-package com.reversemind.glia.json.shared;
+package com.reversemind.glia.test.json.shared;
 
-import com.reversemind.glia.json.Settings;
+import com.reversemind.glia.test.json.Settings;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 

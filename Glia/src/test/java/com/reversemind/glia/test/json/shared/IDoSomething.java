@@ -1,4 +1,4 @@
-package com.reversemind.glia.json.shared;
+package com.reversemind.glia.test.json.shared;
 
 /**
  *

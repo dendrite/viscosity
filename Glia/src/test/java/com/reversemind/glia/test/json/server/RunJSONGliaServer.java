@@ -1,7 +1,7 @@
-package com.reversemind.glia.json.server;
+package com.reversemind.glia.test.json.server;
 
-import com.reversemind.glia.json.Settings;
-import com.reversemind.glia.json.shared.IDoSomething;
+import com.reversemind.glia.test.json.Settings;
+import com.reversemind.glia.test.json.shared.IDoSomething;
 import com.reversemind.glia.server.GliaPayloadProcessor;
 import com.reversemind.glia.server.GliaServer;
 import com.reversemind.glia.server.IGliaPayloadProcessor;
