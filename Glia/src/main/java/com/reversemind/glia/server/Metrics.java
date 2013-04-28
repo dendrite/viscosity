@@ -28,6 +28,10 @@ public class Metrics {
         }
     }
 
+    public long elapsedTime(){
+        return System.currentTimeMillis() - this.startDate.getTime();
+    }
+
     public double getAverageTimePerRequest() {
         return averageTimePerRequest;
     }
@@ -63,6 +67,7 @@ public class Metrics {
                 ", requestsProcessed=" + requestsProcessed +
                 ", averageTimePerRequest=" + averageTimePerRequest +
                 ", processingTime=" + processingTime +
+                ", elapsedTime=" + this.elapsedTime() + " ms" +
                 '}';
     }
 }
