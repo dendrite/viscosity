@@ -16,24 +16,27 @@ public class RunJSONGliaClient {
 
     public static void main(String... args) throws Exception {
 
-        GliaClient client = new GliaClient(Settings.SERVER_HOST, Settings.SERVER_PORT);
-        client.run();
+        //
+        GliaClient gliaClient = new GliaClient(Settings.SERVER_HOST, Settings.SERVER_PORT);
+        gliaClient.run();
 
-        // TODO make
-        IDoSomething doSomething = (IDoSomething) ProxyFactory.getInstance(client).newProxyInstance(IDoSomething.class);
+        // create proxy for remote service
+        IDoSomething doSomething = (IDoSomething) ProxyFactory.getInstance(gliaClient).newProxyInstance(IDoSomething.class);
 
+        // call remote server
         String jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago"));
 
         System.out.println("Server response: " + jsonString);
 
-
-
+        // jut test yourself for little highload
         for(int i=0;i<100;i++){
             jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago" + i));
         }
 
 
-        // let's parse a JSON string
+
+
+        // let's parse a JSON string from server
         Map<String, Object> serverResponseMap = JSONBuilder.build(jsonString);
 
         // get status from response
@@ -48,6 +51,6 @@ public class RunJSONGliaClient {
         }
 
         //Thread.sleep(3000);
-        client.shutdown();
+        gliaClient.shutdown();
     }
 }

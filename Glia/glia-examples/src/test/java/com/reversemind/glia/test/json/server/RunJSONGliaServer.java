@@ -16,16 +16,17 @@ public class RunJSONGliaServer {
         IGliaPayloadProcessor gliaPayloadProcessor = new GliaPayloadProcessor();
         gliaPayloadProcessor.registerPOJO(IDoSomething.class, ServerPojo.class);
 
-        GliaServer server = new GliaServer("GLIA_JSON_SERVER", Settings.SERVER_PORT, gliaPayloadProcessor, false);
-        server.run();
+        GliaServer gliaServer = new GliaServer("GLIA_JSON_SERVER", Settings.SERVER_PORT, gliaPayloadProcessor, false);
+        gliaServer.run();
 
-        //Thread.sleep(3000);
-        //server.shutdown();
 
-        while(true){
-            Thread.sleep(1000);
-            System.out.println("Metrics:" + server.getMetrics());
+        int count = 0;
+        // just wait for a minute 5 sec * 120 = 10 minutes
+        while (count++ < 120) {
+            Thread.sleep(5000);
+            System.out.println(gliaServer.getMetrics());
         }
 
+        gliaServer.shutdown();
     }
 }
