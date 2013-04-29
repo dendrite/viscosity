@@ -19,6 +19,9 @@ Glia using [Netty](http://netty.io/), [Kryo](https://code.google.com/p/kryo/), [
 #### Documentation
 Documentation and tutorials on the [Glia Wiki](https://github.com/dendrite/viscosity/wiki/Glia-Wiki)
 
+#### Logging
+ Glia uses [SLF4J](http://www.slf4j.org/) for logging. SLF4J is a facade over logging that allows you to plug in any (or no) logging framework.
+
 #### License
 
 The use and distribution terms for this software are covered by the Apache License, Version 2.0 (http://opensource.org/licenses/Apache-2.0) which can be found in the file LICENSE.html at the root of this distribution. By using this software in any fashion, you are agreeing to be bound by the terms of this license. You must not remove this notice, or any other, from this software.
@@ -37,20 +40,29 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 #### TODO
 
+
+* Additional options for client speed optimisation - http://docs.jboss.org/netty/3.2/api/org/jboss/netty/bootstrap/ClientBootstrap.html
+* In ProxyFactory - use non-static GliaClient
+* Replace in ProxyFactory using a Interface class into String name of interface class
+* Add a control to server through zookeeper
+
+* Add metrics to the server like a heartbeats & so on...
+
+* Autodiscover server in zookeeper
 * Glia server correct shutdown
 
 * How to get from server number of client connected??
 
-* Client correct wait - for a period - something like Future
-* Need look through all cases - but first situation looks pretty good
-* CASE: if Server will send but Clint is down?
-* Need to make a stress loading from a lot of clients
-* If connection from client is still opened - and reuse again and again the proxy - what in this case? - check it
+
+** Need look through all cases - but first situation looks pretty good
+** CASE: if Server will send but Clint is down?
+** Need to make a stress loading from a lot of clients
 
 
 * 3 - Need to make an Arquillian test - ot examples for EJB Glia example
 
-* 4 - Also made some pure POJO example integration
+* [DONE] Client correct wait - for a period - something like Future
+* [DONE] for example a JSON sending - * 4 - Also made some pure POJO example integration
 
 
 -- if You get something like that during deployment on Jboss 7.1.1.Final

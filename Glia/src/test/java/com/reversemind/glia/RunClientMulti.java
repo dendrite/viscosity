@@ -2,8 +2,8 @@ package com.reversemind.glia;
 
 import com.reversemind.glia.client.GliaClient;
 import com.reversemind.glia.proxy.ProxyFactory;
-import com.reversemind.glia.shared.ISimplePojo;
-import com.reversemind.glia.shared.PAddressNode;
+import com.reversemind.glia.test.both.shared.ISimplePojo;
+import com.reversemind.glia.test.both.shared.PAddressNode;
 
 import java.io.Serializable;
 import java.util.List;

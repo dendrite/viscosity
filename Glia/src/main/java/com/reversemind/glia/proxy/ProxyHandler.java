@@ -53,24 +53,24 @@ public class ProxyHandler implements InvocationHandler {
 
         gliaClient.send(gliaPayload);
 
-        System.out.println("==1");
+//        System.out.println("==1");
         //Thread.sleep(100);
-        System.out.println("==2");
+//        System.out.println("==2");
         long bT = System.currentTimeMillis();
         GliaPayload fromServer = gliaClient.getGliaPayload();
-        System.out.println("==2.5 time:" + (System.currentTimeMillis() - bT));
+        System.out.println("==2.5 Get back from server for:" + (System.currentTimeMillis() - bT) + " ms");
 
-        System.out.println("==3");
+//        System.out.println("==3");
 
-        System.out.println(fromServer);
-        System.out.println("==4");
+//        System.out.println(fromServer);
+//        System.out.println("==4");
         if(fromServer!=null && fromServer.getStatus() != null){
-            System.out.println("==5");
-            System.out.println("fromServer.getResultResponse()\n\n" + fromServer.getResultResponse());
-            System.out.println("==6");
+//            System.out.println("==5");
+//            System.out.println("fromServer.getResultResponse()\n\n" + fromServer.getResultResponse());
+//            System.out.println("==6");
             return fromServer.getResultResponse();
         }
-        System.out.println("==7");
+//        System.out.println("==7");
         return null;
     }
 }

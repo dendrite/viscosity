@@ -53,7 +53,7 @@ public class GliaClient implements Serializable {
         this.port = port;
         this.gliaPayload = null;
         this.executor = this.getExecutor();
-
+        System.out.println("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
     }
 
     public boolean isRunning() {
@@ -70,8 +70,8 @@ public class GliaClient implements Serializable {
             LOG.info("SERVER LISTENER = arrived from server:" + ((GliaPayload) object).toString());
 
             this.gliaPayload = ((GliaPayload) object);
-            if(this.getFutureTask() != null){
-                this.getFutureTask().cancel(true);
+            if(this.futureTask != null){
+                this.futureTask.cancel(true);
                 this.shutDownExecutor();
             }
 
@@ -79,7 +79,8 @@ public class GliaClient implements Serializable {
         }
 
         LOG.info("Received object from is not a GliaPayload");
-        this.getFutureTask().cancel(true);
+        this.futureTask.cancel(true);
+        this.shutDownExecutor();
         this.setGliaPayload(null);
     }
 
@@ -105,10 +106,11 @@ public class GliaClient implements Serializable {
             } catch (ExecutionException e) {
                 LOG.log(Level.WARNING,"ExecutionException futureTask == HERE");
                 //e.printStackTrace();
-
+            }catch(CancellationException ce){
+                LOG.log(Level.WARNING,"Future task was Canceled - YES!!!");
             } catch (Exception e) {
                 LOG.log(Level.WARNING,"GENERAL Exception futureTask == HERE");
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         }
 
@@ -149,7 +151,7 @@ public class GliaClient implements Serializable {
                 return;
             }
         }
-        throw new IOException("Channel is closed");
+        throw new IOException("Channel is closed or even not opened");
     }
 
     /**
@@ -158,8 +160,9 @@ public class GliaClient implements Serializable {
     public void shutdown(){
         this.shutDownExecutor();
 
-        this.channelFuture.getChannel().close();
+        this.channelFuture.getChannel().close().awaitUninterruptibly();
         this.channelFactory.releaseExternalResources();
+        this.channelFactory.shutdown();
 
         this.clientBootstrap.releaseExternalResources();
         this.clientBootstrap.shutdown();
@@ -268,13 +271,15 @@ public class GliaClient implements Serializable {
         if (!channelFuture.isSuccess()) {
             channelFuture.getCause().printStackTrace();
             channelFactory.releaseExternalResources();
+            this.running = false;
+        }else{
+            this.running = true;
         }
 
         // if need to disconnect right after server response
         //  channelFuture.getChannel().getCloseFuture().awaitUninterruptibly();
         //  channelFactory.releaseExternalResources();
 
-        this.running = true;
     }
 
     /**
@@ -338,7 +343,8 @@ public class GliaClient implements Serializable {
      */
     private void shutDownFutureTask(){
         if(this.futureTask != null){
-
+            this.futureTask.cancel(true);
+            this.futureTask = null;
         }
     }
 
@@ -346,22 +352,28 @@ public class GliaClient implements Serializable {
      *
      * @return
      */
-    private FutureTask<GliaPayload> getFutureTask() {
+    private FutureTask<GliaPayload> createFutureTask() {
         if (this.executor != null && this.futureTask == null) {
-            this.futureTask = new FutureTask<GliaPayload>(new PayloadCallable(this.gliaPayload));
+            return this.futureTask = new FutureTask<GliaPayload>(new PayloadCallable(this.gliaPayload));
         }
 
-        if (this.futureTask != null && this.futureTask.isCancelled()) {
-            this.futureTask = null;
-            this.shutDownExecutor();
+        if(this.futureTask != null){
+            throw new RuntimeException("Hmmm... something wrong");
         }
 
-        if(this.futureTask != null && this.futureTask.isDone()){
-            this.futureTask = null;
-            this.shutDownExecutor();
-        }
-
-        return this.futureTask;
+        return this.futureTask = null;
+//
+//        if (this.futureTask != null && this.futureTask.isCancelled()) {
+//            this.futureTask = null;
+//            this.shutDownExecutor();
+//        }
+//
+//        if(this.futureTask != null && this.futureTask.isDone()){
+//            this.futureTask = null;
+//            this.shutDownExecutor();
+//        }
+//
+//        return this.futureTask;
     }
 
     private FutureTask<GliaPayload> createFutureTask() {
@@ -383,6 +395,7 @@ public class GliaClient implements Serializable {
         @Override
         public GliaPayload call() throws Exception {
             while (this.callablePayload == null) {
+                Thread.sleep(2);
             }
             return this.callablePayload;
         }

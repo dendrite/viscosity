@@ -1,7 +1,7 @@
 package com.reversemind.glia.server;
 
-import com.reversemind.glia.shared.ISimplePojo;
-import com.reversemind.glia.shared.PAddressNode;
+import com.reversemind.glia.test.both.shared.ISimplePojo;
+import com.reversemind.glia.test.both.shared.PAddressNode;
 
 import java.io.Serializable;
 import java.util.ArrayList;

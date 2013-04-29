@@ -16,19 +16,19 @@ public class ProxyFactory implements Serializable {
 
     private static final ProxyFactory proxyFactory = new ProxyFactory();
 
-    private static GliaClient GliaClient;
+    //TODO make it non-static
+    private static GliaClient gliaClient;
 
     private ProxyFactory(){
-
     }
 
     public static ProxyFactory getInstance(GliaClient client){
-        GliaClient = client;
+        gliaClient = client;
         return proxyFactory;
     }
 
     public Object newProxyInstance(Class interfaceClass){
         ClassLoader classLoader = interfaceClass.getClassLoader();
-        return Proxy.newProxyInstance(classLoader, new Class[]{interfaceClass}, new ProxyHandler(GliaClient, interfaceClass));
+        return Proxy.newProxyInstance(classLoader, new Class[]{interfaceClass}, new ProxyHandler(gliaClient, interfaceClass));
     }
 }

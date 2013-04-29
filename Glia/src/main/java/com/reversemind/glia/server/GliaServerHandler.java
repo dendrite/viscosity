@@ -18,10 +18,12 @@ public class GliaServerHandler extends SimpleChannelUpstreamHandler {
 
     private IGliaPayloadProcessor gliaPayloadWorker;
     private boolean dropClientConnection = false;
+    private Metrics metrics;
 
-    public GliaServerHandler(IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection){
+    public GliaServerHandler(IGliaPayloadProcessor gliaPayloadWorker, Metrics metrics, boolean dropClientConnection){
         this.gliaPayloadWorker = gliaPayloadWorker;
         this.dropClientConnection = dropClientConnection;
+        this.metrics = metrics;
     }
 
     @Override
@@ -36,8 +38,11 @@ public class GliaServerHandler extends SimpleChannelUpstreamHandler {
     public void messageReceived(ChannelHandlerContext context, MessageEvent messageEvent) {
 
         // TODO what about delay + very long messages???
+        long beginTime = System.currentTimeMillis();
         Object object = this.gliaPayloadWorker.process(messageEvent.getMessage());
-
+        if(this.metrics != null){
+            this.metrics.plusRequest((System.currentTimeMillis()-beginTime));
+        }
         // send object to the client
         ChannelFuture channelFuture = messageEvent.getChannel().write(object);
 
