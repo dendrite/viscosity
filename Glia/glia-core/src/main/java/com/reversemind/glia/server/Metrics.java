@@ -13,6 +13,7 @@ public class Metrics implements Serializable {
     private double averageTimePerRequest = 0.0d;
     private double processingTime = 0.0d;
 
+
     public Metrics(){
         this.startDate = new Date();
     }

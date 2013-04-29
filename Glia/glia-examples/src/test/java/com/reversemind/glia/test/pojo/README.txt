@@ -1,1 +1,1 @@
-This sub package for pure POJO example
+This subpackage for pure POJO example
