@@ -1,6 +1,7 @@
 package com.reversemind.glia.future;
 
 import junit.framework.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.concurrent.*;
  */
 public class FutureTask_TimeOut_Example implements Serializable {
 
+    @Ignore
     @Test
     public void testFutureTaskTimeOutExample(){
 

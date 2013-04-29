@@ -2,6 +2,7 @@ package com.reversemind.glia.test.json;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class TestJSON {
      *
      * @throws IOException
      */
+    @Ignore
     @Test
     public void testJSON() throws IOException {
 

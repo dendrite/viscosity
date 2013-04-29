@@ -348,34 +348,6 @@ public class GliaClient implements Serializable {
         }
     }
 
-    /**
-     *
-     * @return
-     */
-    private FutureTask<GliaPayload> createFutureTask() {
-        if (this.executor != null && this.futureTask == null) {
-            return this.futureTask = new FutureTask<GliaPayload>(new PayloadCallable(this.gliaPayload));
-        }
-
-        if(this.futureTask != null){
-            throw new RuntimeException("Hmmm... something wrong");
-        }
-
-        return this.futureTask = null;
-//
-//        if (this.futureTask != null && this.futureTask.isCancelled()) {
-//            this.futureTask = null;
-//            this.shutDownExecutor();
-//        }
-//
-//        if(this.futureTask != null && this.futureTask.isDone()){
-//            this.futureTask = null;
-//            this.shutDownExecutor();
-//        }
-//
-//        return this.futureTask;
-    }
-
     private FutureTask<GliaPayload> createFutureTask() {
         return this.futureTask = new FutureTask<GliaPayload>(new PayloadCallable(this.gliaPayload));
     }

@@ -3,7 +3,10 @@ package com.reversemind.glia.zookeeper.curator;
 import com.netflix.curator.framework.CuratorFramework;
 import com.netflix.curator.framework.CuratorFrameworkFactory;
 import com.netflix.curator.retry.ExponentialBackoffRetry;
+import com.netflix.curator.retry.RetryNTimes;
+import com.netflix.curator.utils.EnsurePath;
 import org.apache.zookeeper.CreateMode;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -11,6 +14,7 @@ import org.junit.Test;
  */
 public class TestZookeeperCurator {
 
+    @Ignore
     @Test
     public void testZookeeperCurator() throws Exception {
 
@@ -37,16 +41,125 @@ public class TestZookeeperCurator {
         System.out.println(client.getNamespace());
 
         //String path = "/zookeeper/testNode_EPH_" + System.currentTimeMillis();
-        String path = "/testNode_EPH_" + System.currentTimeMillis();
+        //String path = "/testNode_EPH_" + System.currentTimeMillis();
+
+        String path = "/baloo/server/address/GLIA_SERVER_";
         String value = "simple data";
 
         client.create().withMode(CreateMode.EPHEMERAL).forPath(path, value.getBytes());
+        //client.create().withMode(CreateMode.PERSISTENT).forPath(path, value.getBytes());
 
         byte[] some = client.getData().forPath(path);
         System.out.println("Get back is:" + new String(some));
 
         // Let's check that EPHEMERAL will be deleted at the end of client session
-        Thread.sleep(2000);
+        Thread.sleep(600000);
         client.close();
     }
+
+
+    private void createHierarchy(CuratorFramework client, String paths, String pathSeparator) throws Exception {
+
+        String[] elements = paths.split(pathSeparator);
+        if(elements.length > 1){
+            String path = "";
+            if(elements[0].length() >0){
+                path += "/" + elements[0];
+            }
+            for(int i=1; i<elements.length; i++){
+                path += "/" + elements[i];
+                try{
+                    client.create().forPath(path);
+                }catch(Exception ex){
+                    System.out.println("Node '"+ path +"' exist");
+                }
+            }
+
+        }
+
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Ignore
+    @Test
+    public void testCreateSubNodes() throws Exception {
+
+        String connectionString = "localhost:2181";
+        CuratorFramework client = CuratorFrameworkFactory.newClient(connectionString, new ExponentialBackoffRetry(500, 3));
+        client.start();
+
+        String path = "/baloo/application/address/server/GLIA_SERVER";
+        //String path = "/baloo";
+        client.create().forPath(path);
+
+
+        Thread.sleep(100);
+        client.close();
+
+    }
+
+    /**
+     *
+     */
+    @Ignore
+    @Test
+    public void testCreateHierarchyPath() throws Exception {
+
+        String hierarchyPath = "/baloo/application/address/server/GLIA_SERVER/NODE2";
+
+        String connectionString = "localhost:2181";
+        CuratorFramework client = CuratorFrameworkFactory.newClient(connectionString, new ExponentialBackoffRetry(500, 3));
+        client.start();
+
+        System.out.println( client.checkExists().forPath(hierarchyPath) );
+
+        this.createHierarchy(client,hierarchyPath, "/");
+
+        System.out.println( client.checkExists().forPath(hierarchyPath) );
+
+    }
+
+    /**
+     * Just use other technique for zookeeper connection
+     *
+     * @throws Exception
+     */
+    @Ignore
+    @Test
+    public void testPure() throws Exception {
+        CuratorFramework curatorFramework = CuratorFrameworkFactory.builder()
+                .connectionTimeoutMs(1000)
+                .retryPolicy(new RetryNTimes(10, 500))
+                .connectString(ZookeeperConfiguration.ZOOKEEPER_CONNECTION)
+                .build();
+
+        curatorFramework.start();
+
+        String hierarchyPath = "/baloo/application/address/server/GLIA_SERVER/NODE2";
+        System.out.println(curatorFramework.checkExists().forPath(hierarchyPath));
+
+
+
+    }
+
+
+
+    @Ignore
+    @Test
+    public void testEnsure() throws Exception {
+        CuratorFramework curatorFramework = CuratorFrameworkFactory.builder()
+                .connectionTimeoutMs(1000)
+                .retryPolicy(new RetryNTimes(10, 500))
+                .connectString(ZookeeperConfiguration.ZOOKEEPER_CONNECTION)
+                .build();
+
+        curatorFramework.start();
+
+        new EnsurePath(ZookeeperConfiguration.BASE_PATH).ensure(curatorFramework.getZookeeperClient());
+
+    }
+
 }
