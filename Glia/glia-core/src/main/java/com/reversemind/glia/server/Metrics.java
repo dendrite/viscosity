@@ -8,13 +8,12 @@ import java.util.Date;
 
 /**
  * Measurable parameters for GliaServer
- *
  */
 public class Metrics implements Serializable {
 
     private Date startDate;
-    private long requestsProcessed = 0L;
-    private double averageTimePerRequest = 0.0d;
+    private long requests = 0L;
+    private double timePerRequest = 0.0d;
     private double processingTime = 0.0d;
     private double cpuIdle;
 
@@ -26,13 +25,13 @@ public class Metrics implements Serializable {
     }
 
     // TODO need to rename method
-    public void plusRequest(long deltaTimePerRequest) {
+    public void addRequest(long deltaTimePerRequest) {
         synchronized (this) {
-            requestsProcessed++;
+            requests++;
 
             this.processingTime += deltaTimePerRequest;
-            if (this.requestsProcessed > 0) {
-                this.averageTimePerRequest = (this.processingTime / this.requestsProcessed);
+            if (this.requests > 0) {
+                this.timePerRequest = (this.processingTime / this.requests);
             }
 
             // just update CPU load
@@ -44,12 +43,12 @@ public class Metrics implements Serializable {
         return System.currentTimeMillis() - this.startDate.getTime();
     }
 
-    public double getAverageTimePerRequest() {
-        return averageTimePerRequest;
+    public double getTimePerRequest() {
+        return timePerRequest;
     }
 
-    public void setAverageTimePerRequest(double averageTimePerRequest) {
-        this.averageTimePerRequest = averageTimePerRequest;
+    public void setTimePerRequest(double timePerRequest) {
+        this.timePerRequest = timePerRequest;
     }
 
     public Date getStartDate() {
@@ -60,8 +59,8 @@ public class Metrics implements Serializable {
         this.startDate = startDate;
     }
 
-    public long getRequestsProcessed() {
-        return requestsProcessed;
+    public long getRequests() {
+        return requests;
     }
 
     public double getProcessingTime() {
@@ -88,8 +87,8 @@ public class Metrics implements Serializable {
     public String toString() {
         return "Metrics{" +
                 "startDate=" + startDate +
-                ", requestsProcessed=" + requestsProcessed +
-                ", averageTimePerRequest=" + averageTimePerRequest +
+                ", requests=" + requests +
+                ", timePerRequest=" + timePerRequest +
                 ", processingTime=" + processingTime +
                 ", cpuIdle=" + cpuIdle + "% " +
                 '}';

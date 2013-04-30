@@ -41,7 +41,7 @@ public class GliaServerHandler extends SimpleChannelUpstreamHandler {
         long beginTime = System.currentTimeMillis();
         Object object = this.gliaPayloadWorker.process(messageEvent.getMessage());
         if(this.metrics != null){
-            this.metrics.plusRequest((System.currentTimeMillis()-beginTime));
+            this.metrics.addRequest((System.currentTimeMillis() - beginTime));
         }
         // send object to the client
         ChannelFuture channelFuture = messageEvent.getChannel().write(object);
