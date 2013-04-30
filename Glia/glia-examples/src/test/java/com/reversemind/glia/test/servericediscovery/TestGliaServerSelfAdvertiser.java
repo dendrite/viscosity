@@ -22,20 +22,31 @@ public class TestGliaServerSelfAdvertiser implements Serializable {
 
         final String ZOOKEEPER_CONNECTION = "localhost:2181";
         final String SERVICE_BASE_PATH = "/baloo/services";
+        final String SERVICE_NAME = "ADDRESS";
 
-        GliaServerSelfAdvertiser server = new GliaServerSelfAdvertiser(
+        GliaServerSelfAdvertiser server01 = new GliaServerSelfAdvertiser(
                 ZOOKEEPER_CONNECTION,
                 SERVICE_BASE_PATH,
-                "ADDRESS",
+                SERVICE_NAME,
                 null,
                 false,
                 "INSTANCE.001");
 
-        server.run();
+        GliaServerSelfAdvertiser server02 = new GliaServerSelfAdvertiser(
+                ZOOKEEPER_CONNECTION,
+                SERVICE_BASE_PATH,
+                SERVICE_NAME,
+                null,
+                false,
+                "INSTANCE.002");
 
-        Thread.sleep(30000);
+        server01.run();
+        server02.run();
 
-        server.shutdown();
+        Thread.sleep(1000 * 60 * 5);
+
+        server01.shutdown();
+        server02.shutdown();
     }
 
 }

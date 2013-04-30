@@ -41,8 +41,13 @@ The use and distribution terms for this software are covered by the Apache Licen
 #### TODO
 
 
-* Add to ServerMetadata a Metrics
+* Add to GliaClientDiscoverer - select server each time before send method
 * Add to GliaClient or create a GliaClientDiscoverer - just automatically to find a necessary server for communication
+
+
+* Update metrics dynamically in zookeeper
+*[DONE] - Add to ServerMetadata a Metrics
+
 
 * Additional options for client speed optimisation - http://docs.jboss.org/netty/3.2/api/org/jboss/netty/bootstrap/ClientBootstrap.html
 * In ProxyFactory - use non-static GliaClient

@@ -38,8 +38,8 @@ public class GliaClient implements Serializable {
     private GliaPayload gliaPayload;
     private boolean received = false;
 
-    private final String host;
-    private final int port;
+    protected String host;
+    protected int port;
 
     private ClientBootstrap clientBootstrap;
     private Channel channel;
@@ -47,6 +47,11 @@ public class GliaClient implements Serializable {
     private ChannelFactory channelFactory;
 
     private boolean running = false;
+
+    protected GliaClient() {
+        this.port = 7000;
+        this.host = "localhost";
+    }
 
     public GliaClient(String host, int port) {
         this.host = host;
