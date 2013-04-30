@@ -67,8 +67,11 @@ public class ServiceDiscoverer implements Closeable {
         curatorFramework.close();
     }
 
+
+
     public static void main(String[] args) throws Exception {
         ServiceDiscoverer sd = new ServiceDiscoverer();
+
 
         sd.advertise();
 

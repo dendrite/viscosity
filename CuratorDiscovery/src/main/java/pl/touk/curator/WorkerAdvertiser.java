@@ -28,11 +28,15 @@ public final class WorkerAdvertiser {
 
     private static Logger log = Logger.getLogger(WorkerAdvertiser.class);
 
-    WorkerAdvertiser(CuratorFramework curatorFramework, InstanceSerializerFactory instanceSerializerFactory,
-                     String serviceName, String listenAddress, int listenPort) {
+    public WorkerAdvertiser(CuratorFramework curatorFramework, InstanceSerializerFactory instanceSerializerFactory,
+                            String serviceName,
+                            String listenAddress,
+                            int listenPort) {
+
         this.curatorFramework = curatorFramework;
         this.jacksonInstanceSerializer = instanceSerializerFactory.getInstanceSerializer(
-                new TypeReference<JsonServiceInstance<WorkerMetadata>>() {}
+                new TypeReference<JsonServiceInstance<WorkerMetadata>>() {
+                }
         );
         this.listenAddress = listenAddress;
         this.listenPort = listenPort;
@@ -48,6 +52,7 @@ public final class WorkerAdvertiser {
             discovery.registerService(si);
             //discovery.close();
         } catch (Exception e) {
+            // look through it again
             throw Throwables.propagate(e);
         }
     }

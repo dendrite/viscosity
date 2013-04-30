@@ -9,6 +9,7 @@ import java.util.UUID;
  * @author mcl
  */
 public final class WorkerMetadata {
+
     @JsonProperty("workerId")
     private final UUID workerId;
 
