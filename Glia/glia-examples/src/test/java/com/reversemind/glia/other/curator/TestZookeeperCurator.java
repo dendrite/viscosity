@@ -5,7 +5,9 @@ import com.netflix.curator.framework.CuratorFrameworkFactory;
 import com.netflix.curator.retry.ExponentialBackoffRetry;
 import com.netflix.curator.retry.RetryNTimes;
 import com.netflix.curator.utils.EnsurePath;
+import com.reversemind.glia.servicediscovery.serializer.InstanceSerializerFactory;
 import org.apache.zookeeper.CreateMode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -13,6 +15,23 @@ import org.junit.Test;
  *
  */
 public class TestZookeeperCurator {
+
+    @Ignore
+    @Test
+    public void testChangeDataInNode() throws Exception {
+        String connectionString = "localhost:2181";
+        CuratorFramework client = CuratorFrameworkFactory.newClient(connectionString, new ExponentialBackoffRetry(500, 3));
+        client.start();
+
+        String path = "/baloo/services/ADDRESS/INSTANCE.001";
+
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//        InstanceSerializerFactory factory = new InstanceSerializerFactory(objectMapper.reader(), objectMapper.writer());
+
+        byte[] payload = "simple string".getBytes();
+        client.setData().forPath(path, payload);
+    }
 
     @Ignore
     @Test

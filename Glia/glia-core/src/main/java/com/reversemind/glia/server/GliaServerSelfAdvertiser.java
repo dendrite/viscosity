@@ -8,6 +8,8 @@ import com.reversemind.glia.servicediscovery.serializer.ServerMetadata;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Date: 4/30/13
@@ -22,6 +24,9 @@ public class GliaServerSelfAdvertiser extends GliaServer implements Serializable
     private String serviceBasePath;
     private ServiceDiscoverer serviceDiscoverer;
     private ServerMetadata metadata;
+
+    private MetricsUpdateTask metricsUpdateTask;
+    private Timer timer;
 
     public GliaServerSelfAdvertiser(String zookeeperConnectionString,
                                     String serviceBasePath,
@@ -127,6 +132,11 @@ public class GliaServerSelfAdvertiser extends GliaServer implements Serializable
                 this.getPort(),
                 this.metrics
         );
+
+        this.metricsUpdateTask = new MetricsUpdateTask();
+        this.timer = new Timer();
+        this.timer.schedule(this.metricsUpdateTask, 1000, 1000);
+
     }
 
     public GliaServerSelfAdvertiser(String serverName, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection, String instanceName) {
@@ -142,6 +152,9 @@ public class GliaServerSelfAdvertiser extends GliaServer implements Serializable
         );
     }
 
+    /**
+     *
+     */
     @Override
     public void run() {
         super.run();
@@ -149,6 +162,23 @@ public class GliaServerSelfAdvertiser extends GliaServer implements Serializable
         this.serviceDiscoverer.advertise(this.metadata, this.serviceBasePath);
     }
 
+    /**
+     *
+     */
+    public void updateMetrics(){
+        this.metadata = new ServerMetadata(
+                this.getName(),
+                this.getInstanceName(),
+                "localhost",
+                this.getPort(),
+                this.metrics
+        );
+        this.serviceDiscoverer.advertise(this.metadata, this.serviceBasePath);
+    }
+
+    /**
+     *
+     */
     @Override
     public void shutdown() {
         super.shutdown();
@@ -169,4 +199,13 @@ public class GliaServerSelfAdvertiser extends GliaServer implements Serializable
         return this.metadata;
     }
 
+    /**
+     *
+     */
+    private class MetricsUpdateTask extends TimerTask{
+        @Override
+        public void run() {
+            updateMetrics();
+        }
+    }
 }

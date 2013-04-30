@@ -21,7 +21,6 @@ public class TestGliaClientSelfDiscovery implements Serializable {
     @Test
     public void testGliaClientSelfDiscovery() throws Exception {
 
-
         final String ZOOKEEPER_CONNECTION = "localhost:2181";
         final String SERVICE_BASE_PATH = "/baloo/services";
         final String SERVICE_NAME = "ADDRESS";

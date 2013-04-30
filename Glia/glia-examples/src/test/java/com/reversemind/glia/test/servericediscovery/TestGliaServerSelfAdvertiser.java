@@ -43,7 +43,14 @@ public class TestGliaServerSelfAdvertiser implements Serializable {
         server01.run();
         server02.run();
 
-        Thread.sleep(1000 * 60 * 5);
+
+        for(int i=0;i<100;i++){
+            Thread.sleep(1000);
+            //server01.updateMetrics();
+            server01.getMetrics().plusRequest(10);
+        }
+
+        Thread.sleep(1000 * 60 * 1000);
 
         server01.shutdown();
         server02.shutdown();

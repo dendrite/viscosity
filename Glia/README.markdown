@@ -40,38 +40,40 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 #### TODO
 
+* Add CPU load to the server metrics
 
 * Add to GliaClientDiscoverer - select server each time before send method
-* Add to GliaClient or create a GliaClientDiscoverer - just automatically to find a necessary server for communication
-
-
-* Update metrics dynamically in zookeeper
-*[DONE] - Add to ServerMetadata a Metrics
-
 
 * Additional options for client speed optimisation - http://docs.jboss.org/netty/3.2/api/org/jboss/netty/bootstrap/ClientBootstrap.html
 * In ProxyFactory - use non-static GliaClient
 * Replace in ProxyFactory using a Interface class into String name of interface class
 * Add a control to server through zookeeper
-
-* [DONE-PARTLY] Add metrics to the server like a heartbeats & so on...
-
-* [DONE] Autodiscover server in zookeeper
-* Glia server correct shutdown
-
 * How to get from server number of client connected??
 
+* Need look through all cases - but first situation looks pretty good
+* CASE: if Server will send but Client is down?
+* Need to make a stress loading from a lot of clients
 
-** Need look through all cases - but first situation looks pretty good
-** CASE: if Server will send but Clint is down?
-** Need to make a stress loading from a lot of clients
+* Need to make an Arquillian test - ot examples for EJB Glia example
 
 
-* 3 - Need to make an Arquillian test - ot examples for EJB Glia example
+* [DONE] - Add to GliaClient or create a GliaClientDiscoverer - just automatically to find a necessary server for communication
+* [DONE] - Update metrics dynamically in zookeeper
+* [DONE] - Add to ServerMetadata a Metrics
+
+* [DONE-PARTLY] - Add metrics to the server like a heartbeats & so on...
+
+* [DONE] - Autodiscover server in zookeeper
+* [DONE] - Glia server correct shutdown
 
 * [DONE] Client correct wait - for a period - something like Future
 * [DONE] for example a JSON sending - * 4 - Also made some pure POJO example integration
 
+
+
+
+
+Fetures for JBoss 7.1.1 deployment
 
 -- if You get something like that during deployment on Jboss 7.1.1.Final
  Service jboss.pojo."org.jboss.netty.internal.LoggerConfigurator".DESCRIBED is already registered
@@ -99,3 +101,4 @@ http://stackoverflow.com/questions/1247390/java-native-process-timeout/1249984#1
 http://stackoverflow.com/questions/1234429/best-ways-to-handle-maximum-execution-time-for-threads-in-java
 
 for jump start = http://habrahabr.ru/post/116363/
+
