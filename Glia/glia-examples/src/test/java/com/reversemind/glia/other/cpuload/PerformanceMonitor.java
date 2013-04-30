@@ -1,10 +1,7 @@
-package com.reversemind.glia.test.cpuload;
+package com.reversemind.glia.other.cpuload;
 
 
 import sun.management.ManagementFactory;
-
-import java.lang.management.OperatingSystemMXBean;
-import java.lang.management.RuntimeMXBean;
 
 /**
  * Created with IntelliJ IDEA.
@@ -137,7 +134,7 @@ public class PerformanceMonitor {
 //            if (usage != 0) System.out.println("Current CPU usage in pourcentage : " + usage);
 //        }
 //    }
-//
+
     private static void start() {
         int count = 0;
         for (int i = 0; i < 10000000; i++) {
