@@ -10,7 +10,7 @@ Wiki definition of the word glia.
 
 Glia (Greek γλία, γλοία "glue"; pronounced in English as either /ˈɡliːə/ or /ˈɡlaɪə/), are non-neuronal cells that maintain homeostasis, form myelin, and provide support and protection for neurons in the brain, and for neurons in other parts of the nervous system such as in the autonomic nervous system
 
-Glia using [Netty](http://netty.io/), [Kryo](https://code.google.com/p/kryo/), [Zookeeper](http://zookeeper.apache.org/)
+Glia using [Netty](http://netty.io/), [Kryo](https://code.google.com/p/kryo/), [Curator](https://github.com/Netflix/curator), [Zookeeper](http://zookeeper.apache.org/)
 
 
 #### Getting started
@@ -41,14 +41,17 @@ The use and distribution terms for this software are covered by the Apache Licen
 #### TODO
 
 
+* Add to ServerMetadata a Metrics
+* Add to GliaClient or create a GliaClientDiscoverer - just automatically to find a necessary server for communication
+
 * Additional options for client speed optimisation - http://docs.jboss.org/netty/3.2/api/org/jboss/netty/bootstrap/ClientBootstrap.html
 * In ProxyFactory - use non-static GliaClient
 * Replace in ProxyFactory using a Interface class into String name of interface class
 * Add a control to server through zookeeper
 
-* Add metrics to the server like a heartbeats & so on...
+* [DONE-PARTLY] Add metrics to the server like a heartbeats & so on...
 
-* Autodiscover server in zookeeper
+* [DONE] Autodiscover server in zookeeper
 * Glia server correct shutdown
 
 * How to get from server number of client connected??

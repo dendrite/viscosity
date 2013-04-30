@@ -1,4 +1,4 @@
-package com.reversemind.glia.other.servicediscovery;
+package com.reversemind.glia.servicediscovery;
 
 import com.google.common.base.Throwables;
 import com.netflix.curator.framework.CuratorFramework;
@@ -7,10 +7,9 @@ import com.netflix.curator.x.discovery.ServiceDiscovery;
 import com.netflix.curator.x.discovery.ServiceDiscoveryBuilder;
 import com.netflix.curator.x.discovery.ServiceInstance;
 import com.netflix.curator.x.discovery.details.InstanceSerializer;
-import com.reversemind.glia.other.servicediscovery.serializer.InstanceSerializerFactory;
-import com.reversemind.glia.other.servicediscovery.serializer.ServerMetadata;
+import com.reversemind.glia.servicediscovery.serializer.InstanceSerializerFactory;
+import com.reversemind.glia.servicediscovery.serializer.ServerMetadata;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
@@ -27,11 +26,15 @@ public class ServerAdvertiser implements Serializable {
 
     private static Logger LOG = Logger.getLogger(ServerAdvertiser.class);
 
-    private final CuratorFramework curatorFramework;
-    private final InstanceSerializer<ServerMetadata> jacksonInstanceSerializer;
-    private final ServerMetadata serverMetadata;
+    private CuratorFramework curatorFramework;
+    private InstanceSerializer<ServerMetadata> jacksonInstanceSerializer;
+    private ServerMetadata serverMetadata;
+    private String basePath;
 
-    public ServerAdvertiser(CuratorFramework curatorFramework, InstanceSerializerFactory instanceSerializerFactory, ServerMetadata serverMetadata) {
+    public ServerAdvertiser(CuratorFramework curatorFramework,
+                            InstanceSerializerFactory instanceSerializerFactory,
+                            ServerMetadata serverMetadata,
+                            String basePath) {
 
         this.curatorFramework = curatorFramework;
         this.jacksonInstanceSerializer = instanceSerializerFactory.getInstanceSerializer(
@@ -39,6 +42,7 @@ public class ServerAdvertiser implements Serializable {
                 }
         );
         this.serverMetadata = serverMetadata;
+        this.basePath = basePath;
     }
 
     public void advertiseAvailability() {
@@ -46,7 +50,7 @@ public class ServerAdvertiser implements Serializable {
             ServiceDiscovery<ServerMetadata> discovery = this.getDiscovery();
             discovery.start();
 
-            ServiceInstance serviceInstance = getInstance();
+            ServiceInstance serviceInstance = this.getInstance();
             LOG.info("Service:" + serviceInstance + " is available");
             discovery.registerService(serviceInstance);
 
@@ -83,10 +87,21 @@ public class ServerAdvertiser implements Serializable {
 
     private ServiceDiscovery<ServerMetadata> getDiscovery() {
         return ServiceDiscoveryBuilder.builder(ServerMetadata.class)
-                .basePath(ServiceDiscoverer.BASE_PATH)
+                .basePath(this.basePath)
                 .client(curatorFramework)
                 .serializer(jacksonInstanceSerializer)
                 .build();
+    }
+
+    public void deAdvertiseAvailability() {
+        try {
+            ServiceDiscovery<ServerMetadata> discovery = this.getDiscovery();
+            discovery.start();
+            discovery.unregisterService(getInstance());
+            //discovery.close();
+        } catch (Exception e) {
+            throw Throwables.propagate(e);
+        }
     }
 
     public void close() throws IOException {

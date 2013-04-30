@@ -135,6 +135,51 @@ public class GliaServer implements Serializable {
                 "  \n\n\n");
     }
 
+    public GliaServer(String serverName, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
+
+        try {
+            ServerSocket serverSocket = new ServerSocket(0);
+            if (serverSocket.getLocalPort() == -1) {
+                System.exit(-100);
+                throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
+            }
+
+            this.port = serverSocket.getLocalPort();
+
+            serverSocket.close();
+            int count = 0;
+            while (!serverSocket.isClosed()) {
+                if (count++ > 10) {
+                    throw new RuntimeException("Could not start GliaServer");
+                }
+                try {
+                    Thread.sleep(100);
+                    System.out.println("Waiting for closing autodiscovered socket try number#" + count);
+                } catch (InterruptedException e) {
+                    System.exit(-100);
+                    throw new RuntimeException("Could not start GliaServer");
+                }
+            }
+            serverSocket = null;
+        } catch (Exception e) {
+            throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
+        }
+
+
+        this.metrics = new Metrics();
+        this.dropClientConnection = dropClientConnection;
+        this.gliaPayloadWorker = gliaPayloadWorker;
+        this.name = serverName;
+        this.instanceName = UUID.randomUUID().toString();
+        System.out.println("\n\n\n" +
+                " GliaServer started " +
+                "\n-------------------" +
+                "\n name:" + this.name +
+                "\n instance:" + this.instanceName +
+                "\n port:" + this.port +
+                "  \n\n\n");
+    }
+
     /**
      * Get server name
      *

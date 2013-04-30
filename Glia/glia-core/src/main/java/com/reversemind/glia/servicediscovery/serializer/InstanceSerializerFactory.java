@@ -1,4 +1,4 @@
-package com.reversemind.glia.other.servicediscovery.serializer;
+package com.reversemind.glia.servicediscovery.serializer;
 
 import com.netflix.curator.x.discovery.JsonServiceInstance;
 import com.netflix.curator.x.discovery.details.InstanceSerializer;

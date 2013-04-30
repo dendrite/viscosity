@@ -1,10 +1,9 @@
-package com.reversemind.glia.other.servicediscovery.serializer;
+package com.reversemind.glia.servicediscovery.serializer;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Date: 4/30/13
