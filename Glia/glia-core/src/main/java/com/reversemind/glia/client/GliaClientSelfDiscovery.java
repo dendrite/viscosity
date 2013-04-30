@@ -49,6 +49,7 @@ public class GliaClientSelfDiscovery extends GliaClient implements Serializable 
             this.port = serverMetadata.getPort();
             this.host = serverMetadata.getHost();
             super.run();
+            return;
         }
         throw new Exception("Could not find any available server for the ServiceName:" + this.serviceName + " on path:" + this.serviceBasePath);
     }
