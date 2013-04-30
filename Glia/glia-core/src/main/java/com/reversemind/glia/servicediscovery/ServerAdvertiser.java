@@ -73,7 +73,8 @@ public class ServerAdvertiser implements Serializable {
                 this.serverMetadata.getName(),
                 this.serverMetadata.getInstance(),
                 this.serverMetadata.getHost(),
-                this.serverMetadata.getPort()
+                this.serverMetadata.getPort(),
+                this.serverMetadata.getMetrics()
         );
 
         return ServiceInstance.<ServerMetadata>builder()

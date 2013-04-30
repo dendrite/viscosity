@@ -33,7 +33,7 @@ public class GliaServer implements Serializable {
 
     private ServerBootstrap serverBootstrap;
     private SimpleChannelUpstreamHandler handler;
-    private Metrics metrics;
+    protected Metrics metrics;
 
     private final int port;
     private GliaPayload gliaPayload;
@@ -81,13 +81,6 @@ public class GliaServer implements Serializable {
         this.dropClientConnection = dropClientConnection;
         this.gliaPayloadWorker = gliaPayloadWorker;
         this.instanceName = UUID.randomUUID().toString();
-        System.out.println("\n\n\n" +
-                " GliaServer started " +
-                "\n-------------------" +
-                "\n name:" + this.name +
-                "\n instance:" + this.instanceName +
-                "\n port:" + this.port +
-                "  \n\n\n");
     }
 
     /**
@@ -103,13 +96,6 @@ public class GliaServer implements Serializable {
         this.gliaPayloadWorker = gliaPayloadWorker;
         this.name = UUID.randomUUID().toString();
         this.instanceName = UUID.randomUUID().toString();
-        System.out.println("\n\n\n" +
-                " GliaServer started " +
-                "\n-------------------" +
-                "\n name:" + this.name +
-                "\n instance:" + this.instanceName +
-                "\n port:" + this.port +
-                "  \n\n\n");
     }
 
     /**
@@ -126,17 +112,18 @@ public class GliaServer implements Serializable {
         this.gliaPayloadWorker = gliaPayloadWorker;
         this.name = serverName;
         this.instanceName = UUID.randomUUID().toString();
-        System.out.println("\n\n\n" +
-                " GliaServer started " +
-                "\n-------------------" +
-                "\n name:" + this.name +
-                "\n instance:" + this.instanceName +
-                "\n port:" + this.port +
-                "  \n\n\n");
+    }
+
+    public GliaServer(String serverName, int port, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection, String instanceName) {
+        this.metrics = new Metrics();
+        this.port = port;
+        this.dropClientConnection = dropClientConnection;
+        this.gliaPayloadWorker = gliaPayloadWorker;
+        this.name = serverName;
+        this.instanceName = instanceName;
     }
 
     public GliaServer(String serverName, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
-
         try {
             ServerSocket serverSocket = new ServerSocket(0);
             if (serverSocket.getLocalPort() == -1) {
@@ -165,21 +152,17 @@ public class GliaServer implements Serializable {
             throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
         }
 
-
         this.metrics = new Metrics();
         this.dropClientConnection = dropClientConnection;
         this.gliaPayloadWorker = gliaPayloadWorker;
         this.name = serverName;
         this.instanceName = UUID.randomUUID().toString();
-        System.out.println("\n\n\n" +
-                " GliaServer started " +
-                "\n-------------------" +
-                "\n name:" + this.name +
-                "\n instance:" + this.instanceName +
-                "\n port:" + this.port +
-                "  \n\n\n");
     }
 
+    public GliaServer(String serverName, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection, String instanceName) {
+        this(serverName, gliaPayloadWorker, dropClientConnection);
+        this.instanceName = instanceName;
+    }
     /**
      * Get server name
      *
@@ -242,7 +225,8 @@ public class GliaServer implements Serializable {
         // Bind and start to accept incoming connections.
         this.serverBootstrap.bind(new InetSocketAddress(port));
 
-        System.out.println("Server started!");
+        System.out.println(this.toString());
+        System.out.println("\n\nServer started\n\n");
     }
 
     /**
@@ -253,6 +237,18 @@ public class GliaServer implements Serializable {
             this.serverBootstrap.releaseExternalResources();
             this.serverBootstrap.shutdown();
         }
+    }
+
+    @Override
+    public String toString(){
+        return "\n\n\n" +
+                " GliaServer " +
+                "\n-------------------" +
+                "\n name:" + this.name +
+                "\n instance:" + this.instanceName +
+                "\n port:" + this.port +
+                "\n metrics:" + this.metrics +
+                "  \n\n\n";
     }
 
     public static void main(String[] args) throws Exception {

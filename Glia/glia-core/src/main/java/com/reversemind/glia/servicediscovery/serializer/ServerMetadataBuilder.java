@@ -21,7 +21,8 @@ public class ServerMetadataBuilder implements Serializable {
                 gliaServer.getName(),
                 gliaServer.getInstanceName(),
                 "localhost",
-                gliaServer.getPort()
+                gliaServer.getPort(),
+                gliaServer.getMetrics()
         );
     }
 

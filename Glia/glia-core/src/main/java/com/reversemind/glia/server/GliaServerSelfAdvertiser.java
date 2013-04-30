@@ -25,7 +25,8 @@ public class GliaServerSelfAdvertiser extends GliaServer implements Serializable
 
     public GliaServerSelfAdvertiser(String zookeeperConnectionString,
                                     String serviceBasePath,
-                                    IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
+                                    IGliaPayloadProcessor gliaPayloadWorker,
+                                    boolean dropClientConnection) {
         super(gliaPayloadWorker, dropClientConnection);
         this.zookeeperConnectionString = zookeeperConnectionString;
         this.serviceBasePath = serviceBasePath;
@@ -33,14 +34,17 @@ public class GliaServerSelfAdvertiser extends GliaServer implements Serializable
                 this.getName(),
                 this.getInstanceName(),
                 "localhost",
-                this.getPort()
+                this.getPort(),
+                this.metrics
         );
 
     }
 
     public GliaServerSelfAdvertiser(String zookeeperConnectionString,
                                     String serviceBasePath,
-                                    int port, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
+                                    int port,
+                                    IGliaPayloadProcessor gliaPayloadWorker,
+                                    boolean dropClientConnection) {
         super(port, gliaPayloadWorker, dropClientConnection);
         this.zookeeperConnectionString = zookeeperConnectionString;
         this.serviceBasePath = serviceBasePath;
@@ -48,14 +52,17 @@ public class GliaServerSelfAdvertiser extends GliaServer implements Serializable
                 this.getName(),
                 this.getInstanceName(),
                 "localhost",
-                this.getPort()
+                this.getPort(),
+                this.metrics
         );
     }
 
     public GliaServerSelfAdvertiser(String zookeeperConnectionString,
                                     String serviceBasePath,
                                     String serverName,
-                                    int port, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
+                                    int port,
+                                    IGliaPayloadProcessor gliaPayloadWorker,
+                                    boolean dropClientConnection) {
         super(serverName, port, gliaPayloadWorker, dropClientConnection);
         this.zookeeperConnectionString = zookeeperConnectionString;
         this.serviceBasePath = serviceBasePath;
@@ -63,13 +70,35 @@ public class GliaServerSelfAdvertiser extends GliaServer implements Serializable
                 this.getName(),
                 this.getInstanceName(),
                 "localhost",
-                this.getPort()
+                this.getPort(),
+                this.metrics
         );
     }
 
     public GliaServerSelfAdvertiser(String zookeeperConnectionString,
                                     String serviceBasePath,
-                                    String serverName, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
+                                    String serverName,
+                                    int port,
+                                    IGliaPayloadProcessor gliaPayloadWorker,
+                                    boolean dropClientConnection,
+                                    String instanceName) {
+        super(serverName, port, gliaPayloadWorker, dropClientConnection, instanceName);
+        this.zookeeperConnectionString = zookeeperConnectionString;
+        this.serviceBasePath = serviceBasePath;
+        this.metadata = new ServerMetadata(
+                this.getName(),
+                this.getInstanceName(),
+                "localhost",
+                this.getPort(),
+                this.metrics
+        );
+    }
+
+    public GliaServerSelfAdvertiser(String zookeeperConnectionString,
+                                    String serviceBasePath,
+                                    String serverName,
+                                    IGliaPayloadProcessor gliaPayloadWorker,
+                                    boolean dropClientConnection) {
         super(serverName, gliaPayloadWorker, dropClientConnection);
         this.zookeeperConnectionString = zookeeperConnectionString;
         this.serviceBasePath = serviceBasePath;
@@ -77,7 +106,39 @@ public class GliaServerSelfAdvertiser extends GliaServer implements Serializable
                 this.getName(),
                 this.getInstanceName(),
                 "localhost",
-                this.getPort()
+                this.getPort(),
+                this.metrics
+        );
+    }
+
+    public GliaServerSelfAdvertiser(String zookeeperConnectionString,
+                                    String serviceBasePath,
+                                    String serverName,
+                                    IGliaPayloadProcessor gliaPayloadWorker,
+                                    boolean dropClientConnection,
+                                    String instanceName) {
+        super(serverName, gliaPayloadWorker, dropClientConnection, instanceName);
+        this.zookeeperConnectionString = zookeeperConnectionString;
+        this.serviceBasePath = serviceBasePath;
+        this.metadata = new ServerMetadata(
+                this.getName(),
+                this.getInstanceName(),
+                "localhost",
+                this.getPort(),
+                this.metrics
+        );
+    }
+
+    public GliaServerSelfAdvertiser(String serverName, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection, String instanceName) {
+        super(serverName, gliaPayloadWorker, dropClientConnection, instanceName);
+        this.zookeeperConnectionString = zookeeperConnectionString;
+        this.serviceBasePath = serviceBasePath;
+        this.metadata = new ServerMetadata(
+                this.getName(),
+                this.getInstanceName(),
+                "localhost",
+                this.getPort(),
+                this.metrics
         );
     }
 

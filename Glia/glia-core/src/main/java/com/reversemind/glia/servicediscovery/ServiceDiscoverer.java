@@ -7,6 +7,7 @@ import com.netflix.curator.retry.RetryNTimes;
 import com.netflix.curator.utils.EnsurePath;
 import com.netflix.curator.x.discovery.ServiceDiscovery;
 import com.netflix.curator.x.discovery.ServiceInstance;
+import com.reversemind.glia.server.Metrics;
 import com.reversemind.glia.servicediscovery.serializer.InstanceSerializerFactory;
 import com.reversemind.glia.servicediscovery.serializer.ServerMetadata;
 import org.apache.log4j.Logger;
@@ -108,7 +109,8 @@ public class ServiceDiscoverer implements Serializable, Closeable {
                 "GLIA_SERVER",
                 "INSTANCE 001",
                 "localhost",
-                7000
+                7000,
+                new Metrics()
         );
 
         discoverer.advertise(serverMetadata, BASE_PATH);
@@ -117,7 +119,8 @@ public class ServiceDiscoverer implements Serializable, Closeable {
                 "GLIA_SERVER",
                 "INSTANCE 002",
                 "localhost",
-                7001
+                7001,
+                new Metrics()
         ), BASE_PATH);
 
         Thread.sleep(1000);

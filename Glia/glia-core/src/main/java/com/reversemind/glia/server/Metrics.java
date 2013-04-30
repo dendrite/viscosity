@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * Measurable parameters for GliaServer
  *
  */
 public class Metrics implements Serializable {
@@ -13,11 +14,11 @@ public class Metrics implements Serializable {
     private double averageTimePerRequest = 0.0d;
     private double processingTime = 0.0d;
 
-
-    public Metrics(){
+    public Metrics() {
         this.startDate = new Date();
     }
 
+    // TODO need to rename method
     public void plusRequest(long deltaTimePerRequest) {
         synchronized (this) {
             requestsProcessed++;
@@ -30,7 +31,7 @@ public class Metrics implements Serializable {
         }
     }
 
-    public long elapsedTime(){
+    public long elapsedTime() {
         return System.currentTimeMillis() - this.startDate.getTime();
     }
 

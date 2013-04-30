@@ -28,7 +28,8 @@ public class TestGliaServerSelfAdvertiser implements Serializable {
                 SERVICE_BASE_PATH,
                 "ADDRESS",
                 null,
-                false);
+                false,
+                "INSTANCE.001");
 
         server.run();
 
