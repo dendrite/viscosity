@@ -40,8 +40,6 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 #### TODO
 
-* Add CPU load to the server metrics
-
 * Add to GliaClientDiscoverer - select server each time before send method
 
 * Additional options for client speed optimisation - http://docs.jboss.org/netty/3.2/api/org/jboss/netty/bootstrap/ClientBootstrap.html
@@ -56,7 +54,7 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 * Need to make an Arquillian test - ot examples for EJB Glia example
 
-
+* [DONE] - Add CPU load to the server metrics
 * [DONE] - Add to GliaClient or create a GliaClientDiscoverer - just automatically to find a necessary server for communication
 * [DONE] - Update metrics dynamically in zookeeper
 * [DONE] - Add to ServerMetadata a Metrics

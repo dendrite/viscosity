@@ -18,6 +18,7 @@ import java.util.UUID;
  * @author mcl
  */
 public final class WorkerAdvertiser {
+
     private final CuratorFramework curatorFramework;
     private final InstanceSerializer<WorkerMetadata> jacksonInstanceSerializer;
     private final UUID workerId = UUID.randomUUID();

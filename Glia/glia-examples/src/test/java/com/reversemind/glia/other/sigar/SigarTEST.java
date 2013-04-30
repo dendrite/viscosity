@@ -1,4 +1,4 @@
-package com.reversemind.glia.test.cpuload;
+package com.reversemind.glia.other.sigar;
 
 import org.hyperic.sigar.Cpu;
 import org.hyperic.sigar.CpuPerc;
@@ -6,7 +6,7 @@ import org.hyperic.sigar.CpuPerc;
 /**
  *
  */
-public class Sigar {
+public class SigarTEST {
 
     public static void main(String... args){
 //        Sigar sigar = new Sigar();
@@ -22,14 +22,14 @@ public class Sigar {
 //        System.out.println("total: " + cpu.getTotal());
 //        System.out.println("user: " + cpu.getUser());
 //        System.out.println();
-
-
+//
+//
 //        CpuPerc perc = new CpuPerc();//sigar.getCpuPerc();
 //        System.out.println("overall CPU usage");
 //        System.out.println("system idle: " + perc.getIdle());//get current CPU idle rate
 //        System.out.println("conbined: "+ perc.getCombined());//get current CPU usage
-
-
+//
+//
 //        CpuPerc[] cpuPercs = sigar.getCpuPercList();
 //        System.out.println("each CPU usage");
 //        for (CpuPerc cpuPerc : cpuPercs) {

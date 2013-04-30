@@ -1,5 +1,8 @@
 package com.reversemind.glia.server;
 
+import org.hyperic.sigar.Sigar;
+import org.hyperic.sigar.SigarException;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,9 +16,13 @@ public class Metrics implements Serializable {
     private long requestsProcessed = 0L;
     private double averageTimePerRequest = 0.0d;
     private double processingTime = 0.0d;
+    private double cpuIdle;
+
+    private Sigar sigar;
 
     public Metrics() {
         this.startDate = new Date();
+        this.sigar = new Sigar();
     }
 
     // TODO need to rename method
@@ -28,6 +35,8 @@ public class Metrics implements Serializable {
                 this.averageTimePerRequest = (this.processingTime / this.requestsProcessed);
             }
 
+            // just update CPU load
+            this.getCpuIdle();
         }
     }
 
@@ -63,6 +72,18 @@ public class Metrics implements Serializable {
         this.processingTime = processingTime;
     }
 
+    public double getCpuIdle() {
+        try {
+            this.cpuIdle = sigar.getCpuPerc().getIdle();
+        } catch (SigarException e) {
+        }
+        return cpuIdle;
+    }
+
+    public void setCpuIdle(double cpuIdle) {
+        this.cpuIdle = cpuIdle;
+    }
+
     @Override
     public String toString() {
         return "Metrics{" +
@@ -70,7 +91,7 @@ public class Metrics implements Serializable {
                 ", requestsProcessed=" + requestsProcessed +
                 ", averageTimePerRequest=" + averageTimePerRequest +
                 ", processingTime=" + processingTime +
-                ", elapsedTime=" + this.elapsedTime() + " ms" +
+                ", cpuIdle=" + cpuIdle + "% " +
                 '}';
     }
 }

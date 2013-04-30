@@ -26,17 +26,17 @@
             <type>jar</type>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.cb372</groupId>
-            <artifactId>metrics-sigar</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-
         <!--<dependency>-->
-        <!--<groupId>org.fusesource</groupId>-->
-        <!--<artifactId>sigar</artifactId>-->
-        <!--<version>1.6.4</version>-->
+            <!--<groupId>com.github.cb372</groupId>-->
+            <!--<artifactId>metrics-sigar</artifactId>-->
+            <!--<version>0.1.0</version>-->
         <!--</dependency>-->
+
+        <dependency>
+        <groupId>org.fusesource</groupId>
+        <artifactId>sigar</artifactId>
+        <version>1.6.4</version>
+        </dependency>
 
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
