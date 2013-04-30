@@ -59,7 +59,7 @@ The use and distribution terms for this software are covered by the Apache Licen
 * [DONE] - Update metrics dynamically in zookeeper
 * [DONE] - Add to ServerMetadata a Metrics
 
-* [DONE-PARTLY] - Add metrics to the server like a heartbeats & so on...
+* [DONE] - Add metrics to the server like a heartbeats & so on...
 
 * [DONE] - Autodiscover server in zookeeper
 * [DONE] - Glia server correct shutdown
