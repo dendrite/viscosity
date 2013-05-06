@@ -45,7 +45,7 @@ public class GliaClient implements Serializable {
     private Channel channel;
     private ChannelFuture channelFuture;
     private ChannelFactory channelFactory;
-
+    private long futureTaskTimeOut = FUTURE_TASK_TIME_OUT;
     private boolean running = false;
 
     protected GliaClient() {
@@ -57,6 +57,15 @@ public class GliaClient implements Serializable {
         this.host = host;
         this.port = port;
         this.gliaPayload = null;
+        this.executor = this.getExecutor();
+        System.out.println("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
+    }
+
+    public GliaClient(String host, int port, long timeout) {
+        this.host = host;
+        this.port = port;
+        this.gliaPayload = null;
+        this.futureTaskTimeOut = timeout;
         this.executor = this.getExecutor();
         System.out.println("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
     }
@@ -99,7 +108,7 @@ public class GliaClient implements Serializable {
 
             try {
 
-                this.setGliaPayload(this.futureTask.get(FUTURE_TASK_TIME_OUT, TimeUnit.MILLISECONDS));
+                this.setGliaPayload(this.futureTask.get(this.futureTaskTimeOut, TimeUnit.MILLISECONDS));
 
             } catch (TimeoutException e) {
                 LOG.log(Level.WARNING,"TimeoutException futureTask == HERE");
