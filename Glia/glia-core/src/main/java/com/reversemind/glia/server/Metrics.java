@@ -17,11 +17,16 @@ public class Metrics implements Serializable {
     private double processingTime = 0.0d;
     private double cpuIdle;
 
-    private Sigar sigar;
+    private Sigar sigar = null;
 
     public Metrics() {
         this.startDate = new Date();
-        this.sigar = new Sigar();
+        try{
+            this.sigar = new Sigar();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        this.cpuIdle = 99.0d;
     }
 
     // TODO need to rename method
@@ -74,7 +79,7 @@ public class Metrics implements Serializable {
     public double getCpuIdle() {
         try {
             this.cpuIdle = sigar.getCpuPerc().getIdle();
-        } catch (SigarException e) {
+        } catch (Exception e) {
         }
         return cpuIdle;
     }
