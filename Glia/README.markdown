@@ -13,6 +13,21 @@ Glia (Greek γλία, γλοία "glue"; pronounced in English as either /ˈɡli
 Glia using [Netty](http://netty.io/), [Kryo](https://code.google.com/p/kryo/), [Curator](https://github.com/Netflix/curator), [Zookeeper](http://zookeeper.apache.org/)
 
 
+#### Artifacts
+
+Right now only in local TTK Nexus
+
+groupId: com.reversemind
+artifactId: glia-core
+version: 1.2.7-SNAPSHOT
+
+<dependency>
+  <groupId>com.reversemind</groupId>
+  <artifactId>glia-core</artifactId>
+  <version>1.2.7-SNAPSHOT</version>
+</dependency>
+
+
 #### Getting started
 
 
