@@ -22,7 +22,6 @@ public class HostName {
             System.out.println(bytes[i]);
         }
 
-
         InetAddress localHost = InetAddress.getLocalHost();
 
         printInetAddress("localHost", localHost);

@@ -40,12 +40,14 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 #### TODO
 
-* Detect server host name
-* Add to GliaClientDiscoverer - select server each time before send method
+* Make a GliaServer & GliaClient Builder or Factory - 'cause number of constructors grows very rapidly
+
+* Detect server host name - tested in - but some troubles with selecting correct values if a lot of net interfaces is up
+* ?? Add to GliaClientDiscoverer - select server each time before send method
 
 * Additional options for client speed optimisation - http://docs.jboss.org/netty/3.2/api/org/jboss/netty/bootstrap/ClientBootstrap.html
 * In ProxyFactory - use non-static GliaClient
-* Replace in ProxyFactory using a Interface class into String name of interface class
+* Replace in ProxyFactory Interface class into String name of that interface class
 * Add a control to server through zookeeper
 * How to get from server number of client connected??
 
