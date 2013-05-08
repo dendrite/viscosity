@@ -18,8 +18,11 @@ Glia using [Netty](http://netty.io/), [Kryo](https://code.google.com/p/kryo/), [
 Right now only in local TTK Nexus
 
 groupId: com.reversemind
+
 artifactId: glia-core
+
 version: 1.2.7-SNAPSHOT
+
 
 <dependency>
   <groupId>com.reversemind</groupId>
@@ -55,6 +58,10 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 #### TODO
 
+
+* What about Snappy-java
+
+* Remove Sigar into new abstraction - 'cause GliaServer is very affectable
 * Make a GliaServer & GliaClient Builder or Factory - 'cause number of constructors grows very rapidly
 
 * Detect server host name - tested in - but some troubles with selecting correct values if a lot of net interfaces is up
