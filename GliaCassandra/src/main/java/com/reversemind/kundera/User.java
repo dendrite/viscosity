@@ -10,6 +10,7 @@ import javax.persistence.Table;
 public class User {
 
     @Id
+    @Column(name = "user_id")
     private String userId;
 
     @Column(name = "first_name")
@@ -20,6 +21,17 @@ public class User {
 
     @Column(name = "city")
     private String city;
+
+    @Column(name = "screenName")
+    private String screenName;
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
 
     public User() {
     }
@@ -54,5 +66,16 @@ public class User {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", city='" + city + '\'' +
+                ", screenName='" + screenName + '\'' +
+                '}';
     }
 }
