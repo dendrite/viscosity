@@ -15,75 +15,14 @@
         <astyanax.version>1.56.37</astyanax.version>
     </properties>
 
-
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>sonatype-nexus</id>-->
-            <!--<name>Kundera Public Repository</name>-->
-            <!--<url>https://oss.sonatype.org/content/repositories/releases</url>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>false</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-        <!--<repository>-->
-            <!--<id>kundera-missing</id>-->
-            <!--<name>Kundera Public Missing Resources Repository</name>-->
-            <!--<url>http://kundera.googlecode.com/svn/maven2/maven-missing-resources</url>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-    <!--</repositories>-->
-
-
     <dependencies>
-
 
         <!--KUNDERA-->
         <dependency>
             <groupId>com.impetus.client</groupId>
             <artifactId>kundera-cassandra</artifactId>
-            <version>2.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.xerial</groupId>
-                    <artifactId>snappy</artifactId>
-                </exclusion>
-                <!--<exclusion>-->
-                    <!--<groupId>javax.persistence</groupId>-->
-                    <!--<artifactId>persistence-api</artifactId>-->
-                <!--</exclusion>-->
-            </exclusions>
+            <version>2.5</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.impetus.core</groupId>
-            <artifactId>kundera-core</artifactId>
-            <version>2.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.xerial</groupId>
-                    <artifactId>snappy</artifactId>
-                </exclusion>
-                <!--<exclusion>-->
-                    <!--<groupId>javax.persistence</groupId>-->
-                    <!--<artifactId>persistence-api</artifactId>-->
-                <!--</exclusion>-->
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-
 
         <!--ASTYANAX-->
         <dependency>
@@ -129,41 +68,7 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.xerial.snappy</groupId>
-            <artifactId>snappy-java</artifactId>
-            <version>1.0.1-rc3</version>
-        </dependency>
-
     </dependencies>
-
-
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>sonatype-nexus</id>-->
-            <!--<name>Kundera Public Repository</name>-->
-            <!--<url>https://oss.sonatype.org/content/repositories/releases</url>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>false</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-        <!--<repository>-->
-            <!--<id>kundera-missing</id>-->
-            <!--<name>Kundera Public Missing Resources Repository</name>-->
-            <!--<url>http://kundera.googlecode.com/svn/maven2/maven-missing-resources</url>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>true</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-    <!--</repositories>-->
-
-
 
     <build>
         <plugins>
@@ -225,6 +130,5 @@
 
         </plugins>
     </build>
-
 
 </project>
