@@ -1,7 +1,6 @@
-package com.reversemind.cassandra;
+package com.reversemind.test.cassandra;
 
 import com.netflix.astyanax.Keyspace;
-import com.netflix.astyanax.connectionpool.exceptions.ConnectionException;
 import com.netflix.astyanax.model.Column;
 
 import java.io.Serializable;

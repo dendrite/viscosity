@@ -1,11 +1,10 @@
-package com.reversemind.part02;
+package com.reversemind.test.part02;
 
 import com.netflix.astyanax.Keyspace;
 import com.netflix.astyanax.connectionpool.OperationResult;
 import com.netflix.astyanax.model.ColumnFamily;
 import com.netflix.astyanax.model.CqlResult;
 import com.netflix.astyanax.serializers.IntegerSerializer;
-import com.netflix.astyanax.serializers.StringSerializer;
 
 import java.io.Serializable;
 
@@ -26,7 +25,6 @@ public class CreateTables implements Serializable {
                 "Cql3CF",
                 IntegerSerializer.get(),
                 IntegerSerializer.get());
-
 
         OperationResult<CqlResult<Integer, Integer>> result = keyspace
                 .prepareQuery(CQL3_CF)

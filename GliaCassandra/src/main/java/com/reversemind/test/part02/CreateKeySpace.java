@@ -1,4 +1,4 @@
-package com.reversemind.part02;
+package com.reversemind.test.part02;
 
 import com.google.common.collect.ImmutableMap;
 import com.netflix.astyanax.Keyspace;

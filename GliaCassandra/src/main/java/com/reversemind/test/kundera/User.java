@@ -1,4 +1,4 @@
-package com.reversemind.kundera;
+package com.reversemind.test.kundera;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +24,9 @@ public class User {
 
     @Column(name = "screenName")
     private String screenName;
+
+    @Column(name = "epoch")
+    private long epoch;
 
     public String getScreenName() {
         return screenName;
@@ -68,6 +71,14 @@ public class User {
         this.city = city;
     }
 
+    public long getEpoch() {
+        return epoch;
+    }
+
+    public void setEpoch(long epoch) {
+        this.epoch = epoch;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -76,6 +87,7 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", city='" + city + '\'' +
                 ", screenName='" + screenName + '\'' +
+                ", epoch=" + epoch +
                 '}';
     }
 }
