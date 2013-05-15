@@ -56,10 +56,10 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         // parameter autoSelectPort has more priority than assigned port value
         if (builder.isAutoSelectPort()) {
             this.port = this.detectFreePort();
-        } else if (builder.getPort() < 0) {
+        } else if (builder.port() < 0) {
             this.port = this.detectFreePort();
         } else {
-            this.port = builder.getPort();
+            this.port = builder.port();
         }
 
         if(builder.getGliaPayloadWorker() == null){

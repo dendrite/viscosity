@@ -171,7 +171,7 @@ public class GliaServerFactory implements Serializable {
             return instanceName;
         }
 
-        public int getPort() {
+        public int port() {
             return port;
         }
 
