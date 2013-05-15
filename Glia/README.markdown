@@ -59,6 +59,10 @@ The use and distribution terms for this software are covered by the Apache Licen
 #### TODO
 
 
+!!!!
+* Need to fix Spring context loader
+
+
 * Need Netflix Curator fake zookeeper instance - for Testing
 
 * What about Snappy-java
