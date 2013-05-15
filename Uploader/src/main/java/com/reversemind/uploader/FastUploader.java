@@ -1,5 +1,6 @@
 package com.reversemind.uploader;
 
+import com.reversemind.Settings;
 import com.reversemind.User;
 
 import java.io.*;
@@ -23,34 +24,9 @@ public class FastUploader implements Serializable {
 
     private static final int STEP   = 10000;
 
-    private static final String JDBC_HOST   = "localhost";
-    private static final int    JDBC_PORT   = 5432;
-    private static final String JDBC_DB     = "twitter";
-
-    private static final String DB_DRIVER       = "org.postgresql.Driver";
-    private static final String DB_CONNECTION   = "jdbc:postgresql://" + JDBC_HOST + ":" + JDBC_PORT + "/" + JDBC_DB;
-    private static final String DB_USER         = "test";
-    private static final String DB_PASSWORD     = "test";
-
     static String query = "INSERT INTO tuser(id, screen_name, created_at, url, statuses) VALUES(?,?,?,?,?);";
 
-    private static Connection getDBConnection() {
-        Connection dbConnection = null;
 
-        try {
-            Class.forName(DB_DRIVER);
-        } catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            dbConnection = DriverManager.getConnection(DB_CONNECTION, DB_USER, DB_PASSWORD);
-            return dbConnection;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return dbConnection;
-    }
 
     public static PreparedStatement createBatch(Connection connection, List<User> list) throws SQLException {
 
@@ -193,17 +169,15 @@ public class FastUploader implements Serializable {
 
     public static void main(String... args) throws IOException {
 
-
         String fileName = "/opt/DATA/upload/NAMES.txt";
         BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(fileName)));
 
-        Connection connection = getDBConnection();
+        Connection connection = Settings.getDBConnection();
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
 
         long counter = 0;
         List<User> users = new ArrayList<User>();

@@ -16,6 +16,13 @@
 
     <dependencies>
 
+        <!--GLIA SERVER-->
+        <dependency>
+            <groupId>com.reversemind</groupId>
+            <artifactId>glia-core</artifactId>
+            <version>1.2.7-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
