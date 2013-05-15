@@ -34,7 +34,7 @@ public class RunServerFromSpringContext implements Serializable {
             System.out.println("!!!!");
         }
 
-        server.run();
+        server.start();
     }
 
 }

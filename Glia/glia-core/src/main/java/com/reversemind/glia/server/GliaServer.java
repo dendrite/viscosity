@@ -1,6 +1,7 @@
 package com.reversemind.glia.server;
 
 import com.reversemind.glia.GliaPayload;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
@@ -26,28 +27,60 @@ import java.util.concurrent.Executors;
  * @author konilovsky
  * @since 1.0
  */
-public class GliaServer implements Serializable {
+public abstract class GliaServer implements IGliaServer, Serializable {
 
     private String name;
     private String instanceName;
+
+    private boolean running = false;
 
     private ServerBootstrap serverBootstrap;
     private SimpleChannelUpstreamHandler handler;
     protected Metrics metrics;
 
-    private final int port;
+    private int port;
+    private boolean keepClientAlive = false;
+
     private GliaPayload gliaPayload;
-    private boolean dropClientConnection = false;
     private IGliaPayloadProcessor gliaPayloadWorker;
 
     /**
-     * Autodiscover an available port and start GliaServer
      *
-     * @param gliaPayloadWorker
-     * @param dropClientConnection
+     * @param builder
      */
-    public GliaServer(IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
+    public GliaServer(GliaServerFactory.Builder builder){
+        if(builder == null){
+            throw new RuntimeException("Builder is empty");
+        }
 
+        // parameter autoSelectPort has more priority than assigned port value
+        if (builder.isAutoSelectPort()) {
+            this.port = this.detectFreePort();
+        } else if (builder.getPort() < 0) {
+            this.port = this.detectFreePort();
+        } else {
+            this.port = builder.getPort();
+        }
+
+        if(builder.getGliaPayloadWorker() == null){
+            throw new RuntimeException("Assign a payloadWorker to server!");
+        }
+
+        // drop connection from client or not
+        this.keepClientAlive = builder.isKeepClientAlive();
+
+        this.name = StringUtils.isEmpty(builder.getName()) ?  UUID.randomUUID().toString() : builder.getName();
+        this.instanceName = StringUtils.isEmpty(builder.getInstanceName()) ? UUID.randomUUID().toString() : builder.getInstanceName();
+
+        this.metrics = new Metrics();
+    }
+
+    /**
+     * Detect free port on System
+     *
+     * @return
+     */
+    private int detectFreePort(){
         try {
             ServerSocket serverSocket = new ServerSocket(0);
             if (serverSocket.getLocalPort() == -1) {
@@ -55,114 +88,13 @@ public class GliaServer implements Serializable {
                 throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
             }
 
-            this.port = serverSocket.getLocalPort();
-
-            serverSocket.close();
-            int count = 0;
-            while (!serverSocket.isClosed()) {
-                if (count++ > 10) {
-                    throw new RuntimeException("Could not start GliaServer");
-                }
-                try {
-                    Thread.sleep(100);
-                    System.out.println("Waiting for closing autodiscovered socket try number#" + count);
-                } catch (InterruptedException e) {
-                    System.exit(-100);
-                    throw new RuntimeException("Could not start GliaServer");
-                }
-            }
-            serverSocket = null;
-        } catch (Exception e) {
-            throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
+            return serverSocket.getLocalPort();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        this.metrics = new Metrics();
-        this.name = UUID.randomUUID().toString();
-        this.dropClientConnection = dropClientConnection;
-        this.gliaPayloadWorker = gliaPayloadWorker;
-        this.instanceName = UUID.randomUUID().toString();
+        throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
     }
 
-    /**
-     *
-     * @param port
-     * @param gliaPayloadWorker
-     * @param dropClientConnection
-     */
-    public GliaServer(int port, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
-        this.metrics = new Metrics();
-        this.port = port;
-        this.dropClientConnection = dropClientConnection;
-        this.gliaPayloadWorker = gliaPayloadWorker;
-        this.name = UUID.randomUUID().toString();
-        this.instanceName = UUID.randomUUID().toString();
-    }
-
-    /**
-     *
-     * @param serverName
-     * @param port
-     * @param gliaPayloadWorker    -
-     * @param dropClientConnection - disconnect a client after response
-     */
-    public GliaServer(String serverName, int port, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
-        this.metrics = new Metrics();
-        this.port = port;
-        this.dropClientConnection = dropClientConnection;
-        this.gliaPayloadWorker = gliaPayloadWorker;
-        this.name = serverName;
-        this.instanceName = UUID.randomUUID().toString();
-    }
-
-    public GliaServer(String serverName, int port, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection, String instanceName) {
-        this.metrics = new Metrics();
-        this.port = port;
-        this.dropClientConnection = dropClientConnection;
-        this.gliaPayloadWorker = gliaPayloadWorker;
-        this.name = serverName;
-        this.instanceName = instanceName;
-    }
-
-    public GliaServer(String serverName, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection) {
-        try {
-            ServerSocket serverSocket = new ServerSocket(0);
-            if (serverSocket.getLocalPort() == -1) {
-                System.exit(-100);
-                throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
-            }
-
-            this.port = serverSocket.getLocalPort();
-
-            serverSocket.close();
-            int count = 0;
-            while (!serverSocket.isClosed()) {
-                if (count++ > 10) {
-                    throw new RuntimeException("Could not start GliaServer");
-                }
-                try {
-                    Thread.sleep(100);
-                    System.out.println("Waiting for closing autodiscovered socket try number#" + count);
-                } catch (InterruptedException e) {
-                    System.exit(-100);
-                    throw new RuntimeException("Could not start GliaServer");
-                }
-            }
-            serverSocket = null;
-        } catch (Exception e) {
-            throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
-        }
-
-        this.metrics = new Metrics();
-        this.dropClientConnection = dropClientConnection;
-        this.gliaPayloadWorker = gliaPayloadWorker;
-        this.name = serverName;
-        this.instanceName = UUID.randomUUID().toString();
-    }
-
-    public GliaServer(String serverName, IGliaPayloadProcessor gliaPayloadWorker, boolean dropClientConnection, String instanceName) {
-        this(serverName, gliaPayloadWorker, dropClientConnection);
-        this.instanceName = instanceName;
-    }
     /**
      * Get server name
      *
@@ -173,7 +105,7 @@ public class GliaServer implements Serializable {
     }
 
     /**
-     * Instance name each time is a UUID
+     * Instance name mostly prefer to use a UUID
      *
      * @return
      */
@@ -202,16 +134,17 @@ public class GliaServer implements Serializable {
     /**
      *
      */
-    public void run() {
+    public void start() {
         // Configure the server.
         this.serverBootstrap = new ServerBootstrap(
                 new NioServerSocketChannelFactory(
                         Executors.newCachedThreadPool(),
                         Executors.newCachedThreadPool()));
 
-        this.handler = new GliaServerHandler(gliaPayloadWorker, metrics, dropClientConnection);
+        this.handler = new GliaServerHandler(gliaPayloadWorker, metrics, keepClientAlive);
 
-        // Set up the pipeline factory.
+        // Set up the pipeline factory
+        // TODO add Kryo serializer
         this.serverBootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {
                 return Channels.pipeline(
@@ -225,8 +158,15 @@ public class GliaServer implements Serializable {
         // Bind and start to accept incoming connections.
         this.serverBootstrap.bind(new InetSocketAddress(port));
 
+        // TODO use CORRECT LOGGGING
         System.out.println(this.toString());
         System.out.println("\n\nServer started\n\n");
+
+        this.running = true;
+    }
+
+    public boolean isRunning() {
+        return this.running;
     }
 
     /**
@@ -237,6 +177,11 @@ public class GliaServer implements Serializable {
             this.serverBootstrap.releaseExternalResources();
             this.serverBootstrap.shutdown();
         }
+    }
+
+    public String getHost(){
+        // TODO remove from test implementation code
+        return "localhost";
     }
 
     @Override
@@ -251,8 +196,4 @@ public class GliaServer implements Serializable {
                 "  \n\n\n";
     }
 
-    public static void main(String[] args) throws Exception {
-        int port = 7000;
-        //new GliaServer(port.run();
-    }
 }

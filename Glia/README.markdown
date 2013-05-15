@@ -59,10 +59,12 @@ The use and distribution terms for this software are covered by the Apache Licen
 #### TODO
 
 
+* Need Netflix Curator fake zookeeper instance - for Testing
+
 * What about Snappy-java
 
 * Remove Sigar into new abstraction - 'cause GliaServer is very affectable
-* Make a GliaServer & GliaClient Builder or Factory - 'cause number of constructors grows very rapidly
+* [DONE] - Make a GliaServer & GliaClient Builder or Factory - 'cause number of constructors grows very rapidly
 
 * Detect server host name - tested in - but some troubles with selecting correct values if a lot of net interfaces is up
 * ?? Add to GliaClientDiscoverer - select server each time before send method

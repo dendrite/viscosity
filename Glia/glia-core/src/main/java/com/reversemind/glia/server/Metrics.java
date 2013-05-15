@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Measurable parameters for GliaServer
+ * Measurable parameters for GliaServer - include native Sigar libs into your java
  */
 public class Metrics implements Serializable {
 
@@ -17,7 +17,7 @@ public class Metrics implements Serializable {
     private double processingTime = 0.0d;
     private double cpuIdle;
 
-    private Sigar sigar = null;
+    private Sigar sigar = null;             // include native libs in your java
 
     public Metrics() {
         this.startDate = new Date();
@@ -76,10 +76,16 @@ public class Metrics implements Serializable {
         this.processingTime = processingTime;
     }
 
+    /**
+     * Get CPU idle in per cents using Sigar lib
+     *
+     * @return
+     */
     public double getCpuIdle() {
         try {
             this.cpuIdle = sigar.getCpuPerc().getIdle();
         } catch (Exception e) {
+            // just hide exception - other just use special LOG level
         }
         return cpuIdle;
     }

@@ -1,6 +1,7 @@
 package com.reversemind.glia.servicediscovery.serializer;
 
 import com.reversemind.glia.server.GliaServer;
+import com.reversemind.glia.server.IGliaServer;
 
 import java.io.Serializable;
 
@@ -13,14 +14,14 @@ import java.io.Serializable;
  */
 public class ServerMetadataBuilder implements Serializable {
 
-    public ServerMetadata build(GliaServer gliaServer){
+    public ServerMetadata build(IGliaServer gliaServer){
         if(gliaServer == null){
             return null;
         }
         return new ServerMetadata(
                 gliaServer.getName(),
                 gliaServer.getInstanceName(),
-                "localhost",
+                gliaServer.getHost(),
                 gliaServer.getPort(),
                 gliaServer.getMetrics()
         );

@@ -1,10 +1,8 @@
 package com.reversemind.glia.test.json.server;
 
+import com.reversemind.glia.server.*;
 import com.reversemind.glia.test.json.Settings;
 import com.reversemind.glia.test.json.shared.IDoSomething;
-import com.reversemind.glia.server.GliaPayloadProcessor;
-import com.reversemind.glia.server.GliaServer;
-import com.reversemind.glia.server.IGliaPayloadProcessor;
 
 /**
  *
@@ -16,9 +14,14 @@ public class RunJSONGliaServer {
         IGliaPayloadProcessor gliaPayloadProcessor = new GliaPayloadProcessor();
         gliaPayloadProcessor.registerPOJO(IDoSomething.class, ServerPojo.class);
 
-        GliaServer gliaServer = new GliaServer("GLIA_JSON_SERVER", Settings.SERVER_PORT, gliaPayloadProcessor, false);
-        gliaServer.run();
+        IGliaServer gliaServer = GliaServerFactory.builder(GliaServerFactory.Builder.Type.SIMPLE)
+                .payloadWorker(gliaPayloadProcessor)
+                .name("GLIA_JSON_SERVER")
+                .port(Settings.SERVER_PORT)
+                .keepClientAlive(false)
+                .build();
 
+        gliaServer.start();
 
         int count = 0;
         // just wait for a minute 5 sec * 120 = 10 minutes

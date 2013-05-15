@@ -9,7 +9,7 @@ import java.util.List;
  * Date: 4/30/13
  * Time: 2:11 PM
  *
- * @author konilovsky
+ * @author
  * @since 1.0
  */
 public class ServerSelectorSimpleStrategy implements IServerSelectorStrategy, Serializable {

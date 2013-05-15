@@ -1,6 +1,8 @@
 package com.reversemind.glia.test.servericediscovery;
 
-import com.reversemind.glia.server.GliaServerSelfAdvertiser;
+import com.reversemind.glia.server.*;
+import com.reversemind.glia.server.GliaServerAdvertiser;
+import com.reversemind.glia.test.json.Settings;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -23,25 +25,30 @@ public class TestGliaServerSelfAdvertiser implements Serializable {
         final String SERVICE_BASE_PATH = "/baloo/services";
         final String SERVICE_NAME = "ADDRESS";
 
-        GliaServerSelfAdvertiser server01 = new GliaServerSelfAdvertiser(
-                ZOOKEEPER_CONNECTION,
-                SERVICE_BASE_PATH,
-                SERVICE_NAME,
-                null,
-                false,
-                "INSTANCE.001");
+        IGliaPayloadProcessor gliaPayloadProcessor = new GliaPayloadProcessor();
 
-        GliaServerSelfAdvertiser server02 = new GliaServerSelfAdvertiser(
-                ZOOKEEPER_CONNECTION,
-                SERVICE_BASE_PATH,
-                SERVICE_NAME,
-                null,
-                false,
-                "INSTANCE.002");
+        IGliaServer server01 = GliaServerFactory.builder(GliaServerFactory.Builder.Type.ZOOKEEPER_ADVERTISER)
+                .payloadWorker(gliaPayloadProcessor)
+                .name(SERVICE_NAME)
+                .instanceName("INSTANCE.001")
+                .zookeeperConnectionString(ZOOKEEPER_CONNECTION)
+                .serviceBasePath(SERVICE_BASE_PATH)
+                .autoSelectPort(true)
+                .keepClientAlive(false)
+                .build();
 
-        server01.run();
-        server02.run();
+        IGliaServer server02 = GliaServerFactory.builder(GliaServerFactory.Builder.Type.ZOOKEEPER_ADVERTISER)
+                .payloadWorker(gliaPayloadProcessor)
+                .name(SERVICE_NAME)
+                .instanceName("INSTANCE.002")
+                .zookeeperConnectionString(ZOOKEEPER_CONNECTION)
+                .serviceBasePath(SERVICE_BASE_PATH)
+                .autoSelectPort(true)
+                .keepClientAlive(false)
+                .build();
 
+        server01.start();
+        server02.start();
 
         for(int i=0;i<100;i++){
             Thread.sleep(1000);

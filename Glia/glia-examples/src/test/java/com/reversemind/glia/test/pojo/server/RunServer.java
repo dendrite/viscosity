@@ -2,7 +2,8 @@ package com.reversemind.glia.test.pojo.server;
 
 import com.reversemind.glia.server.GliaPayloadProcessor;
 import com.reversemind.glia.server.GliaServer;
-import com.reversemind.glia.test.pojo.server.SimplePojo;
+import com.reversemind.glia.server.GliaServerFactory;
+import com.reversemind.glia.server.IGliaServer;
 import com.reversemind.glia.test.pojo.shared.ISimplePojo;
 
 import java.io.Serializable;
@@ -21,11 +22,15 @@ public class RunServer implements Serializable {
         GliaPayloadProcessor gliaPayloadProcessor = new GliaPayloadProcessor();
         gliaPayloadProcessor.registerPOJO(ISimplePojo.class, SimplePojo.class);
 
-        int port = 7000;
-        GliaServer server = new GliaServer(port, gliaPayloadProcessor, false);
-        System.out.println("Started on port:" + server.getPort());
-        server.run();
+        IGliaServer server = GliaServerFactory.builder(GliaServerFactory.Builder.Type.SIMPLE)
+                .payloadWorker(gliaPayloadProcessor)
+                .port(7012)
+                .autoSelectPort(true)
+                .keepClientAlive(false)
+                .build();
 
+        System.out.println("Started on port:" + server.getPort());
+        server.start();
     }
 
 }

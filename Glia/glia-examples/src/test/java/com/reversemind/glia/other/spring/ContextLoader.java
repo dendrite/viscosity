@@ -30,7 +30,7 @@ public class ContextLoader implements Serializable {
             System.out.println("!!!!");
         }
 
-        server.run();
+        server.start();
 
     }
 

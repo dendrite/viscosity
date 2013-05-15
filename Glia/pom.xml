@@ -4,7 +4,7 @@
     <groupId>com.reversemind</groupId>
     <artifactId>glia</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.7-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
 
     <modules>
         <module>glia-examples</module>

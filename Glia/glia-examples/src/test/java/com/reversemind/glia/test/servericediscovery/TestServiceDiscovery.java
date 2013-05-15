@@ -1,6 +1,6 @@
 package com.reversemind.glia.test.servericediscovery;
 
-import com.reversemind.glia.server.GliaServer;
+import com.reversemind.glia.server.*;
 import com.reversemind.glia.servicediscovery.ServiceDiscoverer;
 import com.reversemind.glia.servicediscovery.serializer.ServerMetadata;
 import com.reversemind.glia.servicediscovery.serializer.ServerMetadataBuilder;
@@ -24,17 +24,33 @@ public class TestServiceDiscovery implements Serializable {
     @Test
     public void testAdvertise() throws InterruptedException, IOException {
 
-
         final String SERVICE_NAME= "ADDRESS";
         final String ZOOKEEPER_CONNECTION_STRING = "localhost:2181";
         final String BASE_PATH = "/baloo/services/" + SERVICE_NAME;
 
         ServiceDiscoverer discoverer = new ServiceDiscoverer(ZOOKEEPER_CONNECTION_STRING, BASE_PATH);
 
+        //IGliaServer serverOne = new GliaServer(SERVICE_NAME, null, false);
 
+        IGliaPayloadProcessor gliaPayloadProcessor = new GliaPayloadProcessor();
 
-        GliaServer serverOne = new GliaServer(SERVICE_NAME, null, false);
-        GliaServer serverTwo = new GliaServer(SERVICE_NAME, null, false);
+        IGliaServer serverOne = GliaServerFactory.builder(GliaServerFactory.Builder.Type.ZOOKEEPER_ADVERTISER)
+                .payloadWorker(gliaPayloadProcessor)
+                .name(SERVICE_NAME)
+                .zookeeperConnectionString(ZOOKEEPER_CONNECTION_STRING)
+                .serviceBasePath(BASE_PATH)
+                .autoSelectPort(true)
+                .keepClientAlive(false)
+                .build();
+
+        IGliaServer serverTwo = GliaServerFactory.builder(GliaServerFactory.Builder.Type.ZOOKEEPER_ADVERTISER)
+                .payloadWorker(gliaPayloadProcessor)
+                .name(SERVICE_NAME)
+                .zookeeperConnectionString(ZOOKEEPER_CONNECTION_STRING)
+                .serviceBasePath(BASE_PATH)
+                .autoSelectPort(true)
+                .keepClientAlive(false)
+                .build();
 
         discoverer.advertise(new ServerMetadataBuilder().build(serverOne), BASE_PATH);
         discoverer.advertise(new ServerMetadataBuilder().build(serverTwo), BASE_PATH);

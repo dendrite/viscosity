@@ -7,7 +7,6 @@ import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
- * TODO convert ti into Kryo serializer
  *
  */
 public class JsonServiceInstance<T> extends ServiceInstance<T> {

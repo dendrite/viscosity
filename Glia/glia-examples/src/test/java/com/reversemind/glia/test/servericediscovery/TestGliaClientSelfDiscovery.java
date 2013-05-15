@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Date: 4/30/13
  * Time: 2:27 PM
  *
- * @author konilovsky
+ * @author
  * @since 1.0
  */
 public class TestGliaClientSelfDiscovery implements Serializable {
