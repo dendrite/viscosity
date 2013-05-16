@@ -59,8 +59,8 @@ The use and distribution terms for this software are covered by the Apache Licen
 #### TODO
 
 
-!!!!
-* Need to fix Spring context loader
+
+* [DONE] - but some shift to pure JavaBean in builder pattern - Need to fix Spring context loader
 
 
 * Need Netflix Curator fake zookeeper instance - for Testing
