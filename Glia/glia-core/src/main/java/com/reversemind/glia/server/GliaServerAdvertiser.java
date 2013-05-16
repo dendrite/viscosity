@@ -26,6 +26,8 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
     private MetricsUpdateTask metricsUpdateTask;
     private Timer timer;
 
+    private boolean useMetrics = false;
+    private long delayMetricsPublish = 1000; // ms
     /**
      *
      * @param builder
@@ -50,6 +52,21 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
                 this.getPort(),
                 this.metrics
         );
+
+        this.useMetrics = builder.isUseMetrics();
+        if(builder.isUseMetrics()){
+
+            this.delayMetricsPublish = builder.getDelayMetricsPublish();
+
+            if(builder.getDelayMetricsPublish() < 0){
+                this.delayMetricsPublish = 1000; //ms
+            }
+
+            this.metricsUpdateTask = new MetricsUpdateTask();
+            this.timer = new Timer();
+            this.timer.schedule(this.metricsUpdateTask, this.delayMetricsPublish, 1000);
+        }
+
     }
 
     /**
@@ -83,10 +100,12 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
     public void shutdown() {
         super.shutdown();
         if(this.serviceDiscoverer != null){
-            try {
-                this.serviceDiscoverer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            synchronized (this.serviceDiscoverer){
+                try {
+                    this.serviceDiscoverer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

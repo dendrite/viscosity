@@ -45,6 +45,9 @@ public class GliaServerFactory implements Serializable {
         private String zookeeperConnectionString;
         private String serviceBasePath;
 
+        private boolean useMetrics = false;
+        private long delayMetricsPublish = 1000; // ms
+
         //private Builder(Type setType){
         public Builder(){
             //this.setType = setType;
@@ -159,6 +162,25 @@ public class GliaServerFactory implements Serializable {
             return this;
         }
 
+        public Builder setDelayMetricsPublish(long delayMetricsPublish) {
+            this.delayMetricsPublish = delayMetricsPublish;
+            return this;
+        }
+
+        public Builder setUseMetrics(boolean useMetrics) {
+            this.useMetrics = useMetrics;
+            return this;
+        }
+
+        public long getDelayMetricsPublish() {
+            return delayMetricsPublish;
+        }
+
+
+
+        public boolean isUseMetrics() {
+            return useMetrics;
+        }
 
         public int getPort() {
             return port;

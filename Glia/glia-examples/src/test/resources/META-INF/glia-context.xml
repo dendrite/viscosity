@@ -52,6 +52,8 @@
         <property name="serviceBasePath" value="${zookeeper.base.path}" />
         <property name="zookeeperConnectionString" value="${zookeeper.connection}" />
         <property name="payloadWorker" ref="serverPayloadProcessor" />
+        <property name="useMetrics" value="true" />
+        <property name="delayMetricsPublish" value="300"/>
     </bean>
 
 </beans>
