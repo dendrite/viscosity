@@ -19,12 +19,12 @@
 
     <dependencies>
 
-
-        <dependency>
-            <groupId>org.stuartgunter</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>1.0.1</version>
-        </dependency>
+        <!--SOME IDEAS ABOUT Spring context cheats-->
+        <!--<dependency>-->
+            <!--<groupId>org.stuartgunter</groupId>-->
+            <!--<artifactId>spring-beans</artifactId>-->
+            <!--<version>1.0.1</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.reversemind</groupId>

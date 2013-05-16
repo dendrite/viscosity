@@ -2,15 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:sg="http://www.stuartgunter.org/schema/spring"
        xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/util
        http://www.springframework.org/schema/util/spring-util-3.0.xsd
        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context-3.0.xsd
-       http://www.stuartgunter.org/schema/spring http://www.stuartgunter.org/schema/spring/spring.xsd">
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <context:property-placeholder location="META-INF/glia-server.properties"/>
 
@@ -54,17 +52,5 @@
         <property name="zookeeperConnectionString" value="${zookeeper.connection}" />
         <property name="payloadWorker" ref="serverPayloadProcessor" />
     </bean>
-
-    <!--<sg:builder-factory id="gliaBuilder2"-->
-                        <!--builder-class="com.reversemind.glia.server.GliaServerFactory.Builder"-->
-                        <!--build-method="build">-->
-        <!--<sg:with name="port" value="2012"/>-->
-    <!--</sg:builder-factory>-->
-
-    <!--<bean id="gliaServer" class="com.reversemind.glia.server.GliaServer">-->
-        <!--<constructor-arg setType="int" value="${glia.server.setPort}"/>-->
-        <!--<constructor-arg setType="boolean" value="${drop.client.connection}"/>-->
-        <!--<constructor-arg setType="com.reversemind.glia.server.IGliaPayloadProcessor" ref="serverPayloadProcessor"/>-->
-    <!--</bean>-->
 
 </beans>

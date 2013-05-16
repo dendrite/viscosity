@@ -15,11 +15,14 @@
     </util:map>
 
     <util:map id="ejbMap" map-class="java.util.HashMap" key-type="java.lang.Class" value-type="java.lang.String">
-        <!--LOCAL CALL-->
+        <!--LOCAL EJB CALL-->
         <entry key="cluster.IAddressSearch" value="java:global/address/address-ejb-1.0-SNAPSHOT/AddressSearch!cluster.IAddressSearch"/>
         <!--REMOTE CALL FROM STANDALONE CONSOLE CLIENT-->
         <!--<entry key="cluster.IAddressSearch" value="ejb:app/address-ejb-1.0-SNAPSHOT/AddressSearch!cluster.IAddressSearch"/>-->
     </util:map>
+
+
+    <!--Examples of JNDI names from Jboss AS 7.1.1-->
 
     <!--java:global/address/address-ejb-1.0-SNAPSHOT/AddressSearch!cluster.IAddressSearch-->
     <!--java:app/address-ejb-1.0-SNAPSHOT/AddressSearch!cluster.IAddressSearch-->
