@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class StringContextLoader implements Serializable {
 
-    public static void main(String... args) {
+    public static void main(String... args) throws InterruptedException {
 
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-context.xml");
 
@@ -36,6 +36,9 @@ public class StringContextLoader implements Serializable {
 
 
 
+
+
+
         IGliaServer server = builderAdvertiser.build();
 
         System.out.println("\n\n");
@@ -47,6 +50,12 @@ public class StringContextLoader implements Serializable {
         System.out.println("Name:" + server.getName());
         System.out.println("Instance Name:" + server.getInstanceName());
         System.out.println("port:" + server.getPort());
+
+        server.start();
+
+        Thread.sleep(30000);
+
+        server.shutdown();
 
 
 

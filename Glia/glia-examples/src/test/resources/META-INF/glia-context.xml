@@ -45,6 +45,7 @@
 
     <!--Builder for advertiser server-->
     <bean id="serverBuilderAdvertiser" class="com.reversemind.glia.server.GliaServerFactory.Builder" >
+        <property name="name" value="SUPER_NAME" />
         <property name="autoSelectPort" value="true" />
         <property name="type" value="ZOOKEEPER_ADVERTISER" />
         <property name="keepClientAlive" value="${keep.client.alive}" />

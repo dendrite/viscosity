@@ -88,7 +88,26 @@ public abstract class GliaServer implements IGliaServer, Serializable {
                 throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
             }
 
-            return serverSocket.getLocalPort();
+            int detectedPortNumber = serverSocket.getLocalPort();
+
+            serverSocket.close();
+            int count = 0;
+            while (!serverSocket.isClosed()) {
+                if (count++ > 10) {
+                    throw new RuntimeException("Could not start GliaServer");
+                }
+                try {
+                    Thread.sleep(100);
+                    System.out.println("Waiting for closing autodiscovered socket try number#" + count);
+                } catch (InterruptedException e) {
+                    System.exit(-100);
+                    throw new RuntimeException("Could not start GliaServer");
+                }
+            }
+            serverSocket = null;
+
+
+            return detectedPortNumber;
         } catch (IOException e) {
             e.printStackTrace();
         }
