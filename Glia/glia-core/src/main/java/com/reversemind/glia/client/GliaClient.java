@@ -256,7 +256,7 @@ public class GliaClient implements Serializable {
         this.clientBootstrap.setPipelineFactory(channelPipelineFactory);
 
         // Start the connection attempt.
-        // ChannelFuture channelFuture = this.clientBootstrap.connect(new InetSocketAddress(host, port));
+        // ChannelFuture channelFuture = this.clientBootstrap.connect(new InetSocketAddress(host, setPort));
         this.channelFuture = this.clientBootstrap.connect(new InetSocketAddress(host, port));
 
         // INFO

@@ -14,7 +14,7 @@
     <bean id="beanAddressSearch" lazy-init="true" class="org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBean">
         <property name="jndiName" value="ejb:address/address-ejb-1.0-SNAPSHOT/AddressSearch!cluster.IAddressSearch"/>
         <property name="businessInterface" value="cluster.IAddressSearch" />
-        <!--<property name="homeInterface" value="cluster.IAddressSearch" />-->
+        <!--<property setName="homeInterface" value="cluster.IAddressSearch" />-->
         <property name="jndiEnvironment">
             <props>
                 <prop key="java.naming.provider.url">remote://localhost:4447</prop>
@@ -29,7 +29,7 @@
 
                 <prop key="remote.connections">default</prop>
                 <!--<prop key="remote.connection.default.host">localhost</prop>-->
-                <!--<prop key="remote.connection.default.port">4447</prop>-->
+                <!--<prop key="remote.connection.default.setPort">4447</prop>-->
                 <prop key="remote.connectionprovider.create.options.org.xnio.Options.SSL_ENABLED">false</prop>
                 <prop key="remote.connection.default.connect.options.org.xnio.Options.SASL_POLICY_NOANONYMOUS">false</prop>
             </props>
@@ -37,7 +37,7 @@
     </bean>
 
     <!--<jee:remote-slsb id="remoteRandom"-->
-                     <!--jndi-name="RandomEjb/DefaultRemoteRandom!pl.lechglowiak.ejbTest.RemoteRandom"-->
+                     <!--jndi-setName="RandomEjb/DefaultRemoteRandom!pl.lechglowiak.ejbTest.RemoteRandom"-->
                      <!--business-interface="pl.lechglowiak.ejbTest.RemoteRandom"-->
     <!--<jee:environment>-->
         <!--java.naming.factory.initial=org.jboss.naming.remote.client.InitialContextFactory-->
@@ -49,8 +49,8 @@
 <!--</jee:remote-slsb>-->
 
     <!--<bean id="addresSearch" class="org.springframework.jndi.JndiObjectFactoryBean">-->
-        <!--<property name="jndiName" value="java:global/address/address-ejb-1.0-SNAPSHOT/AddressSearch!cluster.IAddressSearch" />-->
-        <!--<property name="jndiEnvironment">-->
+        <!--<property setName="jndiName" value="java:global/address/address-ejb-1.0-SNAPSHOT/AddressSearch!cluster.IAddressSearch" />-->
+        <!--<property setName="jndiEnvironment">-->
             <!--<props>-->
                 <!--<prop key="java.naming.provider.url">yourRemoteServerGoesHere:PortGoesHere</prop>-->
                 <!--<prop key="java.naming.factory.initial">yourNamingContextFactoryGoesHere</prop>-->

@@ -42,7 +42,7 @@ public class HostName {
 
             System.out.println();
             String ifaceId = "networkInterface[" + networkInterfaceNumber + "]";
-            System.out.println("  " + ifaceId + ".name: " + intf.getName());
+            System.out.println("  " + ifaceId + ".setName: " + intf.getName());
             System.out.println("  " + ifaceId + ".displayName: " + intf.getDisplayName());
 
             Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses();

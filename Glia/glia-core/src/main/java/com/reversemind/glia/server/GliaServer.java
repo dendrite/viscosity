@@ -53,7 +53,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
             throw new RuntimeException("Builder is empty");
         }
 
-        // parameter autoSelectPort has more priority than assigned port value
+        // parameter setAutoSelectPort has more priority than assigned setPort value
         if (builder.isAutoSelectPort()) {
             this.port = this.detectFreePort();
         } else if (builder.port() < 0) {
@@ -63,7 +63,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         }
 
         if(builder.getGliaPayloadWorker() == null){
-            throw new RuntimeException("Assign a payloadWorker to server!");
+            throw new RuntimeException("Assign a setPayloadWorker to server!");
         }
 
         // drop connection from client or not
@@ -76,7 +76,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
     }
 
     /**
-     * Detect free port on System
+     * Detect free setPort on System
      *
      * @return
      */
@@ -96,7 +96,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
     }
 
     /**
-     * Get server name
+     * Get server setName
      *
      * @return
      */
@@ -105,7 +105,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
     }
 
     /**
-     * Instance name mostly prefer to use a UUID
+     * Instance setName mostly prefer to use a UUID
      *
      * @return
      */
@@ -114,7 +114,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
     }
 
     /**
-     * Get port number of GliaServer
+     * Get setPort number of GliaServer
      *
      * @return
      */
@@ -189,7 +189,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         return "\n\n\n" +
                 " GliaServer " +
                 "\n-------------------" +
-                "\n name:" + this.name +
+                "\n setName:" + this.name +
                 "\n instance:" + this.instanceName +
                 "\n port:" + this.port +
                 "\n metrics:" + this.metrics +

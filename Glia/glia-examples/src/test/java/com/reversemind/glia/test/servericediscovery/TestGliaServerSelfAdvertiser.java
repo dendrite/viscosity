@@ -1,8 +1,6 @@
 package com.reversemind.glia.test.servericediscovery;
 
 import com.reversemind.glia.server.*;
-import com.reversemind.glia.server.GliaServerAdvertiser;
-import com.reversemind.glia.test.json.Settings;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -27,24 +25,24 @@ public class TestGliaServerSelfAdvertiser implements Serializable {
 
         IGliaPayloadProcessor gliaPayloadProcessor = new GliaPayloadProcessor();
 
-        IGliaServer server01 = GliaServerFactory.builder(GliaServerFactory.Builder.Type.ZOOKEEPER_ADVERTISER)
-                .payloadWorker(gliaPayloadProcessor)
-                .name(SERVICE_NAME)
-                .instanceName("INSTANCE.001")
-                .zookeeperConnectionString(ZOOKEEPER_CONNECTION)
-                .serviceBasePath(SERVICE_BASE_PATH)
-                .autoSelectPort(true)
-                .keepClientAlive(false)
+        IGliaServer server01 = GliaServerFactory.builder()
+                .setPayloadWorker(gliaPayloadProcessor)
+                .setName(SERVICE_NAME)
+                .setInstanceName("INSTANCE.001")
+                .setZookeeperConnectionString(ZOOKEEPER_CONNECTION)
+                .setServiceBasePath(SERVICE_BASE_PATH)
+                .setAutoSelectPort(true)
+                .setKeepClientAlive(false)
                 .build();
 
-        IGliaServer server02 = GliaServerFactory.builder(GliaServerFactory.Builder.Type.ZOOKEEPER_ADVERTISER)
-                .payloadWorker(gliaPayloadProcessor)
-                .name(SERVICE_NAME)
-                .instanceName("INSTANCE.002")
-                .zookeeperConnectionString(ZOOKEEPER_CONNECTION)
-                .serviceBasePath(SERVICE_BASE_PATH)
-                .autoSelectPort(true)
-                .keepClientAlive(false)
+        IGliaServer server02 = GliaServerFactory.builder()
+                .setPayloadWorker(gliaPayloadProcessor)
+                .setName(SERVICE_NAME)
+                .setInstanceName("INSTANCE.002")
+                .setZookeeperConnectionString(ZOOKEEPER_CONNECTION)
+                .setServiceBasePath(SERVICE_BASE_PATH)
+                .setAutoSelectPort(true)
+                .setKeepClientAlive(false)
                 .build();
 
         server01.start();

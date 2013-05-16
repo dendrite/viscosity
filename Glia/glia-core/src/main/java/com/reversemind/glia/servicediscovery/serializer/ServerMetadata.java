@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 public final class ServerMetadata implements Serializable {
 
-    @JsonProperty("name")
+    @JsonProperty("setName")
     private String name;
 
     @JsonProperty("instance")
@@ -33,7 +33,7 @@ public final class ServerMetadata implements Serializable {
 
     @JsonCreator
     public ServerMetadata(
-            @JsonProperty("name") String name,
+            @JsonProperty("setName") String name,
             @JsonProperty("instance") String instance,
             @JsonProperty("host") String host,
             @JsonProperty("port") int port,
@@ -93,7 +93,7 @@ public final class ServerMetadata implements Serializable {
     @Override
     public String toString() {
         return "ServerMetadata{" +
-                "name='" + name + '\'' +
+                "setName='" + name + '\'' +
                 ", instance='" + instance + '\'' +
                 ", host='" + host + '\'' +
                 ", port=" + port +

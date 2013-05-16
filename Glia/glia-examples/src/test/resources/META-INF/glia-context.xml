@@ -35,21 +35,25 @@
                 <!--<prop key="java.naming.security.principal">kalinin</prop>-->
                 <!--<prop key="java.naming.security.credentials">Rtls1q2w4e</prop>-->
                 <!--<prop key="remote.connection.default.host">localhost</prop>-->
-                <!--<prop key="remote.connection.default.port">4447</prop>-->
+                <!--<prop key="remote.connection.default.setPort">4447</prop>-->
             </props>
         </property>
     </bean>
 
+    <!--Builder for simple GliaServer-->
+    <bean id="serverBuilderSimple" class="com.reversemind.glia.server.GliaServerFactory.Builder" >
+        <property name="port" value="12534"/>
+    </bean>
 
-
-    <bean id="gliaFactory" class="com.reversemind.glia.server.GliaServerFactory" />
-
-
-    <!--<bean id="gliaBuilder" class="com.reversemind.glia.server.GliaServerFactory.Builder" >-->
-        <!--<constructor-arg value="SIMPLE"/>-->
-        <!--<property name="port" value="12534"/>-->
-    <!--</bean>-->
-
+    <!--Builder for advertiser server-->
+    <bean id="serverBuilderAdvertiser" class="com.reversemind.glia.server.GliaServerFactory.Builder" >
+        <property name="autoSelectPort" value="true" />
+        <property name="type" value="ZOOKEEPER_ADVERTISER" />
+        <property name="keepClientAlive" value="${keep.client.alive}" />
+        <property name="serviceBasePath" value="${zookeeper.base.path}" />
+        <property name="zookeeperConnectionString" value="${zookeeper.connection}" />
+        <property name="payloadWorker" ref="serverPayloadProcessor" />
+    </bean>
 
     <!--<sg:builder-factory id="gliaBuilder2"-->
                         <!--builder-class="com.reversemind.glia.server.GliaServerFactory.Builder"-->
@@ -58,9 +62,9 @@
     <!--</sg:builder-factory>-->
 
     <!--<bean id="gliaServer" class="com.reversemind.glia.server.GliaServer">-->
-        <!--<constructor-arg type="int" value="${glia.server.port}"/>-->
-        <!--<constructor-arg type="boolean" value="${drop.client.connection}"/>-->
-        <!--<constructor-arg type="com.reversemind.glia.server.IGliaPayloadProcessor" ref="serverPayloadProcessor"/>-->
+        <!--<constructor-arg setType="int" value="${glia.server.setPort}"/>-->
+        <!--<constructor-arg setType="boolean" value="${drop.client.connection}"/>-->
+        <!--<constructor-arg setType="com.reversemind.glia.server.IGliaPayloadProcessor" ref="serverPayloadProcessor"/>-->
     <!--</bean>-->
 
 </beans>

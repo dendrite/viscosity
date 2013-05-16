@@ -14,11 +14,11 @@ public class RunJSONGliaServer {
         IGliaPayloadProcessor gliaPayloadProcessor = new GliaPayloadProcessor();
         gliaPayloadProcessor.registerPOJO(IDoSomething.class, ServerPojo.class);
 
-        IGliaServer gliaServer = GliaServerFactory.builder(GliaServerFactory.Builder.Type.SIMPLE)
-                .payloadWorker(gliaPayloadProcessor)
-                .name("GLIA_JSON_SERVER")
-                .port(Settings.SERVER_PORT)
-                .keepClientAlive(false)
+        IGliaServer gliaServer = GliaServerFactory.builder()
+                .setPayloadWorker(gliaPayloadProcessor)
+                .setName("GLIA_JSON_SERVER")
+                .setPort(Settings.SERVER_PORT)
+                .setKeepClientAlive(false)
                 .build();
 
         gliaServer.start();

@@ -14,7 +14,7 @@ import java.util.Map;
 public class JSONBuilder {
 
     /**
-     * @param addressObject - it's just a string - for example a city name - Chicago
+     * @param addressObject - it's just a string - for example a city setName - Chicago
      * @return - JSON String {"searchAddress":"Chicago"}
      */
     public static String buildJSONQuery(String addressObject) throws IOException {

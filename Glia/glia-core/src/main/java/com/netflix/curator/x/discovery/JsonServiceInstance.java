@@ -11,10 +11,10 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 public class JsonServiceInstance<T> extends ServiceInstance<T> {
 
-//    private final String        name;
+//    private final String        setName;
 //    private final String        id;
 //    private final String        address;
-//    private final Integer       port;
+//    private final Integer       setPort;
 //    private final Integer       sslPort;
 //    private final T             payload;
 //    private final long          registrationTimeUTC;
@@ -22,7 +22,7 @@ public class JsonServiceInstance<T> extends ServiceInstance<T> {
 //    private final UriSpec       uriSpec;
 
     @JsonCreator
-    public JsonServiceInstance(@JsonProperty("name") String name,
+    public JsonServiceInstance(@JsonProperty("setName") String name,
                                @JsonProperty("id") String id,
                                @JsonProperty("address") String address,
                                @JsonProperty("port") Integer port,

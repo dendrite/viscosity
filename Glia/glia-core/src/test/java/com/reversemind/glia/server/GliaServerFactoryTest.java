@@ -18,13 +18,13 @@ import static org.junit.Assert.*;
 public class GliaServerFactoryTest  {
 
     /**
-     * Need a payloadWorker
+     * Need a setPayloadWorker
      */
     @Test
     public void testBuilderNoPayloadWorker() {
         IGliaServer gliaServer = null;
         try {
-            gliaServer = GliaServerFactory.builder(GliaServerFactory.Builder.Type.SIMPLE).build();
+            gliaServer = GliaServerFactory.builder().build();
         } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
@@ -32,16 +32,16 @@ public class GliaServerFactoryTest  {
     }
 
     /**
-     * AutoSelectPort is true and port is 8000 - should be selected auto port number
+     * AutoSelectPort is true and setPort is 8000 - should be selected auto setPort number
      * <p></p>
-     * 'Cause priority to .autoSelectPort(true)
+     * 'Cause priority to .setAutoSelectPort(true)
      */
     @Test
     public void testAutoSelectPortNumber(){
-        IGliaServer gliaServer = GliaServerFactory.builder(GliaServerFactory.Builder.Type.SIMPLE)
-                .autoSelectPort(true)
-                .port(8000)
-                .payloadWorker(new IGliaPayloadProcessor() {
+        IGliaServer gliaServer = GliaServerFactory.builder()
+                .setAutoSelectPort(true)
+                .setPort(8000)
+                .setPayloadWorker(new IGliaPayloadProcessor() {
                     @Override
                     public Map<Class, Class> getPojoMap() {
                         return null;
@@ -66,7 +66,7 @@ public class GliaServerFactoryTest  {
                 }).build();
 
         assertNotNull(gliaServer);
-        // 'cause .autoSelectPort(true)
+        // 'cause .setAutoSelectPort(true)
         assertNotEquals(8000,gliaServer.getPort());
 
 
@@ -76,9 +76,9 @@ public class GliaServerFactoryTest  {
         assertNotNull(gliaServer);
 
 
-        gliaServer = GliaServerFactory.builder(GliaServerFactory.Builder.Type.SIMPLE)
-                .autoSelectPort(true)
-                .payloadWorker(new IGliaPayloadProcessor() {
+        gliaServer = GliaServerFactory.builder()
+                .setAutoSelectPort(true)
+                .setPayloadWorker(new IGliaPayloadProcessor() {
                     @Override
                     public Map<Class, Class> getPojoMap() {
                         return null;
@@ -115,8 +115,8 @@ public class GliaServerFactoryTest  {
     @Test
     public void testAssignPortNumber(){
 
-        IGliaServer gliaServer = GliaServerFactory.builder(GliaServerFactory.Builder.Type.SIMPLE)
-                .payloadWorker(new IGliaPayloadProcessor() {
+        IGliaServer gliaServer = GliaServerFactory.builder()
+                .setPayloadWorker(new IGliaPayloadProcessor() {
                     @Override
                     public Map<Class, Class> getPojoMap() {
                         return null;
@@ -139,8 +139,8 @@ public class GliaServerFactoryTest  {
                         return null;
                     }
                 })
-                .autoSelectPort(false)
-                .port(8000)
+                .setAutoSelectPort(false)
+                .setPort(8000)
                 .build();
 
         // TODO correct logging
@@ -159,8 +159,8 @@ public class GliaServerFactoryTest  {
         final String NAME = "GLIA_SERVER_NAME";
         final String NAME_INSTANCE = "GLIA_SERVER_INSTANCE_NAME";
 
-        IGliaServer gliaServer = GliaServerFactory.builder(GliaServerFactory.Builder.Type.SIMPLE)
-                .payloadWorker(new IGliaPayloadProcessor() {
+        IGliaServer gliaServer = GliaServerFactory.builder()
+                .setPayloadWorker(new IGliaPayloadProcessor() {
                     @Override
                     public Map<Class, Class> getPojoMap() {
                         return null;
@@ -183,9 +183,9 @@ public class GliaServerFactoryTest  {
                         return null;
                     }
                 })
-                .autoSelectPort(true)
-                .name(NAME)
-                .instanceName(NAME_INSTANCE)
+                .setAutoSelectPort(true)
+                .setName(NAME)
+                .setInstanceName(NAME_INSTANCE)
                 .build();
 
         assertEquals(NAME, gliaServer.getName());

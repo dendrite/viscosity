@@ -34,22 +34,22 @@ public class TestServiceDiscovery implements Serializable {
 
         IGliaPayloadProcessor gliaPayloadProcessor = new GliaPayloadProcessor();
 
-        IGliaServer serverOne = GliaServerFactory.builder(GliaServerFactory.Builder.Type.ZOOKEEPER_ADVERTISER)
-                .payloadWorker(gliaPayloadProcessor)
-                .name(SERVICE_NAME)
-                .zookeeperConnectionString(ZOOKEEPER_CONNECTION_STRING)
-                .serviceBasePath(BASE_PATH)
-                .autoSelectPort(true)
-                .keepClientAlive(false)
+        IGliaServer serverOne = GliaServerFactory.builder()
+                .setPayloadWorker(gliaPayloadProcessor)
+                .setName(SERVICE_NAME)
+                .setZookeeperConnectionString(ZOOKEEPER_CONNECTION_STRING)
+                .setServiceBasePath(BASE_PATH)
+                .setAutoSelectPort(true)
+                .setKeepClientAlive(false)
                 .build();
 
-        IGliaServer serverTwo = GliaServerFactory.builder(GliaServerFactory.Builder.Type.ZOOKEEPER_ADVERTISER)
-                .payloadWorker(gliaPayloadProcessor)
-                .name(SERVICE_NAME)
-                .zookeeperConnectionString(ZOOKEEPER_CONNECTION_STRING)
-                .serviceBasePath(BASE_PATH)
-                .autoSelectPort(true)
-                .keepClientAlive(false)
+        IGliaServer serverTwo = GliaServerFactory.builder()
+                .setPayloadWorker(gliaPayloadProcessor)
+                .setName(SERVICE_NAME)
+                .setZookeeperConnectionString(ZOOKEEPER_CONNECTION_STRING)
+                .setServiceBasePath(BASE_PATH)
+                .setAutoSelectPort(true)
+                .setKeepClientAlive(false)
                 .build();
 
         discoverer.advertise(new ServerMetadataBuilder().build(serverOne), BASE_PATH);

@@ -19,8 +19,10 @@ public class GliaServerFactory implements Serializable {
      *
      * @return new Builder();
      */
-    public static Builder builder(Builder.Type type){
-        return new Builder(type);
+    //public static Builder builder(Builder.Type setType){
+    public static Builder builder(){
+//        return new Builder(setType);
+        return new Builder();
     }
 
     /**
@@ -43,13 +45,14 @@ public class GliaServerFactory implements Serializable {
         private String zookeeperConnectionString;
         private String serviceBasePath;
 
-        private Builder(Type type){
-            this.type = type;
+        //private Builder(Type setType){
+        public Builder(){
+            //this.setType = setType;
         }
 
         public IGliaServer build(){
             if(this.gliaPayloadWorker == null){
-                throw new RuntimeException("Assign a payloadWorker to server!");
+                throw new RuntimeException("Assign a setPayloadWorker to server!");
             }
             switch(this.type){
                 case SIMPLE: return new GliaServerSimple(this);
@@ -58,32 +61,32 @@ public class GliaServerFactory implements Serializable {
             }
         }
 
-        public Builder payloadWorker(IGliaPayloadProcessor gliaPayloadWorker){
+        public Builder setPayloadWorker(IGliaPayloadProcessor gliaPayloadWorker){
             this.gliaPayloadWorker = gliaPayloadWorker;
             return this;
         }
 
         /**
-         * Server name should be without any space - if you will use zookeeper
+         * Server setName should be without any space - if you will use zookeeper
          *
          * @param name
          * @return
          */
-        public Builder name(String name) {
-            // TODO check is the name contains any space
+        public Builder setName(String name) {
+            // TODO check is the setName contains any space
             this.name = name;
             return this;
         }
 
         /**
-         * Instance name should be without any space - if you will use zookeeper
+         * Instance setName should be without any space - if you will use zookeeper
          * <p></p>
-         * but prefer to use empty - constructor will assign a UUID for instance name
+         * but prefer to use empty - constructor will assign a UUID for instance setName
          *
          * @param instanceName
          * @return
          */
-        public Builder instanceName(String instanceName) {
+        public Builder setInstanceName(String instanceName) {
             this.instanceName = instanceName;
             return this;
         }
@@ -94,7 +97,7 @@ public class GliaServerFactory implements Serializable {
          * @param type
          * @return
          */
-        public Builder type(Type type) {
+        public Builder setType(Type type) {
             this.type = type;
             return this;
         }
@@ -105,7 +108,7 @@ public class GliaServerFactory implements Serializable {
          * @param zookeeperConnectionString
          * @return
          */
-        public Builder zookeeperConnectionString(String zookeeperConnectionString) {
+        public Builder setZookeeperConnectionString(String zookeeperConnectionString) {
             this.zookeeperConnectionString = zookeeperConnectionString;
             return this;
         }
@@ -118,29 +121,29 @@ public class GliaServerFactory implements Serializable {
          * @param serviceBasePath
          * @return
          */
-        public Builder serviceBasePath(String serviceBasePath) {
+        public Builder setServiceBasePath(String serviceBasePath) {
             this.serviceBasePath = serviceBasePath;
             return this;
         }
 
         /**
-         * if autoSelectPort is true than assigned port number will be ignored
+         * if setAutoSelectPort is true than assigned setPort number will be ignored
          *
-         * @param port - port number from 0-65k
+         * @param port - setPort number from 0-65k
          * @return
          */
-        public Builder port(int port) {
+        public Builder setPort(int port) {
             this.port = port;
             return this;
         }
 
         /**
-         * Force to server select and assign any available port in OS
+         * Force to server select and assign any available setPort in OS
          *
          * @param autoSelectPort
          * @return
          */
-        public Builder autoSelectPort(boolean autoSelectPort) {
+        public Builder setAutoSelectPort(boolean autoSelectPort) {
             this.autoSelectPort = autoSelectPort;
             return this;
         }
@@ -151,13 +154,15 @@ public class GliaServerFactory implements Serializable {
          * @param keepClientAlive
          * @return
          */
-        public Builder keepClientAlive(boolean keepClientAlive) {
+        public Builder setKeepClientAlive(boolean keepClientAlive) {
             this.keepClientAlive = keepClientAlive;
             return this;
         }
 
 
-
+        public int getPort() {
+            return port;
+        }
 
         public boolean isKeepClientAlive() {
             return keepClientAlive;
@@ -184,7 +189,7 @@ public class GliaServerFactory implements Serializable {
         }
 
         /**
-         * Server type
+         * Server setType
          *
          * @return
          */
@@ -197,7 +202,7 @@ public class GliaServerFactory implements Serializable {
         }
 
         /**
-         * If autoSelectPort is true - port number will be ignored
+         * If setAutoSelectPort is true - setPort number will be ignored
          *
          * @return
          */
