@@ -53,7 +53,7 @@ public class StringContextLoader implements Serializable {
 
         server.start();
 
-        Thread.sleep(30000);
+        Thread.sleep(60000);
 
         server.shutdown();
 

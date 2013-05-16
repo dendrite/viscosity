@@ -58,10 +58,9 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 #### TODO
 
-
-
+* Make as parameter a timeout for Metrics publication
+* Some troubles with metrics update in zookeeper
 * [DONE] - but some shift to pure JavaBean in builder pattern - Need to fix Spring context loader
-
 
 * Need Netflix Curator fake zookeeper instance - for Testing
 
