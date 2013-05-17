@@ -13,11 +13,11 @@ import java.util.Map;
 /**
  *
  */
-public class StringContextLoader implements Serializable {
+public class GliaServerSpringContextLoader implements Serializable {
 
     public static void main(String... args) throws InterruptedException {
 
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-context.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-server-context.xml");
 
         GliaServerFactory.Builder builderAdvertiser = applicationContext.getBean("serverBuilderAdvertiser",GliaServerFactory.Builder.class);
 
@@ -30,7 +30,7 @@ public class StringContextLoader implements Serializable {
 
         System.out.println("Type:" + builderAdvertiser.getType());
 
-        System.out.println("Zookeeper connection string:" + builderAdvertiser.getZookeeperConnectionString());
+        System.out.println("Zookeeper connection string:" + builderAdvertiser.getZookeeperHosts());
         System.out.println("Zookeeper base path:" + builderAdvertiser.getServiceBasePath());
 
 

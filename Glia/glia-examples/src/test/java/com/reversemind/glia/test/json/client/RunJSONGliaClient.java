@@ -18,7 +18,7 @@ public class RunJSONGliaClient {
 
         //
         GliaClient gliaClient = new GliaClient(Settings.SERVER_HOST, Settings.SERVER_PORT);
-        gliaClient.run();
+        gliaClient.start();
 
         // create proxy for remote service
         IDoSomething doSomething = (IDoSomething) ProxyFactory.getInstance(gliaClient).newProxyInstance(IDoSomething.class);

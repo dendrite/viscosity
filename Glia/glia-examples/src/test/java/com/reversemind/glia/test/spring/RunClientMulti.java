@@ -26,7 +26,7 @@ public class RunClientMulti implements Serializable {
         String serverHost = "localhost";
 
         client = new GliaClient(serverHost,serverPort);
-        client.run();
+        client.start();
 
         Thread[] threadArray = new Thread[10];
 

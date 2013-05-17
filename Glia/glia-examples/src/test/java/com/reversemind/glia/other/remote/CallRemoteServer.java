@@ -25,7 +25,7 @@ public class CallRemoteServer implements Serializable {
         String serverHost = "localhost";
 
         GliaClient client = new GliaClient(serverHost,serverPort);
-        client.run();
+        client.start();
 
         IAddressSearch addressSearch = (IAddressSearch) ProxyFactory.getInstance(client).newProxyInstance(IAddressSearch.class);
 

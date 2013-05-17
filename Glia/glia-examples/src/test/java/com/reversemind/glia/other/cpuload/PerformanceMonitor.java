@@ -4,11 +4,7 @@ package com.reversemind.glia.other.cpuload;
 import sun.management.ManagementFactory;
 
 /**
- * Created with IntelliJ IDEA.
- * User: dendrite
- * Date: 28.04.13
- * Time: 23:50
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class PerformanceMonitor {
     static long lastSystemTime      = 0;

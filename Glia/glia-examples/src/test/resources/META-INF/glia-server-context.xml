@@ -45,15 +45,20 @@
 
     <!--Builder for advertiser server-->
     <bean id="serverBuilderAdvertiser" class="com.reversemind.glia.server.GliaServerFactory.Builder" >
-        <property name="name" value="SUPER_NAME" />
-        <property name="autoSelectPort" value="true" />
-        <property name="type" value="ZOOKEEPER_ADVERTISER" />
-        <property name="keepClientAlive" value="${keep.client.alive}" />
-        <property name="serviceBasePath" value="${zookeeper.base.path}" />
-        <property name="zookeeperConnectionString" value="${zookeeper.connection}" />
         <property name="payloadWorker" ref="serverPayloadProcessor" />
-        <property name="useMetrics" value="true" />
-        <property name="delayMetricsPublish" value="300"/>
+
+        <property name="name" value="${glia.server.name}" />
+        <property name="autoSelectPort" value="${glia.server.autoselect.port}" />
+        <property name="port" value="${glia.server.port}" />
+        <property name="keepClientAlive" value="${glia.server.keep.client.alive}" />
+
+        <property name="type" value="ZOOKEEPER_ADVERTISER" />
+
+        <property name="serviceBasePath" value="${glia.server.zookeeper.base.path}" />
+        <property name="zookeeperHosts" value="${glia.server.zookeeper.connection}" />
+
+        <property name="useMetrics" value="${glia.server.use.metrics}" />
+        <property name="periodPublishMetrics" value="${glia.server.delay.metrics.publish}"/>
     </bean>
 
 </beans>

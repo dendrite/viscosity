@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @author konilovsky
  * @since 1.0
  */
-public class GliaClient implements Serializable {
+public class GliaClient implements IGliaClient, Serializable {
 
     // TODO replace logger for SLF4J
     private static final Logger LOG = Logger.getLogger(GliaClient.class.getName());
@@ -169,8 +169,9 @@ public class GliaClient implements Serializable {
     }
 
     /**
-     *
+     *  Shutdown a client
      */
+    @Override
     public void shutdown(){
         this.shutDownExecutor();
 
@@ -191,7 +192,8 @@ public class GliaClient implements Serializable {
      *
      * @throws Exception
      */
-    public void run() throws Exception {
+    @Override
+    public void start() throws Exception {
 
         if(this.running){
             throw new InstantiationException("Glia client is running");
@@ -365,7 +367,6 @@ public class GliaClient implements Serializable {
     private FutureTask<GliaPayload> createFutureTask() {
         return this.futureTask = new FutureTask<GliaPayload>(new PayloadCallable(this.gliaPayload));
     }
-
 
     /**
      *

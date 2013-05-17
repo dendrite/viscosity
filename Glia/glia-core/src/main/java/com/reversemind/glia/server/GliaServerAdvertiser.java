@@ -18,7 +18,7 @@ import java.util.TimerTask;
  */
 public class GliaServerAdvertiser extends GliaServer implements Serializable {
 
-    private String zookeeperConnectionString;
+    private String zookeeperHosts;
     private String serviceBasePath;
     private ServiceDiscoverer serviceDiscoverer;
     private ServerMetadata metadata;
@@ -27,7 +27,7 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
     private Timer timer;
 
     private boolean useMetrics = false;
-    private long delayMetricsPublish = 1000; // ms
+    private long periodPublishMetrics = 1000; // ms
     /**
      *
      * @param builder
@@ -35,10 +35,10 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
     public GliaServerAdvertiser(GliaServerFactory.Builder builder){
         super(builder);
 
-        if(StringUtils.isEmpty(builder.getZookeeperConnectionString())){
+        if(StringUtils.isEmpty(builder.getZookeeperHosts())){
             throw new RuntimeException("Need zookeeper connection string");
         }
-        this.zookeeperConnectionString = builder.getZookeeperConnectionString();
+        this.zookeeperHosts = builder.getZookeeperHosts();
 
         if(StringUtils.isEmpty(builder.getServiceBasePath())){
             throw new RuntimeException("Need zookeeper base path string");
@@ -56,15 +56,15 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
         this.useMetrics = builder.isUseMetrics();
         if(builder.isUseMetrics()){
 
-            this.delayMetricsPublish = builder.getDelayMetricsPublish();
+            this.periodPublishMetrics = builder.getPeriodPublishMetrics();
 
-            if(builder.getDelayMetricsPublish() < 0){
-                this.delayMetricsPublish = 1000; //ms
+            if(builder.getPeriodPublishMetrics() < 0){
+                this.periodPublishMetrics = 1000; //ms
             }
 
             this.metricsUpdateTask = new MetricsUpdateTask();
             this.timer = new Timer();
-            this.timer.schedule(this.metricsUpdateTask, this.delayMetricsPublish, 1000);
+            this.timer.schedule(this.metricsUpdateTask, this.periodPublishMetrics, 1000);
         }
 
     }
@@ -75,7 +75,7 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
     @Override
     public void start() {
         super.start();
-        this.serviceDiscoverer = new ServiceDiscoverer(this.zookeeperConnectionString, this.serviceBasePath);
+        this.serviceDiscoverer = new ServiceDiscoverer(this.zookeeperHosts, this.serviceBasePath);
         this.serviceDiscoverer.advertise(this.metadata, this.serviceBasePath);
     }
 

@@ -90,9 +90,11 @@ public class ServiceDiscoverer implements Serializable, Closeable {
     @Override
     public void close() throws IOException {
         if(this.listServerAdvertiser != null && this.listServerAdvertiser.size() >0){
-            for(ServerAdvertiser serverAdvertiser: this.listServerAdvertiser){
-                serverAdvertiser.deAdvertiseAvailability();
-                serverAdvertiser.close();
+            for(int i=0; i<this.listServerAdvertiser.size();i++){
+                synchronized (this.listServerAdvertiser.get(i)){
+                    this.listServerAdvertiser.get(i).deAdvertiseAvailability();
+                    this.listServerAdvertiser.get(i).close();
+                }
             }
         }
         this.curatorFramework.close();

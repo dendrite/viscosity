@@ -14,9 +14,9 @@ import java.io.Serializable;
  * @author konilovsky
  * @since 1.0
  */
-public class GliaClientSelfDiscovery extends GliaClient implements Serializable {
+public class GliaClientServerDiscovery extends GliaClient implements IGliaClient, Serializable {
 
-    private String zookeeperConnectionString;
+    private String zookeeperHosts;
     private String serviceBasePath;
     private String serviceName;
     private IServerSelectorStrategy serverSelectorStrategy;
@@ -25,30 +25,30 @@ public class GliaClientSelfDiscovery extends GliaClient implements Serializable 
 
     /**
      *
-     * @param zookeeperConnectionString
+     * @param zookeeperHosts
      * @param serviceBasePath
      * @param serviceName
      * @param serverSelectorStrategy
      */
-    public GliaClientSelfDiscovery(String zookeeperConnectionString,
-                                   String serviceBasePath,
-                                   String serviceName,
-                                   IServerSelectorStrategy serverSelectorStrategy) {
-        this.zookeeperConnectionString = zookeeperConnectionString;
+    public GliaClientServerDiscovery(String zookeeperHosts,
+                                     String serviceBasePath,
+                                     String serviceName,
+                                     IServerSelectorStrategy serverSelectorStrategy) {
+        this.zookeeperHosts = zookeeperHosts;
         this.serviceBasePath = serviceBasePath;
         this.serviceName = serviceName;
         this.serverSelectorStrategy = serverSelectorStrategy;
-        this.serviceDiscoverer = new ServiceDiscoverer(this.zookeeperConnectionString, this.serviceBasePath);
+        this.serviceDiscoverer = new ServiceDiscoverer(this.zookeeperHosts, this.serviceBasePath);
     }
 
     @Override
-    public void run() throws Exception {
+    public void start() throws Exception {
         ServerMetadata serverMetadata = this.serverSelectorStrategy.selectServer(this.serviceDiscoverer.discover(this.serviceName));
         if(serverMetadata != null && !StringUtils.isEmpty(serverMetadata.getHost()) && serverMetadata.getPort() > 0){
             System.out.println("found server:" + serverMetadata);
             this.port = serverMetadata.getPort();
             this.host = serverMetadata.getHost();
-            super.run();
+            super.start();
             return;
         }
         throw new Exception("Could not find any available server for the ServiceName:" + this.serviceName + " on path:" + this.serviceBasePath);

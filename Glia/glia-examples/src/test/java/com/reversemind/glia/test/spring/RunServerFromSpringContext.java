@@ -19,7 +19,7 @@ import java.util.Set;
 public class RunServerFromSpringContext implements Serializable {
 
     public static void main(String... args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/glia-context.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/glia-server-context.xml");
 
         IGliaPayloadProcessor payloadProcessor = (IGliaPayloadProcessor) context.getBean("serverPayloadProcessor");
 

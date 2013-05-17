@@ -23,7 +23,7 @@ public class RunClient {
         String serverHost = "localhost";
 
         GliaClient client = new GliaClient(serverHost, serverPort);
-        client.run();
+        client.start();
 
 
         ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance(client).newProxyInstance(ISimplePojo.class);

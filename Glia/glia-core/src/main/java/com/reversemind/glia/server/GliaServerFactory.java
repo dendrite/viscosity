@@ -34,7 +34,7 @@ public class GliaServerFactory implements Serializable {
         private String instanceName = null;
         private int port = -1;
         private boolean dropClientConnection = false;
-        private IGliaPayloadProcessor gliaPayloadWorker = null;
+        private IGliaPayloadProcessor payloadWorker = null;
 
         private boolean autoSelectPort = true;
         private boolean keepClientAlive = false;
@@ -42,19 +42,21 @@ public class GliaServerFactory implements Serializable {
         private Type type = Type.SIMPLE;
 
         // for Zookeeper specific
-        private String zookeeperConnectionString;
+        private String zookeeperHosts;
         private String serviceBasePath;
 
         private boolean useMetrics = false;
-        private long delayMetricsPublish = 1000; // ms
+        private long periodPublishMetrics = 1000; // ms
 
-        //private Builder(Type setType){
+        /**
+         * Actually this Counstructor should be a private but for Spring Context it's opened
+         *
+         */
         public Builder(){
-            //this.setType = setType;
         }
 
         public IGliaServer build(){
-            if(this.gliaPayloadWorker == null){
+            if(this.payloadWorker == null){
                 throw new RuntimeException("Assign a setPayloadWorker to server!");
             }
             switch(this.type){
@@ -65,7 +67,7 @@ public class GliaServerFactory implements Serializable {
         }
 
         public Builder setPayloadWorker(IGliaPayloadProcessor gliaPayloadWorker){
-            this.gliaPayloadWorker = gliaPayloadWorker;
+            this.payloadWorker = gliaPayloadWorker;
             return this;
         }
 
@@ -108,11 +110,11 @@ public class GliaServerFactory implements Serializable {
         /**
          * Example: localhost:2181
          *
-         * @param zookeeperConnectionString
+         * @param zookeeperHosts
          * @return
          */
-        public Builder setZookeeperConnectionString(String zookeeperConnectionString) {
-            this.zookeeperConnectionString = zookeeperConnectionString;
+        public Builder setZookeeperHosts(String zookeeperHosts) {
+            this.zookeeperHosts = zookeeperHosts;
             return this;
         }
 
@@ -162,8 +164,8 @@ public class GliaServerFactory implements Serializable {
             return this;
         }
 
-        public Builder setDelayMetricsPublish(long delayMetricsPublish) {
-            this.delayMetricsPublish = delayMetricsPublish;
+        public Builder setPeriodPublishMetrics(long periodPublishMetrics) {
+            this.periodPublishMetrics = periodPublishMetrics;
             return this;
         }
 
@@ -172,11 +174,9 @@ public class GliaServerFactory implements Serializable {
             return this;
         }
 
-        public long getDelayMetricsPublish() {
-            return delayMetricsPublish;
+        public long getPeriodPublishMetrics() {
+            return periodPublishMetrics;
         }
-
-
 
         public boolean isUseMetrics() {
             return useMetrics;
@@ -206,8 +206,8 @@ public class GliaServerFactory implements Serializable {
             return dropClientConnection;
         }
 
-        public IGliaPayloadProcessor getGliaPayloadWorker() {
-            return gliaPayloadWorker;
+        public IGliaPayloadProcessor getPayloadWorker() {
+            return payloadWorker;
         }
 
         /**
@@ -232,8 +232,8 @@ public class GliaServerFactory implements Serializable {
             return autoSelectPort;
         }
 
-        public String getZookeeperConnectionString() {
-            return this.zookeeperConnectionString;
+        public String getZookeeperHosts() {
+            return this.zookeeperHosts;
         }
 
         public enum Type{

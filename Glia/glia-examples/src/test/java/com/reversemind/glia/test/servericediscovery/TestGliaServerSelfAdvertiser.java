@@ -21,7 +21,7 @@ public class TestGliaServerSelfAdvertiser implements Serializable {
 
         final String ZOOKEEPER_CONNECTION = "localhost:2181";
         final String SERVICE_BASE_PATH = "/baloo/services";
-        final String SERVICE_NAME = "ADDRESS";
+        final String SERVICE_NAME = "GLIA.ADDRESS";
 
         IGliaPayloadProcessor gliaPayloadProcessor = new GliaPayloadProcessor();
 
@@ -29,7 +29,7 @@ public class TestGliaServerSelfAdvertiser implements Serializable {
                 .setPayloadWorker(gliaPayloadProcessor)
                 .setName(SERVICE_NAME)
                 .setInstanceName("INSTANCE.001")
-                .setZookeeperConnectionString(ZOOKEEPER_CONNECTION)
+                .setZookeeperHosts(ZOOKEEPER_CONNECTION)
                 .setServiceBasePath(SERVICE_BASE_PATH)
                 .setAutoSelectPort(true)
                 .setKeepClientAlive(false)
@@ -39,7 +39,7 @@ public class TestGliaServerSelfAdvertiser implements Serializable {
                 .setPayloadWorker(gliaPayloadProcessor)
                 .setName(SERVICE_NAME)
                 .setInstanceName("INSTANCE.002")
-                .setZookeeperConnectionString(ZOOKEEPER_CONNECTION)
+                .setZookeeperHosts(ZOOKEEPER_CONNECTION)
                 .setServiceBasePath(SERVICE_BASE_PATH)
                 .setAutoSelectPort(true)
                 .setKeepClientAlive(false)

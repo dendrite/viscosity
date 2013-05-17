@@ -62,7 +62,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
             this.port = builder.port();
         }
 
-        if(builder.getGliaPayloadWorker() == null){
+        if(builder.getPayloadWorker() == null){
             throw new RuntimeException("Assign a setPayloadWorker to server!");
         }
 

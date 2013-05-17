@@ -22,7 +22,7 @@ public class JsonServiceInstance<T> extends ServiceInstance<T> {
 //    private final UriSpec       uriSpec;
 
     @JsonCreator
-    public JsonServiceInstance(@JsonProperty("setName") String name,
+    public JsonServiceInstance(@JsonProperty("name") String name,
                                @JsonProperty("id") String id,
                                @JsonProperty("address") String address,
                                @JsonProperty("port") Integer port,

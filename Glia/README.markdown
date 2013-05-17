@@ -58,16 +58,26 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 #### TODO
 
-* Make as parameter a timeout for Metrics publication
+
+
+!!!!!!!
+Trouble with Sigar under JBoss 7.1.1.Final
+
+
+
+
+* look through is glia-server-context.xml - exists??
+
+* If connection was lost from client - need to reconnection another instance
+
+* GliaServerEJBContainer - right now tested only for JBoss 7.1.1.Final - test dependency for different application servers (GlassFish, JBoss)
+* Need GliaServerEJBContainer Arquillian JUnit Test
+
 * Some troubles with metrics update in zookeeper
-* [DONE] - but some shift to pure JavaBean in builder pattern - Need to fix Spring context loader
 
 * Need Netflix Curator fake zookeeper instance - for Testing
-
 * What about Snappy-java
-
 * Remove Sigar into new abstraction - 'cause GliaServer is very affectable
-* [DONE] - Make a GliaServer & GliaClient Builder or Factory - 'cause number of constructors grows very rapidly
 
 * Detect server host name - tested in - but some troubles with selecting correct values if a lot of net interfaces is up
 * ?? Add to GliaClientDiscoverer - select server each time before send method
@@ -82,8 +92,10 @@ The use and distribution terms for this software are covered by the Apache Licen
 * CASE: if Server will send but Client is down?
 * Need to make a stress loading from a lot of clients
 
-* Need to make an Arquillian test - ot examples for EJB Glia example
 
+* [DONE] - Make as parameter a timeout for Metrics publication
+* [DONE] - but some shift to pure JavaBean in builder pattern - Need to fix Spring context loader
+* [DONE] - Make a GliaServer & GliaClient Builder or Factory - 'cause number of constructors grows very rapidly
 * [DONE] - Add CPU load to the server metrics
 * [DONE] - Add to GliaClient or create a GliaClientDiscoverer - just automatically to find a necessary server for communication
 * [DONE] - Update metrics dynamically in zookeeper
@@ -130,3 +142,24 @@ http://stackoverflow.com/questions/1234429/best-ways-to-handle-maximum-execution
 
 for jump start = http://habrahabr.ru/post/116363/
 
+
+
+
+
+--------
+
+Extension
+<extension module="org.jboss.as.pojo"/>
+
+And pojo domain
+<subsystem xmlns="urn:jboss:domain:pojo:1.0"/>
+
+
+
+
+
+---------
+
+12:00:20,521 INFO  [stdout] (MSC service thread 1-6) 306 [MSC service thread 1-6] DEBUG org.apache.zookeeper.ClientCnxn  - zookeeper.disableAutoWatchReset is false
+12:00:20,557 INFO  [stdout] (MSC service thread 1-6-SendThread(localhost:2181)) 339 [MSC service thread 1-6-SendThread(localhost:2181)] DEBUG org.apache.zookeeper.client.ZooKeeperSaslClient  - JAAS loginContext is: Client
+12:00:20,569 INFO  [stdout] (MSC service thread 1-6-SendThread(localhost:2181)) 354 [MSC service thread 1-6-SendThread(localhost:2181)] WARN org.apache.zookeeper.client.ZooKeeperSaslClient  - Could not login: the client is being asked for a password, but the Zookeeper client code does not currently support obtaining a password from the user. Make sure that the client is configured to use a ticket cache (using the JAAS configuration setting 'useTicketCache=true)' and restart the client. If you still get this message after that, the TGT in the ticket cache has expired and must be manually refreshed. To do so, first determine if you are using a password or a keytab. If the former, run kinit in a Unix shell in the environment of the user who is running this Zookeeper client using the command 'kinit <princ>' (where <princ> is the name of the client's Kerberos principal). If the latter, do 'kinit -k -t <keytab> <princ>' (where <princ> is the name of the Kerberos principal, and <keytab> is the location of the keytab file). After manually refreshing your cache, restart this client. If you continue to see this message after manually refreshing your cache, ensure that your KDC host's clock is in sync with this host's clock.

@@ -1,7 +1,6 @@
 package com.reversemind.glia.test.servericediscovery;
 
-import com.reversemind.glia.client.GliaClientSelfDiscovery;
-import com.reversemind.glia.client.IServerSelectorStrategy;
+import com.reversemind.glia.client.GliaClientServerDiscovery;
 import com.reversemind.glia.client.ServerSelectorSimpleStrategy;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -15,7 +14,7 @@ import java.io.Serializable;
  * @author
  * @since 1.0
  */
-public class TestGliaClientSelfDiscovery implements Serializable {
+public class TestGliaClientServerDiscovery implements Serializable {
 
     @Ignore
     @Test
@@ -25,9 +24,9 @@ public class TestGliaClientSelfDiscovery implements Serializable {
         final String SERVICE_BASE_PATH = "/baloo/services";
         final String SERVICE_NAME = "ADDRESS";
 
-        GliaClientSelfDiscovery client = new GliaClientSelfDiscovery(ZOOKEEPER_CONNECTION, SERVICE_BASE_PATH, SERVICE_NAME, new ServerSelectorSimpleStrategy());
+        GliaClientServerDiscovery client = new GliaClientServerDiscovery(ZOOKEEPER_CONNECTION, SERVICE_BASE_PATH, SERVICE_NAME, new ServerSelectorSimpleStrategy());
 
-        client.run();
+        client.start();
 
         Thread.sleep(1000 * 30);
 

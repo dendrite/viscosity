@@ -1,7 +1,7 @@
 package com.reversemind.glia.server;
-
-import org.hyperic.sigar.Sigar;
-import org.hyperic.sigar.SigarException;
+//
+//import org.hyperic.sigar.Sigar;
+//import org.hyperic.sigar.SigarException;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,12 +17,12 @@ public class Metrics implements Serializable {
     private double processingTime = 0.0d;
     private double cpuIdle;
 
-    private Sigar sigar = null;             // include native libs in your java
+    //private Sigar sigar = null;             // include native libs in your java
 
     public Metrics() {
         this.startDate = new Date();
         try{
-            this.sigar = new Sigar();
+            //this.sigar = new Sigar();
         }catch(Exception ex){
             ex.printStackTrace();
         }
@@ -83,7 +83,7 @@ public class Metrics implements Serializable {
      */
     public double getCpuIdle() {
         try {
-            this.cpuIdle = sigar.getCpuPerc().getIdle();
+            this.cpuIdle = 90.0d;//sigar.getCpuPerc().getIdle();
         } catch (Exception e) {
             // just hide exception - other just use special LOG level
         }
