@@ -84,7 +84,7 @@ public class PerformanceMonitor {
             start();
             double usage = monitor.getCpuUsage();
             monitor._getJavaRuntime();
-            System.out.println("Current CPU usage in pourcentage : " + usage + " - " + javacpu + " " + uptime);
+            System.out.println("Current CPU usage in per cents : " + usage + " - " + javacpu + " " + uptime);
         }
     }
 

@@ -163,3 +163,38 @@ And pojo domain
 12:00:20,521 INFO  [stdout] (MSC service thread 1-6) 306 [MSC service thread 1-6] DEBUG org.apache.zookeeper.ClientCnxn  - zookeeper.disableAutoWatchReset is false
 12:00:20,557 INFO  [stdout] (MSC service thread 1-6-SendThread(localhost:2181)) 339 [MSC service thread 1-6-SendThread(localhost:2181)] DEBUG org.apache.zookeeper.client.ZooKeeperSaslClient  - JAAS loginContext is: Client
 12:00:20,569 INFO  [stdout] (MSC service thread 1-6-SendThread(localhost:2181)) 354 [MSC service thread 1-6-SendThread(localhost:2181)] WARN org.apache.zookeeper.client.ZooKeeperSaslClient  - Could not login: the client is being asked for a password, but the Zookeeper client code does not currently support obtaining a password from the user. Make sure that the client is configured to use a ticket cache (using the JAAS configuration setting 'useTicketCache=true)' and restart the client. If you still get this message after that, the TGT in the ticket cache has expired and must be manually refreshed. To do so, first determine if you are using a password or a keytab. If the former, run kinit in a Unix shell in the environment of the user who is running this Zookeeper client using the command 'kinit <princ>' (where <princ> is the name of the client's Kerberos principal). If the latter, do 'kinit -k -t <keytab> <princ>' (where <princ> is the name of the Kerberos principal, and <keytab> is the location of the keytab file). After manually refreshing your cache, restart this client. If you continue to see this message after manually refreshing your cache, ensure that your KDC host's clock is in sync with this host's clock.
+
+
+
+------
+
+
+
+13:33:39,968 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-5) JBAS015877: Stopped deployment address-ejb-1.0-SNAPSHOT.jar in 743ms
+13:33:39,985 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-6) JBAS015877: Stopped deployment address-web-1.0-SNAPSHOT.war in 760ms
+13:33:40,000 ERROR [stderr] (Timer-1) java.lang.IllegalStateException: instance must be started before calling this method
+13:33:40,001 ERROR [stderr] (Timer-1)   at com.google.common.base.Preconditions.checkState(Preconditions.java:149)
+13:33:40,001 ERROR [stderr] (Timer-1)   at com.netflix.curator.framework.imps.CuratorFrameworkImpl.create(CuratorFrameworkImpl.java:316)
+13:33:40,001 ERROR [stderr] (Timer-1)   at com.netflix.curator.x.discovery.details.ServiceDiscoveryImpl.internalRegisterService(ServiceDiscoveryImpl.java:175)
+13:33:40,002 ERROR [stderr] (Timer-1)   at com.netflix.curator.x.discovery.details.ServiceDiscoveryImpl.registerService(ServiceDiscoveryImpl.java:149)
+13:33:40,002 ERROR [stderr] (Timer-1)   at com.reversemind.glia.servicediscovery.ServerAdvertiser.advertiseAvailability(ServerAdvertiser.java:55)
+13:33:40,002 ERROR [stderr] (Timer-1)   at com.reversemind.glia.servicediscovery.ServiceDiscoverer.advertise(ServiceDiscoverer.java:78)
+13:33:40,002 ERROR [stderr] (Timer-1)   at com.reversemind.glia.server.GliaServerAdvertiser.updateMetrics(GliaServerAdvertiser.java:93)
+13:33:40,003 ERROR [stderr] (Timer-1)   at com.reversemind.glia.server.GliaServerAdvertiser$MetricsUpdateTask.run(GliaServerAdvertiser.java:127)
+13:33:40,003 ERROR [stderr] (Timer-1)   at java.util.TimerThread.mainLoop(Timer.java:512)
+13:33:40,003 ERROR [stderr] (Timer-1)   at java.util.TimerThread.run(Timer.java:462)
+13:33:40,003 ERROR [stderr] (Timer-1) Exception in thread "Timer-1" java.lang.NoClassDefFoundError: com/google/common/base/Throwables
+13:33:40,004 ERROR [stderr] (Timer-1)   at com.reversemind.glia.servicediscovery.ServerAdvertiser.advertiseAvailability(ServerAdvertiser.java:62)
+13:33:40,004 ERROR [stderr] (Timer-1)   at com.reversemind.glia.servicediscovery.ServiceDiscoverer.advertise(ServiceDiscoverer.java:78)
+13:33:40,004 ERROR [stderr] (Timer-1)   at com.reversemind.glia.server.GliaServerAdvertiser.updateMetrics(GliaServerAdvertiser.java:93)
+13:33:40,004 ERROR [stderr] (Timer-1)   at com.reversemind.glia.server.GliaServerAdvertiser$MetricsUpdateTask.run(GliaServerAdvertiser.java:127)
+13:33:40,005 ERROR [stderr] (Timer-1)   at java.util.TimerThread.mainLoop(Timer.java:512)
+13:33:40,005 ERROR [stderr] (Timer-1)   at java.util.TimerThread.run(Timer.java:462)
+13:33:40,005 ERROR [stderr] (Timer-1) Caused by: java.lang.ClassNotFoundException: com.google.common.base.Throwables from [Module "deployment.address.ear:main" from Service Module Loader]
+13:33:40,005 ERROR [stderr] (Timer-1)   at org.jboss.modules.ModuleClassLoader.findClass(ModuleClassLoader.java:190)
+13:33:40,005 ERROR [stderr] (Timer-1)   at org.jboss.modules.ConcurrentClassLoader.performLoadClassUnchecked(ConcurrentClassLoader.java:468)
+13:33:40,006 ERROR [stderr] (Timer-1)   at org.jboss.modules.ConcurrentClassLoader.performLoadClassChecked(ConcurrentClassLoader.java:456)
+13:33:40,006 ERROR [stderr] (Timer-1)   at org.jboss.modules.ConcurrentClassLoader.performLoadClassChecked(ConcurrentClassLoader.java:423)
+13:33:40,006 ERROR [stderr] (Timer-1)   at org.jboss.modules.ConcurrentClassLoader.performLoadClass(ConcurrentClassLoader.java:398)
+13:33:40,006 ERROR [stderr] (Timer-1)   at org.jboss.modules.ConcurrentClassLoader.loadClass(ConcurrentClassLoader.java:120)
+13:33:40,007 ERROR [stderr] (Timer-1)   ... 6 more
