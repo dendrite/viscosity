@@ -22,7 +22,6 @@ import java.util.Set;
  * @author konilovsky
  * @since 1.0
  */
-@Startup
 @Singleton
 public class GliaServerEJBContainer implements Serializable {
 
