@@ -58,6 +58,7 @@ public class GliaClient implements IGliaClient, Serializable {
         this.port = port;
         this.gliaPayload = null;
         this.executor = this.getExecutor();
+        // TODO what about LOG no console
         System.out.println("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
     }
 

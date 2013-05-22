@@ -1,6 +1,5 @@
 package com.reversemind.glia.integration.ejb.client;
 
-import com.reversemind.glia.client.GliaClient;
 import com.reversemind.glia.client.GliaClientServerDiscovery;
 import com.reversemind.glia.client.IGliaClient;
 import com.reversemind.glia.proxy.ProxyFactory;
@@ -17,11 +16,21 @@ import java.util.Date;
  * Date: 5/17/13
  * Time: 8:29 AM
  *
+ * a. Remove pojo and jpa modules
+ * Pojo extension
+ * <extension module="org.jboss.as.osgi"/>
+ * <!-- Remove this line extension module="org.jboss.as.pojo"/-->
+ * <extension module="org.jboss.as.remoting"/>
+ * And pojo domain
+ * <subsystem xmlns="urn:jboss:domain:naming:1.0" />
+ * <!--subsystem xmlns="urn:jboss:domain:pojo:1.0" /-->
+ * <subsystem xmlns="urn:jboss:domain:osgi:1.0" activation="lazy">
+ *
  * @author konilovsky
  * @since 1.0
  */
 @Singleton
-public class GliaClientProxyEJBContainerDiscovery implements IGliaClientProxy, Serializable {
+public class ClientEJBDiscovery implements IClientEJB, Serializable {
 
     private GliaClientServerDiscovery client;
     private ProxyFactory proxyFactory = null;
@@ -37,7 +46,7 @@ public class GliaClientProxyEJBContainerDiscovery implements IGliaClientProxy, S
         }
 
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-client-context.xml");
-        this.client = applicationContext.getBean("clientServerDiscovery", GliaClientServerDiscovery.class);
+        this.client = applicationContext.getBean("gliaClientServerDiscovery", GliaClientServerDiscovery.class);
 
         try {
 

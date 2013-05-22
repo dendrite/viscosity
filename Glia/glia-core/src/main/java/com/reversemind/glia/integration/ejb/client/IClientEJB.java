@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Local
-public interface IGliaClientProxy extends Serializable {
+public interface IClientEJB extends Serializable {
     public IGliaClient getClient();
     public Object getProxy(Class interfaceClass) throws Exception;
 }

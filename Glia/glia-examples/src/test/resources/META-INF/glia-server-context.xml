@@ -47,18 +47,30 @@
     <bean id="serverBuilderAdvertiser" class="com.reversemind.glia.server.GliaServerFactory.Builder" >
         <property name="payloadWorker" ref="serverPayloadProcessor" />
 
-        <property name="name" value="${glia.server.name}" />
-        <property name="autoSelectPort" value="${glia.server.autoselect.port}" />
-        <property name="port" value="${glia.server.port}" />
-        <property name="keepClientAlive" value="${glia.server.keep.client.alive}" />
+        <property name="name" value="${glia.server.advertiser.name}" />
+        <property name="autoSelectPort" value="${glia.server.advertiser.autoselect.port}" />
+        <property name="port" value="${glia.server.advertiser.port}" />
+        <property name="keepClientAlive" value="${glia.server.advertiser.keep.client.alive}" />
 
         <property name="type" value="ZOOKEEPER_ADVERTISER" />
 
-        <property name="serviceBasePath" value="${glia.server.zookeeper.base.path}" />
-        <property name="zookeeperHosts" value="${glia.server.zookeeper.connection}" />
+        <property name="serviceBasePath" value="${glia.server.advertiser.zookeeper.base.path}" />
+        <property name="zookeeperHosts" value="${glia.server.advertiser.zookeeper.connection}" />
 
-        <property name="useMetrics" value="${glia.server.use.metrics}" />
-        <property name="periodPublishMetrics" value="${glia.server.delay.metrics.publish}"/>
+        <property name="useMetrics" value="${glia.server.advertiser.use.metrics}" />
+        <property name="periodPublishMetrics" value="${glia.server.advertiser.delay.metrics.publish}"/>
+    </bean>
+
+    <!--Builder for Simple server-->
+    <bean id="serverBuilder" class="com.reversemind.glia.server.GliaServerFactory.Builder" >
+        <property name="payloadWorker" ref="serverPayloadProcessor" />
+
+        <property name="name" value="${glia.server.simple.name}" />
+        <property name="autoSelectPort" value="${glia.server.simple.autoselect.port}" />
+        <property name="port" value="${glia.server.simple.port}" />
+        <property name="keepClientAlive" value="${glia.server.simple.keep.client.alive}" />
+
+        <property name="type" value="SIMPLE" />
     </bean>
 
 </beans>

@@ -1,8 +1,6 @@
 package com.reversemind.glia.integration.ejb.server;
 
-import com.reversemind.glia.server.GliaServer;
 import com.reversemind.glia.server.GliaServerFactory;
-import com.reversemind.glia.server.IGliaPayloadProcessor;
 import com.reversemind.glia.server.IGliaServer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -10,20 +8,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import java.io.Serializable;
-import java.util.Map;
-import java.util.Set;
 
 /**
- * Date: 5/17/13
- * Time: 8:00 AM
+ * Date: 5/22/13
+ * Time: 4:31 PM
  *
  * @author konilovsky
  * @since 1.0
  */
 @Singleton
-public class GliaServerEJBContainerDiscovery implements Serializable {
+public class ServerEJB implements Serializable {
 
     private IGliaServer server;
 
@@ -36,8 +31,7 @@ public class GliaServerEJBContainerDiscovery implements Serializable {
         System.setProperty("curator-log-events", "true");
 
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-server-context.xml");
-
-        GliaServerFactory.Builder builderAdvertiser = applicationContext.getBean("serverBuilderAdvertiser",GliaServerFactory.Builder.class);
+        GliaServerFactory.Builder builderAdvertiser = applicationContext.getBean("serverBuilder",GliaServerFactory.Builder.class);
 
         System.out.println("--------------------------------------------------------");
         System.out.println("Builder properties:");
@@ -50,7 +44,6 @@ public class GliaServerEJBContainerDiscovery implements Serializable {
 
         System.out.println("Zookeeper connection string:" + builderAdvertiser.getZookeeperHosts());
         System.out.println("Zookeeper base path:" + builderAdvertiser.getServiceBasePath());
-
 
 
         this.server = builderAdvertiser.build();
@@ -79,5 +72,4 @@ public class GliaServerEJBContainerDiscovery implements Serializable {
             System.out.println("SERVER SHUTDOWN");
         }
     }
-
 }

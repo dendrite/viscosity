@@ -55,6 +55,14 @@ public class GliaServerFactory implements Serializable {
         public Builder(){
         }
 
+        /**
+         * Using type SIMPLE, ZOOKEEPER_ADVERTISER to build server
+         *
+         * for SIMPLE GliaServerSimple
+         * for ZOOKEEPER_ADVERTISER GliaServerAdvertiser
+         *
+         * @return
+         */
         public IGliaServer build(){
             if(this.payloadWorker == null){
                 throw new RuntimeException("Assign a setPayloadWorker to server!");
