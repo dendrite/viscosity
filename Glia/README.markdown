@@ -65,6 +65,15 @@ Trouble with Sigar under JBoss 7.1.1.Final
 
 
 
+* Extra troubles zookeeper under JBoss - it's a real bug -
+https://issues.apache.org/jira/browse/ZOOKEEPER-1696
+
+https://issues.apache.org/jira/browse/ZOOKEEPER-1554
+
+* What about transactions
+
+* Make a typezation without cast IAskServer askServer = (IAskServer) gliaClientProxy.getProxy(IAskServer.class);
+
 
 * look through is glia-server-context.xml - exists??
 

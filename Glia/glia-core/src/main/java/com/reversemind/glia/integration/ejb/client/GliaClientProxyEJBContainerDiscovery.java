@@ -21,7 +21,7 @@ import java.util.Date;
  * @since 1.0
  */
 @Singleton
-public class GliaClientProxyEJBContainer implements IGliaClientProxy, Serializable {
+public class GliaClientProxyEJBContainerDiscovery implements IGliaClientProxy, Serializable {
 
     private GliaClientServerDiscovery client;
     private ProxyFactory proxyFactory = null;

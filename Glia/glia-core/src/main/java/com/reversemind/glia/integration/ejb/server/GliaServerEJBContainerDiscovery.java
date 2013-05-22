@@ -23,14 +23,17 @@ import java.util.Set;
  * @since 1.0
  */
 @Singleton
-public class GliaServerEJBContainer implements Serializable {
+public class GliaServerEJBContainerDiscovery implements Serializable {
 
     private IGliaServer server;
 
     @PostConstruct
     public void init(){
 
-
+        //https://issues.apache.org/jira/browse/ZOOKEEPER-1554
+        //System.setProperty("java.security.auth.login.config","/opt/zookeeper/conf/jaas.conf");
+//        System.setProperty("java.security.auth.login.config","/opt/zookeeper/conf");
+        System.setProperty("curator-log-events", "true");
 
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-server-context.xml");
 
