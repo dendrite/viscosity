@@ -19,6 +19,14 @@
 
     <dependencies>
 
+
+        <dependency>
+            <groupId>ru.ttk.stub2</groupId>
+            <artifactId>ru.ttk.sub-interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+
         <!--SOME IDEAS ABOUT Spring context cheats-->
         <!--<dependency>-->
             <!--<groupId>org.stuartgunter</groupId>-->

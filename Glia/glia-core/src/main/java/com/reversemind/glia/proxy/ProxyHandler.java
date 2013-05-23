@@ -41,8 +41,10 @@ public class ProxyHandler implements InvocationHandler {
                     "Invoke REMOTE METHOD\n\n\n");
 
             System.out.println("Method:" + method.getName());
-            for(Object obj: args){
-                System.out.println("arguments: " + obj.getClass().getCanonicalName() + " value:" + obj);
+            if(args != null && args.length > 0){
+                for(Object obj: args){
+                    System.out.println("arguments: " + obj.getClass().getCanonicalName() + " value:" + obj);
+                }
             }
 
             if(method.getName().equalsIgnoreCase("toString")){
