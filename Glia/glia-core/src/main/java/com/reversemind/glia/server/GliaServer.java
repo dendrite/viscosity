@@ -65,6 +65,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         if(builder.getPayloadWorker() == null){
             throw new RuntimeException("Assign a setPayloadWorker to server!");
         }
+        this.gliaPayloadWorker = builder.getPayloadWorker();
 
         // drop connection from client or not
         this.keepClientAlive = builder.isKeepClientAlive();
