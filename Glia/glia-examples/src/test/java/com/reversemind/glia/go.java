@@ -1,28 +1,27 @@
-package com.reversemind.fetcher;
+package com.reversemind.glia;
 
-import org.jsoup.Connection;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import org.jsoup.safety.Whitelist;
 
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
+import java.net.URLDecoder;
 
 /**
- * Date: 5/15/13
- * Time: 9:53 AM
+ * Date: 5/27/13
+ * Time: 2:46 PM
  *
  * @author konilovsky
  * @since 1.0
  */
-public class HttpFetch implements Serializable {
+public class go implements Serializable {
 
-    public static String getAgent(){
-        int index = (int)Math.round(Math.random() * (agents.length-1));
-        return agents[index];
-    }
-
-    public static void main(String... args) throws IOException {
+    public static void main(String... args) throws Exception {
 
         System.setProperty("http.proxyHost", "10.105.0.217");
         System.setProperty("http.proxyPort", "3128");
@@ -30,47 +29,66 @@ public class HttpFetch implements Serializable {
         System.setProperty("https.proxyHost", "10.105.0.217");
         System.setProperty("https.proxyPort", "3128");
 
-        try{
-            Connection.Response response = Jsoup.connect("https://www.twitter.com/asdfwefw")
-                    .userAgent(getAgent())
-                    .timeout(5000)
-                    .execute();
-            System.out.println("CODE:" +response.statusCode() );
-        }catch(IOException ex){
-            System.out.println("NOPE");
-        }
+        String parseUrl = "https://twitter.com/i/profiles/show/splix/timeline/with_replies?include_available_features=1&include_entities=1&max_id=285605679744569344";
 
-        Document doc = Jsoup.connect("https://twitter.com/asdfwefw")
+        Document doc = Jsoup.connect(parseUrl)
+                .ignoreContentType(true)
                 .userAgent(getAgent())
                 .timeout(3000)
                 .followRedirects(true)
+                .referrer("http://www.google.com")
                 .get();
-
-        Elements meta = doc.select("html head meta");
-        if (meta.attr("http-equiv").contains("REFRESH"))
-            doc = Jsoup.connect(meta.attr("content").split("=")[1]).get();
-
-        System.out.println(doc.baseUri());
-
+        doc.outputSettings().charset("UTF-8");
         String title = doc.title();
-        System.out.println("title:" + title);
-        //System.out.println(doc.html());
+
+//        System.out.println(URLDecoder.decode(doc.body().html().toString(),"UTF-8"));
+//        System.out.println(doc.html());
+
+        String s2 = Jsoup.clean(doc.html(),Whitelist.basic());
+        System.out.println(s2);
+
+//        String htmlText = Jsoup.clean( doc.body().html(), Whitelist.simpleText() );
+//        System.out.println("htmlText == " +  htmlText);
+
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode actualObj = mapper.readValue(doc.html().toString(), JsonNode.class);
+        System.out.println(actualObj);
 
 
 
 
-
+        String result = URLDecoder.decode("\u003cb\u003e\u041e\u0442\u0432\u0435", "UTF-8");
+        System.out.println("result = " + result);
+//
+//        System.out.println("\n\n");
+//
+//        //StringUtils.newStringUtf8(Base64.decodeBase64(s));
+//
+//
+//        File file2 = new File("/opt/_del/decoded2.txt");
+//        BufferedWriter bw = new BufferedWriter(new FileWriter(file2));
+//
+//
+//        File file = new File("/opt/_del/decode.txt");
+//        BufferedReader br = new BufferedReader( new FileReader(file));
+//
+//
+//        String tmp = "";
+//        while((tmp = br.readLine()) != null){
+//            String newStr = URLDecoder.decode(tmp, "UTF-8");
+//            bw.write(newStr + "\n");
+//
+//        }
+//        bw.flush();
+//        bw.close();
     }
 
-
-
-
-
-
-
-
-
-
+    public static String getAgent(){
+        int index = (int)Math.round(Math.random() * (agents.length-1));
+        return agents[index];
+    }
 
     public static String[] agents = {
             "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20130406 Firefox/23.0",

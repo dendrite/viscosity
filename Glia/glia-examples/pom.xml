@@ -20,6 +20,18 @@
     <dependencies>
 
 
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.birt.runtime.3_7_1</groupId>
+            <artifactId>org.apache.commons.codec</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+
         <!--SOME IDEAS ABOUT Spring context cheats-->
         <!--<dependency>-->
             <!--<groupId>org.stuartgunter</groupId>-->
