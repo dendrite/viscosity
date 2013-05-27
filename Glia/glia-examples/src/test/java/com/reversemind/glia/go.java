@@ -38,11 +38,13 @@ public class go implements Serializable {
                 .followRedirects(true)
                 .referrer("http://www.google.com")
                 .get();
+
+
         doc.outputSettings().charset("UTF-8");
         String title = doc.title();
 
-//        System.out.println(URLDecoder.decode(doc.body().html().toString(),"UTF-8"));
-//        System.out.println(doc.html());
+        System.out.println(URLDecoder.decode(doc.body().html().toString(),"UTF-8"));
+        System.out.println(doc.html());
 
         String s2 = Jsoup.clean(doc.html(),Whitelist.basic());
         System.out.println(s2);
