@@ -60,6 +60,17 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 
 
+* Add to Client a timeout as a parameter
+* Build Client from Builder pattern
+* Publish in zookeeper a list (names - canonical java names) of interfaces inside a GliaServer
+* Make a typezation without cast IAskServer askServer = (IAskServer) gliaClientProxy.getProxy(IAskServer.class);
+
+* look through is glia-server-context.xml - exists?? - just wrap it into exception!
+
+* What about a reconnect
+* If connection was lost from client - need to reconnection another instance
+
+
 !!!!!!!
 Trouble with Sigar under JBoss 7.1.1.Final
 
@@ -70,14 +81,9 @@ https://issues.apache.org/jira/browse/ZOOKEEPER-1696
 
 https://issues.apache.org/jira/browse/ZOOKEEPER-1554
 
-* What about transactions
-
-* Make a typezation without cast IAskServer askServer = (IAskServer) gliaClientProxy.getProxy(IAskServer.class);
+* What about transactions??? Atmicos + Spring - it's an interesting solution
 
 
-* look through is glia-server-context.xml - exists??
-
-* If connection was lost from client - need to reconnection another instance
 
 * GliaServerEJBContainer - right now tested only for JBoss 7.1.1.Final - test dependency for different application servers (GlassFish, JBoss)
 * Need GliaServerEJBContainer Arquillian JUnit Test
