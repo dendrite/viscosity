@@ -27,6 +27,10 @@ public class ServerEJBAdvertiser implements Serializable {
 
     private IGliaServer server;
 
+    public IGliaServer getServer() {
+        return server;
+    }
+
     @PostConstruct
     public void init(){
 

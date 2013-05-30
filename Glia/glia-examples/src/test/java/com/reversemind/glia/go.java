@@ -1,5 +1,8 @@
 package com.reversemind.glia;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -7,6 +10,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
 
 import java.io.*;
@@ -33,11 +37,33 @@ public class go implements Serializable {
 
         Document doc = Jsoup.connect(parseUrl)
                 .ignoreContentType(true)
-                .userAgent(getAgent())
+                //.userAgent(getAgent())
                 .timeout(3000)
                 .followRedirects(true)
                 .referrer("http://www.google.com")
                 .get();
+
+
+        //&quot;
+        //System.out.println(doc.html().toString());
+        Element masthead = doc.select("body").first();
+        String values = masthead.html();
+        //values = values.replaceAll("\\&quot;","\"").replaceAll("\"","\"");
+//        values = values.replaceAll("\\&quot;","'").replaceAll("&gt;",">").replaceAll("&lt;","<").replaceAll("&amp;","&").replaceAll("&apos;","'")
+//                .replaceAll("&quot;","'").replaceAll("\n{1,}"," ").
+//        replaceAll("\\'","'");
+
+
+
+
+        System.out.println(values);
+        JsonReader reader = new JsonReader(new StringReader(values));
+        reader.setLenient(true);
+
+
+
+        JsonObject jsonObject = new JsonParser().parse(reader).getAsJsonObject();
+        System.out.println(jsonObject);
 
 
         doc.outputSettings().charset("UTF-8");
@@ -63,6 +89,12 @@ public class go implements Serializable {
 
         String result = URLDecoder.decode("\u003cb\u003e\u041e\u0442\u0432\u0435", "UTF-8");
         System.out.println("result = " + result);
+
+
+
+        //yourArray = new Gson().fromJson(jsonObject.get("fieldIwant"), yourArrayType);
+
+
 //
 //        System.out.println("\n\n");
 //
