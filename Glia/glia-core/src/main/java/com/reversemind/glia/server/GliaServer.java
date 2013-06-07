@@ -183,6 +183,8 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         System.out.println(this.toString());
         System.out.println("\n\nServer started\n\n");
 
+        // TODO need to detect HOST NAME
+        this.setHost("DETECT HOST NAME");
         this.running = true;
     }
 
@@ -207,7 +209,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         }
     }
 
-    private void setHost(){
+    private void setHost(String hostName){
         // TODO remove from test implementation code
         this.host = "localhost";
     }
