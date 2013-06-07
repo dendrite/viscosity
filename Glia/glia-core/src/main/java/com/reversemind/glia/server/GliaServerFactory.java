@@ -168,6 +168,7 @@ public class GliaServerFactory implements Serializable {
          * @return
          */
         public Builder setKeepClientAlive(boolean keepClientAlive) {
+            System.out.println(" =GLIA= goint to set keep client alive:" + keepClientAlive);
             this.keepClientAlive = keepClientAlive;
             return this;
         }

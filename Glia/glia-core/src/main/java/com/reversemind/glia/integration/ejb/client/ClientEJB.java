@@ -50,6 +50,9 @@ public class ClientEJB implements IClientEJB, Serializable  {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-client-context.xml");
         this.client = applicationContext.getBean("gliaClient", GliaClient.class);
 
+        if(this.client == null){
+            throw new RuntimeException("Could not construct client from properties");
+        }
         try {
 
             client.start();
@@ -82,7 +85,7 @@ public class ClientEJB implements IClientEJB, Serializable  {
     }
 
     @Override
-    public Object getProxy(Class interfaceClass) throws Exception {
+    public <T> Object getProxy(Class<T> interfaceClass) throws Exception {
         if(this.client == null){
             throw new Exception("Glia client is not running");
         }
@@ -91,6 +94,6 @@ public class ClientEJB implements IClientEJB, Serializable  {
             throw new Exception("Could not get proxyFactory for ");
         }
 
-        return this.proxyFactory.newProxyInstance(interfaceClass);
+        return (T)this.proxyFactory.newProxyInstance(interfaceClass);
     }
 }

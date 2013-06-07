@@ -31,7 +31,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
 
     private String name;
     private String instanceName;
-    private String host;
+    private String host = "localhost";
 
     private boolean running = false;
 
@@ -69,6 +69,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         this.gliaPayloadWorker = builder.getPayloadWorker();
 
         // drop connection from client or not
+        System.out.println(" =GLIA= set value for KeepClientAlive from builder:" + builder.isKeepClientAlive());
         this.keepClientAlive = builder.isKeepClientAlive();
 
         this.name = StringUtils.isEmpty(builder.getName()) ?  UUID.randomUUID().toString() : builder.getName();

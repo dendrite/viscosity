@@ -28,7 +28,11 @@ public class ProxyFactory implements Serializable {
     }
 
     public Object newProxyInstance(Class interfaceClass){
+
         ClassLoader classLoader = interfaceClass.getClassLoader();
+        System.out.println(" ^^^^^^^^^^ GLIA PROXY FACTORY gliaClient:" + gliaClient);
+        System.out.println(" ^^^^^^^^^^ GLIA PROXY FACTORY classLoader:" + classLoader);
+
         return Proxy.newProxyInstance(classLoader, new Class[]{interfaceClass}, new ProxyHandler(gliaClient, interfaceClass));
     }
 }

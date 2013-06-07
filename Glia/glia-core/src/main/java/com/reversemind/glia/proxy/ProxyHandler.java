@@ -4,6 +4,7 @@ import com.reversemind.glia.GliaPayload;
 import com.reversemind.glia.GliaPayloadStatus;
 import com.reversemind.glia.client.GliaClient;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -32,7 +33,8 @@ public class ProxyHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
         if(this.gliaClient == null){
-            throw new Exception("Client is null");
+            System.out.println(" ^^^^^ gliaClient is NULL !!!");
+            throw new RuntimeException("Client is null");
         }
 
         synchronized (this.gliaClient){
@@ -48,7 +50,7 @@ public class ProxyHandler implements InvocationHandler {
             }
 
             if(method.getName().equalsIgnoreCase("toString")){
-                return "GET IT FROM - INVOKE METHOD";
+                return "You are calling for toString method - it's not a good idea :)";
             }
 
             GliaPayload gliaPayload = this.makePayload();
@@ -58,7 +60,18 @@ public class ProxyHandler implements InvocationHandler {
             gliaPayload.setArguments(args);
             gliaPayload.setInterfaceClass(this.interfaceClass);
 
-            gliaClient.send(gliaPayload);
+            System.out.println(" =GLIA= CREATED ON CLIENT a PAYLOAD:" + gliaPayload);
+            System.out.println(" =GLIA= gliaClient:" + gliaClient);
+            if(gliaClient != null){
+                System.out.println(" =GLIA= is running gliaClient:" + gliaClient.isRunning());
+            }
+            assert gliaClient != null;
+            try{
+                gliaClient.send(gliaPayload);
+            }catch(IOException ex){
+                System.out.println(" =GLIA= gliaClient.send(gliaPayload);" + ex.getMessage() );
+                ex.printStackTrace();
+            }
 
 //        System.out.println("==1");
             //Thread.sleep(100);
