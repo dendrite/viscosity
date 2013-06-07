@@ -12,4 +12,8 @@ import java.io.Serializable;
 public interface IGliaClient extends Serializable {
     public void start() throws Exception;
     public void shutdown();
+
+    public boolean isRunning();
+    public int getPort();
+    public String getHost();
 }

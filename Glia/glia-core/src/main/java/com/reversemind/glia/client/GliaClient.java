@@ -75,6 +75,16 @@ public class GliaClient implements IGliaClient, Serializable {
         return running;
     }
 
+    @Override
+    public int getPort() {
+        return this.port;
+    }
+
+    @Override
+    public String getHost() {
+        return this.host;
+    }
+
     /**
      *
      * @param object
