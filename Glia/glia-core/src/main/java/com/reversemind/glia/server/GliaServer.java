@@ -31,6 +31,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
 
     private String name;
     private String instanceName;
+    private String host;
 
     private boolean running = false;
 
@@ -196,12 +197,24 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         if (this.serverBootstrap != null) {
             this.serverBootstrap.releaseExternalResources();
             this.serverBootstrap.shutdown();
+
+            this.port = -1;
+            this.running = false;
+
+            this.name = null;
+            this.instanceName = null;
+            this.host = null;
         }
+    }
+
+    private void setHost(){
+        // TODO remove from test implementation code
+        this.host = "localhost";
     }
 
     public String getHost(){
         // TODO remove from test implementation code
-        return "localhost";
+        return this.host;
     }
 
     @Override
