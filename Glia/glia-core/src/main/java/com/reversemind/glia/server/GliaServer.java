@@ -75,6 +75,9 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         this.name = StringUtils.isEmpty(builder.getName()) ?  UUID.randomUUID().toString() : builder.getName();
         this.instanceName = StringUtils.isEmpty(builder.getInstanceName()) ? UUID.randomUUID().toString() : builder.getInstanceName();
 
+        // TODO need to detect HOST NAME
+        this.setHost("DETECT HOST NAME");
+
         this.metrics = new Metrics();
     }
 

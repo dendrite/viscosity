@@ -292,7 +292,7 @@ public class GliaClient implements IGliaClient, Serializable {
         //    thriftServer.releaseExternalResources();
 
         // !!! see also - http://massapi.com/class/cl/ClientBootstrap.html
-        System.out.println("1");
+//        System.out.println("1");
         // just wait for server connection for 3sec.
         channelFuture.await(SERVER_CONNECTION_TIMEOUT);
         if (!channelFuture.isSuccess()) {

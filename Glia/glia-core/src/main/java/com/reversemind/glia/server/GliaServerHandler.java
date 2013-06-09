@@ -46,7 +46,7 @@ public class GliaServerHandler extends SimpleChannelUpstreamHandler {
         // send object to the client
         ChannelFuture channelFuture = messageEvent.getChannel().write(object);
 
-        if(this.dropClientConnection){
+        if(!this.dropClientConnection){
             // see here - http://netty.io/3.6/guide/
             // Close connection right after sending
             channelFuture.addListener(new ChannelFutureListener() {
