@@ -24,7 +24,7 @@ public class RunServer implements Serializable {
         IGliaServer server = GliaServerFactory.builder()
                 .setPayloadWorker(gliaPayloadProcessor)
                 .setPort(7012)
-                .setAutoSelectPort(true)
+                .setAutoSelectPort(false)
                 .setKeepClientAlive(false)
                 .build();
 

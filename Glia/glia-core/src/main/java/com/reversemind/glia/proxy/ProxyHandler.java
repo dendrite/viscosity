@@ -45,6 +45,7 @@ public class ProxyHandler implements InvocationHandler {
             System.out.println("Method:" + method.getName());
             if(args != null && args.length > 0){
                 for(Object obj: args){
+                    if(obj != null)
                     System.out.println("arguments: " + obj.getClass().getCanonicalName() + " value:" + obj);
                 }
             }

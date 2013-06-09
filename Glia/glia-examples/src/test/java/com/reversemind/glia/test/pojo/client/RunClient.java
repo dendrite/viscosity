@@ -19,7 +19,7 @@ public class RunClient {
     public static void main(String... args) throws Exception {
         System.out.println("Run client");
 
-        int serverPort = 7000;
+        int serverPort = 7012;
         String serverHost = "localhost";
 
         GliaClient client = new GliaClient(serverHost, serverPort);
@@ -35,9 +35,27 @@ public class RunClient {
                 System.out.println("node:" + addressNode);
             }
         }
+        client.shutdown();
 
+
+        Thread.sleep(2000);
+
+
+        System.out.println("Restart client");
+        client.restart();
+
+        Thread.sleep(100);
+
+        list = simplePojoProxy.searchAddress("Москва");
+
+        if (list != null && list.size() > 0) {
+            for (PAddressNode addressNode : list) {
+                System.out.println("node:" + addressNode);
+            }
+        }
 
         client.shutdown();
+
     }
 
 }

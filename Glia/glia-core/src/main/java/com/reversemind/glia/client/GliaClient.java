@@ -196,6 +196,33 @@ public class GliaClient implements IGliaClient, Serializable {
         this.running = false;
     }
 
+    @Override
+    public void restart() throws Exception {
+        this.shutdown();
+
+        this.gliaPayload = null;
+        this.futureTaskTimeOut = SERVER_CONNECTION_TIMEOUT;
+        this.executor = this.getExecutor();
+        System.out.println("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
+
+        this.start();
+    }
+
+    @Override
+    public void restart(String serverHost, int serverPort, long clientTimeOut) throws Exception {
+
+        this.shutdown();
+
+        this.host = serverHost;
+        this.port = serverPort;
+        this.gliaPayload = null;
+        this.futureTaskTimeOut = clientTimeOut;
+        this.executor = this.getExecutor();
+        System.out.println("\n\n GliaClient RE-started \n for server:" + host + ":" + port + "\n\n");
+
+        this.start();
+    }
+
     /**
      * Start a GliaClient
      *

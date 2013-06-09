@@ -13,7 +13,12 @@ public interface IGliaClient extends Serializable {
     public void start() throws Exception;
     public void shutdown();
 
+    public void restart() throws Exception;
+    public void restart(String serverHost, int serverPort, long clientTimeOut) throws Exception;
+
     public boolean isRunning();
     public int getPort();
     public String getHost();
+
+
 }

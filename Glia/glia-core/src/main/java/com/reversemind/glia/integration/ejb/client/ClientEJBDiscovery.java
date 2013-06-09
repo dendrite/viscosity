@@ -84,7 +84,12 @@ public class ClientEJBDiscovery implements IClientEJB, Serializable {
 
     @Override
     public <T> Object getProxy(Class<T> interfaceClass) throws Exception {
-        if(this.client == null){
+
+        this.client.shutdown();
+        Thread.sleep(100);
+        this.client.restart();
+
+        if(this.client == null | !this.client.isRunning()){
             throw new Exception("Glia client is not running");
         }
 

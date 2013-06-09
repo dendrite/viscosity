@@ -66,4 +66,22 @@ public class GliaClientServerDiscovery extends GliaClient implements IGliaClient
         }
     }
 
+    @Override
+    public void restart() throws Exception {
+        this.shutdown();
+//        this.zookeeperHosts = zookeeperHosts;
+//        this.serviceBasePath = serviceBasePath;
+//        this.serviceName = serviceName;
+//        this.serverSelectorStrategy = serverSelectorStrategy;
+        this.serviceDiscoverer = new ServiceDiscoverer(this.zookeeperHosts, this.serviceBasePath);
+        this.start();
+    }
+
+    @Override
+    public void restart(String serverHost, int serverPort, long clientTimeOut) throws Exception {
+        this.shutdown();
+        this.serviceDiscoverer = new ServiceDiscoverer(this.zookeeperHosts, this.serviceBasePath);
+        this.start();
+    }
+
 }
