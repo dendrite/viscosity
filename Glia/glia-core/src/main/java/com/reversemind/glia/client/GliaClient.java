@@ -91,15 +91,12 @@ public class GliaClient implements IGliaClient, Serializable {
      */
     private void serverListener(Object object) {
         if(object instanceof GliaPayload){
-
-            LOG.info("SERVER LISTENER = arrived from server:" + ((GliaPayload) object).toString());
-
+            LOG.info("SERVER LISTENER = arrived from server");
             this.gliaPayload = ((GliaPayload) object);
             if(this.futureTask != null){
                 this.futureTask.cancel(true);
                 this.shutDownExecutor();
             }
-
             return;
         }
 

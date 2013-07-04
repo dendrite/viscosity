@@ -155,7 +155,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
             gliaPayload.setStatus(GliaPayloadStatus.OK);
             gliaPayload.setServerTimestamp(System.currentTimeMillis());
 
-            System.out.println("\n\n find result: " + result + " \n\n");
+            //System.out.println("\n\n find result: " + result + " \n\n");
             return gliaPayload;
 
             // TODO make correct Exception processing
@@ -186,7 +186,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
             gliaPayload.setStatus(GliaPayloadStatus.OK);
             gliaPayload.setServerTimestamp(System.currentTimeMillis());
 
-            System.out.println("\n\n find result: " + result + " \n\n");
+            //System.out.println("\n\n find result: " + result + " \n\n");
             return gliaPayload;
 
             // TODO make correct Exception processing

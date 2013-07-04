@@ -59,6 +59,8 @@ The use and distribution terms for this software are covered by the Apache Licen
 #### TODO
 
 
+* Some troubles with overriden methods
+
 * Create restart method for GliaServer & GliaClient
 
 * Add to Client a timeout as a parameter
