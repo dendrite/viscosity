@@ -59,7 +59,7 @@ The use and distribution terms for this software are covered by the Apache Licen
 #### TODO
 
 
-* Some troubles with overriden methods
+*[DONE] Some troubles with overriden methods
 
 * Create restart method for GliaServer & GliaClient
 

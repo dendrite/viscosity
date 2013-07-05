@@ -3,6 +3,7 @@ package com.reversemind.glia.test.json.server;
 import com.reversemind.glia.test.json.Settings;
 import com.reversemind.glia.test.json.shared.IDoSomething;
 import com.reversemind.glia.test.json.shared.JSONBuilder;
+import org.jboss.as.platform.mbean.PlatformLoggingMXBeanGetLoggerLevelHandler;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -48,6 +49,12 @@ public class ServerPojo implements IDoSomething {
 
         // get back an Error
         return "{" + Settings.SEARCH_STATUS + ":" + Settings.SEARCH_STATUS_ERROR + "}";
+    }
+
+    @Override
+    public String doExtraThing(String jsonString, String otherParameter) {
+        System.out.println("Just for testing overrided functions - I've got a second parameter:" + otherParameter);
+        return this.doExtraThing(jsonString);
     }
 
 }

@@ -18,7 +18,8 @@ public class RunJSONGliaServer {
                 .setPayloadWorker(gliaPayloadProcessor)
                 .setName("GLIA_JSON_SERVER")
                 .setPort(Settings.SERVER_PORT)
-                .setKeepClientAlive(false)
+                .setKeepClientAlive(true)
+                .setAutoSelectPort(false)
                 .build();
 
         gliaServer.start();

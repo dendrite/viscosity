@@ -25,14 +25,20 @@ public class RunJSONGliaClient {
 
         // call remote server
         String jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago"));
-
         System.out.println("Server response: " + jsonString);
 
-        // jut test yourself for little highload
-        for(int i=0;i<100;i++){
-            jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago" + i));
-        }
 
+
+        System.out.println("\n\nMake a second interface:");
+        // call remote server
+        jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago"), "SIMPLE STRING");
+
+        System.out.println("Server response: " + jsonString);
+//
+//        // jut test yourself for little highload
+//        for(int i=0;i<1;i++){
+//            jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago" + i));
+//        }
 
 
 

@@ -32,6 +32,18 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
     private static Hashtable jndiPropertiesMap;
     private static Context jndiContext = null;
 
+    private static Map<String,Class> typeMap = new HashMap<String,Class>();
+    {
+        typeMap.put(int.class.getCanonicalName(),       Integer.class );
+        typeMap.put(long.class.getCanonicalName(),      Long.class );
+        typeMap.put(double.class.getCanonicalName(),    Double.class );
+        typeMap.put(float.class.getCanonicalName(),     Float.class );
+        typeMap.put(boolean.class.getCanonicalName(),   Boolean.class );
+        typeMap.put(char.class.getCanonicalName(),      Character.class );
+        typeMap.put(byte.class.getCanonicalName(),      Byte.class );
+        typeMap.put(short.class.getCanonicalName(),     Short.class );
+    }
+
     @Override
     public Map<Class, Class> getPojoMap() {
         return mapPOJORegisteredInterfaces;
@@ -132,7 +144,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
                 return this.invokeEjbMethod(gliaPayload, remoteObject, gliaPayload.getMethodName(), gliaPayload.getArguments());
             } catch (NamingException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         }
 
@@ -141,7 +153,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
     private GliaPayload invokeMethod(GliaPayload gliaPayload, Class pojoOrEjbClass, String methodName, Object[] arguments){
 
-        Method selectedMethod = this.findMethod(pojoOrEjbClass, methodName);
+        Method selectedMethod = this.findMethod(pojoOrEjbClass, methodName, arguments);
 
         if (selectedMethod == null) {
             LOG.info("ERROR :" + GliaPayloadStatus.ERROR_PAYLOAD_UNKNOWN_METHOD);
@@ -160,11 +172,11 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
             // TODO make correct Exception processing
         } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (InstantiationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN);
@@ -172,7 +184,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
     private GliaPayload invokeEjbMethod(GliaPayload gliaPayload, Object instance, String methodName, Object[] arguments){
 
-        Method selectedMethod = this.findMethod(instance.getClass(), methodName);
+        Method selectedMethod = this.findMethod(instance.getClass(), methodName, arguments);
 
         if (selectedMethod == null) {
             LOG.info("ERROR :" + GliaPayloadStatus.ERROR_PAYLOAD_UNKNOWN_METHOD);
@@ -191,24 +203,58 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
             // TODO make correct Exception processing
         } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN);
     }
 
-    private Method findMethod(Class interfaceClass, String methodName){
+    private Method findMethod(Class interfaceClass, String methodName, Object[] arguments){
         Method selectedMethod = null;
 
         Method[] pojoClassMethods = interfaceClass.getMethods();
+        String compareTypeName = "";
         for (Method method : pojoClassMethods) {
-            if (method.getName().equals(methodName)) {
-                selectedMethod = method;
-                LOG.info("Find method:" + selectedMethod);
-                break;
+
+
+            if(method.getName().equals(methodName)){
+                System.out.println(method.getName() + " args:" + method.getParameterTypes().length);
+
+                if(arguments.length == method.getParameterTypes().length){
+
+                    if(arguments.length == 0){
+                        selectedMethod = method;
+                        break;
+                    }
+
+                    if(method.getParameterTypes().length > 0){
+                        int count = arguments.length;
+                        Class[] cl = method.getParameterTypes();
+                        for(int i=0; i<arguments.length; i++){
+
+                            compareTypeName = cl[i].getCanonicalName();
+                            if(typeMap.containsKey(cl[i].getCanonicalName())){
+                                compareTypeName = typeMap.get(cl[i].getCanonicalName()).getCanonicalName();
+                            }
+                            if(compareTypeName.equals(arguments[i].getClass().getCanonicalName())){
+                                count--;
+                            }
+                        }
+                        if(count==0){
+                            selectedMethod = method;
+                            break;
+                        }
+                    }
+                }
             }
+
+//            if (method.getName().equals(methodName)) {
+//                selectedMethod = method;
+//                LOG.info("Find method:" + selectedMethod);
+//                break;
+//            }
         }
 
         return selectedMethod;
