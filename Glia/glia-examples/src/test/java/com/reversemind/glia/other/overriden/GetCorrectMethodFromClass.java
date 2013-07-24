@@ -57,11 +57,16 @@ public class GetCorrectMethodFromClass {
                         Class[] cl = method.getParameterTypes();
                         for(int i=0; i<arguments.length; i++){
 
+                            System.out.println("cl[i].getCanonicalName():"+ cl[i].getCanonicalName());
                             compareTypeName = cl[i].getCanonicalName();
                             if(typeMap.containsKey(cl[i].getCanonicalName())){
                                 compareTypeName = typeMap.get(cl[i].getCanonicalName()).getCanonicalName();
                             }
-                            if(compareTypeName.equals(arguments[i].getClass().getCanonicalName())){
+
+                            System.out.println("arguments[i]:" + arguments[i]);
+                            System.out.println("arguments[i].getClass():" + arguments[i].getClass());
+                            System.out.println("arguments[i].getClass():" + arguments[i].getClass().getCanonicalName());
+                            if(compareTypeName != null && compareTypeName.equals(arguments[i].getClass().getCanonicalName())){
                                 count--;
                             }
                         }
