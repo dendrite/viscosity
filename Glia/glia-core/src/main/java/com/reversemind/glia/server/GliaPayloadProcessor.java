@@ -214,6 +214,21 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
     private Method findMethod(Class interfaceClass, String methodName, Object[] arguments){
         Method selectedMethod = null;
 
+        // Let's check that not all arguments are null
+        int argumentsCount = 0;
+        for(int i=0; i<arguments.length;i++){
+            if(arguments[i] == null){
+                argumentsCount++;
+            }
+        }
+
+        boolean argumentsAreNull = false;
+
+        if(argumentsCount == arguments.length){
+            System.out.println("Not all arguments are null");
+            argumentsAreNull = true;
+        }
+
         Method[] pojoClassMethods = interfaceClass.getMethods();
         String compareTypeName = "";
         for (Method method : pojoClassMethods) {
@@ -229,6 +244,11 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
                         break;
                     }
 
+                    if(argumentsAreNull){
+                        selectedMethod = method;
+                        break;
+                    }
+
                     if(method.getParameterTypes().length > 0){
                         int count = arguments.length;
                         Class[] cl = method.getParameterTypes();
@@ -238,9 +258,19 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
                             if(typeMap.containsKey(cl[i].getCanonicalName())){
                                 compareTypeName = typeMap.get(cl[i].getCanonicalName()).getCanonicalName();
                             }
-                            if(compareTypeName.equals(arguments[i].getClass().getCanonicalName())){
+
+                            System.out.println("arguments[i]:" + arguments[i]);
+                            if(arguments[i] != null){
+                                System.out.println("arguments[i].getClass():" + arguments[i].getClass());
+                                System.out.println("arguments[i].getClass():" + arguments[i].getClass().getCanonicalName());
+                            }
+
+                            if(arguments[i] == null){
+                                count--;
+                            }else if(compareTypeName != null && arguments[i] != null && compareTypeName.equals(arguments[i].getClass().getCanonicalName())){
                                 count--;
                             }
+
                         }
                         if(count==0){
                             selectedMethod = method;

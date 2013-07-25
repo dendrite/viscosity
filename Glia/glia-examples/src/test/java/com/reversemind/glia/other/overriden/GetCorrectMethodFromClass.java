@@ -27,10 +27,10 @@ public class GetCorrectMethodFromClass {
 
         SimpleOverridenMethods simple = new SimpleOverridenMethods();
 
-        String methodName = "getSimple";
+        String methodNameNeedToFind = "getSimple";
         Object[] arguments = new Object[2];
         arguments[0] = 1;
-        arguments[1] = "1";
+        arguments[1] = null;//"1";
 
 
 
@@ -40,14 +40,35 @@ public class GetCorrectMethodFromClass {
 
         String compareTypeName = "";
 
+
+        // Let's check that not all arguments are null
+        int argCount = 0;
+        for(int i=0; i<arguments.length;i++){
+            if(arguments[i] == null){
+                argCount++;
+            }
+        }
+
+        boolean argumentsAreNull = false;
+
+        if(argCount == arguments.length){
+            System.out.println("Not all arguments are null");
+            argumentsAreNull = true;
+        }
+
         for(Method method: methods){
 
-            if(method.getName().equals(methodName)){
+            if(method.getName().equals(methodNameNeedToFind)){
                 System.out.println(method.getName() + " args:" + method.getParameterTypes().length);
 
                 if(arguments.length == method.getParameterTypes().length){
 
                     if(arguments.length == 0){
+                        foundedMethod = method;
+                        break;
+                    }
+
+                    if(argumentsAreNull){
                         foundedMethod = method;
                         break;
                     }
@@ -64,9 +85,14 @@ public class GetCorrectMethodFromClass {
                             }
 
                             System.out.println("arguments[i]:" + arguments[i]);
-                            System.out.println("arguments[i].getClass():" + arguments[i].getClass());
-                            System.out.println("arguments[i].getClass():" + arguments[i].getClass().getCanonicalName());
-                            if(compareTypeName != null && compareTypeName.equals(arguments[i].getClass().getCanonicalName())){
+                            if(arguments[i] != null){
+                                System.out.println("arguments[i].getClass():" + arguments[i].getClass());
+                                System.out.println("arguments[i].getClass():" + arguments[i].getClass().getCanonicalName());
+                            }
+
+                            if(arguments[i] == null){
+                                count--;
+                            }else if(compareTypeName != null && arguments[i] != null && compareTypeName.equals(arguments[i].getClass().getCanonicalName())){
                                 count--;
                             }
                         }
