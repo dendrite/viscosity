@@ -58,7 +58,7 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 #### TODO
 
-
+* Need to throw up into external system an exception - if it possible to detect correctly on client and
 *[DONE] Some troubles with overriden methods
 
 * Create restart method for GliaServer & GliaClient
