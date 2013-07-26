@@ -87,7 +87,7 @@ public class GetCorrectMethodFromClass {
                             System.out.println("arguments[i]:" + arguments[i]);
                             if(arguments[i] != null){
                                 System.out.println("arguments[i].getClass():" + arguments[i].getClass());
-                                System.out.println("arguments[i].getClass():" + arguments[i].getClass().getCanonicalName());
+                                System.out.println("arguments[i].getClass().getCanonicalName():" + arguments[i].getClass().getCanonicalName());
                             }
 
                             if(arguments[i] == null){

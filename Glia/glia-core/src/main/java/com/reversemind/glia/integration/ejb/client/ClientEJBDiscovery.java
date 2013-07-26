@@ -5,6 +5,7 @@ import com.reversemind.glia.client.IGliaClient;
 import com.reversemind.glia.proxy.ProxyFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import sun.util.LocaleServiceProviderPool;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -82,21 +83,38 @@ public class ClientEJBDiscovery implements IClientEJB, Serializable {
         return this.client;
     }
 
-    @Override
-    public <T> Object getProxy(Class<T> interfaceClass) throws Exception {
-
+    private void clientReconnect() throws Exception {
+        long beginTime = System.currentTimeMillis();
         this.client.shutdown();
         Thread.sleep(100);
         this.client.restart();
+        System.out.println("Reconnected for time:" + (System.currentTimeMillis() - beginTime) + " ms");
+    }
+
+    @Override
+    public <T> T getProxy(Class<T> interfaceClass) throws Exception {
 
         if(this.client == null | !this.client.isRunning()){
             throw new Exception("Glia client is not running");
         }
 
         if(this.proxyFactory == null){
-            throw new Exception("Could not get proxyFactory for ");
+            throw new Exception("Could not get proxyFactory for " + interfaceClass);
         }
 
-        return (T)this.proxyFactory.newProxyInstance(interfaceClass);
+        T object = null;
+
+        try{
+            object = (T)this.proxyFactory.newProxyInstance(interfaceClass);
+        }catch(Exception ex){
+            // TODO into LOG
+            ex.printStackTrace();
+
+            System.out.println("Let's reconnect it again...");
+            this.clientReconnect();
+            object = (T)this.proxyFactory.newProxyInstance(interfaceClass);
+        }
+
+        return object;
     }
 }
