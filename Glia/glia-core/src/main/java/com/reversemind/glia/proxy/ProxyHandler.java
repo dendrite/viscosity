@@ -70,8 +70,19 @@ public class ProxyHandler implements InvocationHandler {
             try{
                 gliaClient.send(gliaPayload);
             }catch(IOException ex){
-                System.out.println(" =GLIA= gliaClient.send(gliaPayload);" + ex.getMessage() );
+                System.out.println(" =GLIA= gliaClient.send(gliaPayload);" + ex.getMessage());
                 ex.printStackTrace();
+
+                System.out.println("=GLIA= gliaClient going to restart a client and send again data");
+                gliaClient.restart();
+
+                try{
+                    gliaClient.send(gliaPayload);
+                }catch (IOException ex2){
+                    System.out.println("After second send - exception");
+                    ex2.printStackTrace();
+                    throw new ProxySendException("=GLIA= Could not to send data into server - let's reconnect" );
+                }
             }
 
 //        System.out.println("==1");

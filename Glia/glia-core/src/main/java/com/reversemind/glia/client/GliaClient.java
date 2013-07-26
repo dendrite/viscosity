@@ -183,12 +183,23 @@ public class GliaClient implements IGliaClient, Serializable {
     public void shutdown(){
         this.shutDownExecutor();
 
-        this.channelFuture.getChannel().close().awaitUninterruptibly();
-        this.channelFactory.releaseExternalResources();
-        this.channelFactory.shutdown();
+        try{
+            if(this.channelFuture != null){
+                this.channelFuture.getChannel().close().awaitUninterruptibly();
+                this.channelFactory.releaseExternalResources();
+                this.channelFactory.shutdown();
+            }
 
-        this.clientBootstrap.releaseExternalResources();
-        this.clientBootstrap.shutdown();
+            if(this.clientBootstrap != null){
+                this.clientBootstrap.releaseExternalResources();
+                this.clientBootstrap.shutdown();
+            }
+        }catch(Exception ex){
+            System.out.println("Could not to shutdown channelFuture && clientBootstrap");
+        }
+
+        this.channelFuture = null;
+        this.clientBootstrap = null;
 
         this.running = false;
     }
@@ -395,8 +406,8 @@ public class GliaClient implements IGliaClient, Serializable {
     private void shutDownFutureTask(){
         if(this.futureTask != null){
             this.futureTask.cancel(true);
-            this.futureTask = null;
         }
+        this.futureTask = null;
     }
 
     private FutureTask<GliaPayload> createFutureTask() {
