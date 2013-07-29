@@ -58,34 +58,30 @@ The use and distribution terms for this software are covered by the Apache Licen
 
 #### TODO
 
+* What about transactions??? Atmicos + Spring - it's an interesting solution
 * Need to throw up into external system an exception - if it possible to detect correctly on client and
-*[DONE] Some troubles with overriden methods
+* [DONE] Some troubles with overriden methods
 
 * Create restart method for GliaServer & GliaClient
 
 * Add to Client a timeout as a parameter
 * Build Client from Builder pattern
 * Publish in zookeeper a list (names - canonical java names) of interfaces inside a GliaServer
-* Make a typezation without cast IAskServer askServer = (IAskServer) gliaClientProxy.getProxy(IAskServer.class);
+* [DONE] Make a typezation without cast IAskServer askServer = (IAskServer) gliaClientProxy.getProxy(IAskServer.class);
 
 * look through is glia-server-context.xml - exists?? - just wrap it into exception!
 
-* What about a reconnect
-* If connection was lost from client - need to reconnection another instance
+* [DONE] What about a reconnect - tested under EJB
+* [DONE] If connection was lost from client - need to reconnection another instance - tested under EJB
 
 
 !!!!!!!
 Trouble with Sigar under JBoss 7.1.1.Final
 
 
-
-* Extra troubles zookeeper under JBoss - it's a real bug -
+* [DONE] Extra troubles zookeeper under JBoss - it's a real bug - !(resume - it's not a bug it's feature and works great with some log extra info)
 https://issues.apache.org/jira/browse/ZOOKEEPER-1696
-
 https://issues.apache.org/jira/browse/ZOOKEEPER-1554
-
-* What about transactions??? Atmicos + Spring - it's an interesting solution
-
 
 
 * GliaServerEJBContainer - right now tested only for JBoss 7.1.1.Final - test dependency for different application servers (GlassFish, JBoss)
