@@ -59,6 +59,13 @@ The use and distribution terms for this software are covered by the Apache Licen
 #### TODO
 
 * What about transactions??? Atmicos + Spring - it's an interesting solution
+
+Java Open Transaction Manager (JOTM) - http://jotm.ow2.org/xwiki/bin/view/Main/WebHome
+JBoss TS - http://www.jboss.org/jbosstm
+Bitronix Transaction Manager (BTM) - http://docs.codehaus.org/display/BTM/Home
+Atomikos - http://www.atomikos.com/
+
+
 * Need to throw up into external system an exception - if it possible to detect correctly on client and
 * [DONE] Some troubles with overriden methods
 
