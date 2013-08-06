@@ -73,7 +73,7 @@ Atomikos - http://www.atomikos.com/
 * Need to throw up into external system an exception - if it possible to detect correctly on client and
 * [DONE] Some troubles with overriden methods
 
-* Build Client from Builder pattern
+* Build Client from a Builder pattern
 * Publish in zookeeper a list (names - canonical java names) of interfaces inside a GliaServer
 * [DONE] Make a typezation without cast IAskServer askServer = (IAskServer) gliaClientProxy.getProxy(IAskServer.class);
 
