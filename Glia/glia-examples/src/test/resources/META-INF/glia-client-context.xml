@@ -20,7 +20,8 @@
         <constructor-arg index="0" value="${glia.client.zookeeper.connection}" />
         <constructor-arg index="1" value="${glia.client.zookeeper.base.path}" />
         <constructor-arg index="2" value="${glia.client.service.name}" />
-        <constructor-arg index="3" ref="selectorStrategy" />
+        <constructor-arg index="3" value="${glia.client.timeout}" />
+        <constructor-arg index="4" ref="selectorStrategy" />
     </bean>
 
     <!--direct connection -->

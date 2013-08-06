@@ -21,13 +21,13 @@ groupId: com.reversemind
 
 artifactId: glia-core
 
-version: 1.7.0-SNAPSHOT
+version: 1.7.1-SNAPSHOT
 
 
 <dependency>
   <groupId>com.reversemind</groupId>
   <artifactId>glia-core</artifactId>
-  <version>1.7.0-SNAPSHOT</version>
+  <version>1.7.1-SNAPSHOT</version>
 </dependency>
 
 
@@ -66,12 +66,13 @@ Bitronix Transaction Manager (BTM) - http://docs.codehaus.org/display/BTM/Home
 Atomikos - http://www.atomikos.com/
 
 
+
+* [DONE] Create restart method for GliaServer & GliaClient
+* [DONE] Add to Client a timeout as a parameter
+
 * Need to throw up into external system an exception - if it possible to detect correctly on client and
 * [DONE] Some troubles with overriden methods
 
-* Create restart method for GliaServer & GliaClient
-
-* Add to Client a timeout as a parameter
 * Build Client from Builder pattern
 * Publish in zookeeper a list (names - canonical java names) of interfaces inside a GliaServer
 * [DONE] Make a typezation without cast IAskServer askServer = (IAskServer) gliaClientProxy.getProxy(IAskServer.class);

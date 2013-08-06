@@ -24,7 +24,8 @@ public class TestGliaClientServerDiscovery implements Serializable {
         final String SERVICE_BASE_PATH = "/baloo/services";
         final String SERVICE_NAME = "ADDRESS";
 
-        GliaClientServerDiscovery client = new GliaClientServerDiscovery(ZOOKEEPER_CONNECTION, SERVICE_BASE_PATH, SERVICE_NAME, new ServerSelectorSimpleStrategy());
+        final long clientTimeOut = 30000;
+        GliaClientServerDiscovery client = new GliaClientServerDiscovery(ZOOKEEPER_CONNECTION, SERVICE_BASE_PATH, SERVICE_NAME, clientTimeOut, new ServerSelectorSimpleStrategy());
 
         client.start();
 

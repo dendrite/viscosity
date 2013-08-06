@@ -28,16 +28,19 @@ public class GliaClientServerDiscovery extends GliaClient implements IGliaClient
      * @param zookeeperHosts
      * @param serviceBasePath
      * @param serviceName
+     * @param clientTimeOut
      * @param serverSelectorStrategy
      */
     public GliaClientServerDiscovery(String zookeeperHosts,
                                      String serviceBasePath,
                                      String serviceName,
+                                     long clientTimeOut,
                                      IServerSelectorStrategy serverSelectorStrategy) {
         this.zookeeperHosts = zookeeperHosts;
         this.serviceBasePath = serviceBasePath;
         this.serviceName = serviceName;
         this.serverSelectorStrategy = serverSelectorStrategy;
+        this.setClientTimeOut(clientTimeOut);
         this.serviceDiscoverer = new ServiceDiscoverer(this.zookeeperHosts, this.serviceBasePath);
     }
 
@@ -80,6 +83,7 @@ public class GliaClientServerDiscovery extends GliaClient implements IGliaClient
     @Override
     public void restart(String serverHost, int serverPort, long clientTimeOut) throws Exception {
         this.shutdown();
+        this.setClientTimeOut(clientTimeOut);
         this.serviceDiscoverer = new ServiceDiscoverer(this.zookeeperHosts, this.serviceBasePath);
         this.start();
     }

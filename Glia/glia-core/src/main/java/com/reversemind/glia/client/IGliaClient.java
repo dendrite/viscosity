@@ -10,6 +10,7 @@ import java.io.Serializable;
  * @since 1.0
  */
 public interface IGliaClient extends Serializable {
+
     public void start() throws Exception;
     public void shutdown();
 

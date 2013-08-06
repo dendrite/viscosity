@@ -29,9 +29,9 @@ public class GliaClient implements IGliaClient, Serializable {
     // TODO replace logger for SLF4J
     private static final Logger LOG = Logger.getLogger(GliaClient.class.getName());
 
-    private static final long SERVER_CONNECTION_TIMEOUT = 3000;     // 3 sec
+    private static final long SERVER_CONNECTION_TIMEOUT = 30000;    // 30 sec
     private static final long EXECUTOR_TIME_OUT = 60000;            // 1 min
-    private static final long FUTURE_TASK_TIME_OUT = 2000;          // 2 sec
+    private static final long FUTURE_TASK_TIME_OUT = 30000;         // 30 sec
     private ExecutorService executor;
     private FutureTask<GliaPayload> futureTask;
 
@@ -66,9 +66,30 @@ public class GliaClient implements IGliaClient, Serializable {
         this.host = host;
         this.port = port;
         this.gliaPayload = null;
-        this.futureTaskTimeOut = timeout;
+
+
+        if(timeout > 0){
+            this.futureTaskTimeOut = timeout;
+        }else{
+            this.futureTaskTimeOut = FUTURE_TASK_TIME_OUT;
+        }
+
         this.executor = this.getExecutor();
         System.out.println("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
+    }
+
+    /**
+     * Set client timeout in ms - if zero or less than 0 - that assign a default value FUTURE_TASK_TIME_OUT = 30 sec
+     *
+     * @param timeOut
+     */
+    public void setClientTimeOut(long timeOut) {
+        System.out.println("Going to set client timeout for:" + timeOut + " ms");
+        if(timeOut > 0){
+            this.futureTaskTimeOut = timeOut;
+        }else{
+            this.futureTaskTimeOut = FUTURE_TASK_TIME_OUT;
+        }
     }
 
     public boolean isRunning() {
@@ -209,7 +230,7 @@ public class GliaClient implements IGliaClient, Serializable {
         this.shutdown();
 
         this.gliaPayload = null;
-        this.futureTaskTimeOut = SERVER_CONNECTION_TIMEOUT;
+        this.setClientTimeOut(FUTURE_TASK_TIME_OUT);
         this.executor = this.getExecutor();
         System.out.println("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
 
@@ -224,7 +245,8 @@ public class GliaClient implements IGliaClient, Serializable {
         this.host = serverHost;
         this.port = serverPort;
         this.gliaPayload = null;
-        this.futureTaskTimeOut = clientTimeOut;
+
+        this.setClientTimeOut(clientTimeOut);
         this.executor = this.getExecutor();
         System.out.println("\n\n GliaClient RE-started \n for server:" + host + ":" + port + "\n\n");
 
