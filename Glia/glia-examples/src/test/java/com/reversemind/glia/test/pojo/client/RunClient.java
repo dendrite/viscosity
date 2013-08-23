@@ -4,6 +4,7 @@ import com.reversemind.glia.client.GliaClient;
 import com.reversemind.glia.proxy.ProxyFactory;
 import com.reversemind.glia.test.pojo.shared.ISimplePojo;
 import com.reversemind.glia.test.pojo.shared.PAddressNode;
+import com.reversemind.glia.test.pojo.shared.SimpleException;
 
 import java.util.List;
 
@@ -53,6 +54,9 @@ public class RunClient {
                 System.out.println("node:" + addressNode);
             }
         }
+
+
+
 
         client.shutdown();
 

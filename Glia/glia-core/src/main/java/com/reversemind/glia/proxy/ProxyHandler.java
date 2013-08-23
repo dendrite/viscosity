@@ -5,6 +5,7 @@ import com.reversemind.glia.GliaPayloadStatus;
 import com.reversemind.glia.client.GliaClient;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
@@ -67,6 +68,9 @@ public class ProxyHandler implements InvocationHandler {
                 System.out.println(" =GLIA= is running gliaClient:" + gliaClient.isRunning());
             }
             assert gliaClient != null;
+
+
+            // TODO need to refactor this catcher
             try{
                 gliaClient.send(gliaPayload);
             }catch(IOException ex){
@@ -90,6 +94,16 @@ public class ProxyHandler implements InvocationHandler {
 //        System.out.println("==2");
             long bT = System.currentTimeMillis();
             GliaPayload fromServer = gliaClient.getGliaPayload();
+
+            if(fromServer.getThrowable() != null){
+
+                // TODO What if impossible to load a specific Class
+
+                Constructor constructor = fromServer.getThrowable().getCause().getClass().getConstructor(new Class[]{String.class});
+                String[] exceptionMessage = {fromServer.getThrowable().getCause().getMessage()};
+                throw (Throwable) constructor.newInstance(exceptionMessage);
+            }
+
             System.out.println("==2.5 Get back from server for:" + (System.currentTimeMillis() - bT) + " ms");
 
 //        System.out.println("==3");

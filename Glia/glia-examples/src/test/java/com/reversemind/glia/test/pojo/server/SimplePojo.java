@@ -2,6 +2,7 @@ package com.reversemind.glia.test.pojo.server;
 
 import com.reversemind.glia.test.pojo.shared.ISimplePojo;
 import com.reversemind.glia.test.pojo.shared.PAddressNode;
+import com.reversemind.glia.test.pojo.shared.SimpleException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,5 +31,10 @@ public class SimplePojo implements ISimplePojo, Serializable {
             list.add(new PAddressNode("" + i, " city - " + query + "_" + i));
         }
         return list;
+    }
+
+    @Override
+    public String createException(String query) throws SimpleException {
+        throw new SimpleException("-Simple exception message-");
     }
 }

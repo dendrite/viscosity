@@ -40,8 +40,6 @@ public class RunJSONGliaClient {
 //            jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago" + i));
 //        }
 
-
-
         // let's parse a JSON string from server
         Map<String, Object> serverResponseMap = JSONBuilder.build(jsonString);
 

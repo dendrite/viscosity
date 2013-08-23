@@ -21,13 +21,13 @@ groupId: com.reversemind
 
 artifactId: glia-core
 
-version: 1.7.1-SNAPSHOT
+version: 1.7.2-SNAPSHOT
 
 
 <dependency>
   <groupId>com.reversemind</groupId>
   <artifactId>glia-core</artifactId>
-  <version>1.7.1-SNAPSHOT</version>
+  <version>1.7.2-SNAPSHOT</version>
 </dependency>
 
 
@@ -66,11 +66,12 @@ Bitronix Transaction Manager (BTM) - http://docs.codehaus.org/display/BTM/Home
 Atomikos - http://www.atomikos.com/
 
 
+* ProxyHandler - What if impossible to load a specific Class
 
 * [DONE] Create restart method for GliaServer & GliaClient
 * [DONE] Add to Client a timeout as a parameter
 
-* Need to throw up into external system an exception - if it possible to detect correctly on client and
+* [DONE] Need to propagate from server to client an exception
 * [DONE] Some troubles with overriden methods
 
 * Build Client from a Builder pattern

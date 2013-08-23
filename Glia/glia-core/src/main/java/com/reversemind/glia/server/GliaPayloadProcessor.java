@@ -138,10 +138,9 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
         if(!StringUtils.isEmpty(jndiName)){
             try {
+                // JBoss AS 7 JNDI name
                 // buildingDAO = InitialContext.doLookup("java:global/ttk-house/ttk-house-ejb-2.0-SNAPSHOT/BuildingDAO!ru.ttk.baloo.house.data.service.building.IBuildingDAO");
                 Object remoteObject = InitialContext.doLookup(jndiName);
-                //Object remoteObject = jndiContext.lookup(jndiName);
-
                 return this.invokeEjbMethod(gliaPayload, remoteObject, gliaPayload.getMethodName(), gliaPayload.getArguments());
             } catch (NamingException e) {
                 e.printStackTrace();
@@ -153,6 +152,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
     private GliaPayload invokeMethod(GliaPayload gliaPayload, Class pojoOrEjbClass, String methodName, Object[] arguments){
 
+        Throwable throwable = null;
         Method selectedMethod = this.findMethod(pojoOrEjbClass, methodName, arguments);
 
         if (selectedMethod == null) {
@@ -166,23 +166,30 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
             gliaPayload.setResultResponse(result);
             gliaPayload.setStatus(GliaPayloadStatus.OK);
             gliaPayload.setServerTimestamp(System.currentTimeMillis());
-
+            gliaPayload.setThrowable(null);
             //System.out.println("\n\n find result: " + result + " \n\n");
             return gliaPayload;
-
-            // TODO make correct Exception processing
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
+        }catch (Throwable th){
+            throwable = th;
+            gliaPayload.setThrowable(th);
+            // TODO need correct logging
+            System.out.println("ON SERVER Throwable:" + th);
         }
+//            // TODO make correct Exception processing
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        }
 
-        return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN);
+        return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN, throwable);
     }
 
     private GliaPayload invokeEjbMethod(GliaPayload gliaPayload, Object instance, String methodName, Object[] arguments){
+
+        Throwable throwable = null;
 
         Method selectedMethod = this.findMethod(instance.getClass(), methodName, arguments);
 
@@ -197,18 +204,26 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
             gliaPayload.setResultResponse(result);
             gliaPayload.setStatus(GliaPayloadStatus.OK);
             gliaPayload.setServerTimestamp(System.currentTimeMillis());
-
+            gliaPayload.setThrowable(null);
             //System.out.println("\n\n find result: " + result + " \n\n");
             return gliaPayload;
 
-            // TODO make correct Exception processing
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        }catch (Throwable th){
+            throwable = th;
+            gliaPayload.setThrowable(th);
+            // TODO need correct logging
+            System.out.println("ON SERVER Throwable:" + th);
         }
+//            // TODO make correct Exception processing
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        }
 
-        return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN);
+        return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_UNKNOWN, throwable);
     }
 
     private Method findMethod(Class interfaceClass, String methodName, Object[] arguments){

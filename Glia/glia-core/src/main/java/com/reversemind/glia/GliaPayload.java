@@ -20,6 +20,8 @@ public class GliaPayload implements Serializable {
     private long clientTimestamp;
     private long serverTimestamp;
 
+    private Throwable throwable;
+
     private GliaPayloadStatus status;
 
     public GliaPayload() {
@@ -88,6 +90,14 @@ public class GliaPayload implements Serializable {
         this.status = status;
     }
 
+    public Throwable getThrowable() {
+        return throwable;
+    }
+
+    public void setThrowable(Throwable throwable) {
+        this.throwable = throwable;
+    }
+
     @Override
     public String toString() {
         return "GliaPayload{" +
@@ -98,6 +108,7 @@ public class GliaPayload implements Serializable {
                 ", clientTimestamp=" + clientTimestamp +
                 ", serverTimestamp=" + serverTimestamp +
                 ", status=" + status +
+                ", throwable=" + throwable +
                 '}';
     }
 }

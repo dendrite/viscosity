@@ -23,4 +23,12 @@ public class GliaPayloadBuilder implements Serializable {
         return gliaPayload;
     }
 
+    public static GliaPayload buildErrorPayload(GliaPayloadStatus gliaPayloadStatus, Throwable throwable) {
+        GliaPayload gliaPayload = new GliaPayload();
+        gliaPayload.setServerTimestamp(System.currentTimeMillis());
+        gliaPayload.setStatus(gliaPayloadStatus);
+        gliaPayload.setThrowable(throwable);
+        return gliaPayload;
+    }
+
 }
