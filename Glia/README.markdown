@@ -71,6 +71,7 @@ Atomikos - http://www.atomikos.com/
 * [DONE] Create restart method for GliaServer & GliaClient
 * [DONE] Add to Client a timeout as a parameter
 
+
 * [DONE] Need to propagate from server to client an exception
 * [DONE] Some troubles with overriden methods
 
