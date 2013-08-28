@@ -15,8 +15,10 @@ import org.jboss.netty.handler.codec.serialization.ObjectEncoder;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
+import java.net.*;
+import java.util.Enumeration;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 
@@ -76,9 +78,42 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         this.instanceName = StringUtils.isEmpty(builder.getInstanceName()) ? UUID.randomUUID().toString() : builder.getInstanceName();
 
         // TODO need to detect HOST NAME
-        this.setHost("DETECT HOST NAME");
+        this.setHost(this.getIpAddress());
 
         this.metrics = new Metrics();
+    }
+
+    private String getIpAddress(){
+        Set<String> ipSet = new TreeSet<String>();
+        Enumeration<NetworkInterface> n = null;
+        try {
+            n = NetworkInterface.getNetworkInterfaces();
+
+            for (; n.hasMoreElements();) {
+                NetworkInterface e = n.nextElement();
+                Enumeration<InetAddress> a = e.getInetAddresses();
+                for (; a.hasMoreElements();) {
+                    InetAddress inetAddress = a.nextElement();
+                    if (inetAddress.getHostAddress() != null){
+                        ipSet.add(inetAddress.getHostAddress());
+                    }
+                }
+            }
+
+            if (ipSet != null && ipSet.size() > 0) {
+                for(String ip: ipSet){
+                    if (!ip.equals("127.0.0.1") & !ip.equalsIgnoreCase("localhost") ){
+                        return ip;
+                    }
+                }
+            }
+
+        } catch (SocketException se) {
+            // TODO need correct logging
+            se.printStackTrace();
+        }
+
+        return "localhost";
     }
 
     /**
@@ -188,7 +223,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         System.out.println("\n\nServer started\n\n");
 
         // TODO need to detect HOST NAME
-        this.setHost("DETECT HOST NAME");
+        this.setHost(this.getIpAddress());
         this.running = true;
     }
 
@@ -215,7 +250,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
 
     private void setHost(String hostName){
         // TODO remove from test implementation code
-        this.host = "localhost";
+        this.host = hostName;
     }
 
     public String getHost(){
@@ -231,6 +266,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
                 "\n setName:" + this.name +
                 "\n instance:" + this.instanceName +
                 "\n port:" + this.port +
+                "\n host:" + this.host +
                 "\n metrics:" + this.metrics +
                 "  \n\n\n";
     }

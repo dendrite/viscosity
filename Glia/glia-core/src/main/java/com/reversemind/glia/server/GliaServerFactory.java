@@ -21,7 +21,6 @@ public class GliaServerFactory implements Serializable {
      */
     //public static Builder builder(Builder.Type setType){
     public static Builder builder(){
-//        return new Builder(setType);
         return new Builder();
     }
 
@@ -249,6 +248,5 @@ public class GliaServerFactory implements Serializable {
             SIMPLE, ZOOKEEPER_ADVERTISER
         }
     }
-
 
 }
