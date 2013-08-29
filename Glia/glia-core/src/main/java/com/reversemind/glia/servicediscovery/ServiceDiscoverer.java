@@ -17,6 +17,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -65,10 +67,24 @@ public class ServiceDiscoverer implements Serializable, Closeable {
         List<ServerMetadata> metadataList = new ArrayList<ServerMetadata>();
         for (ServiceInstance<ServerMetadata> instance : serverFinder.getServers(serviceName)) {
             ServerMetadata serverMetadata = instance.getPayload();
-            System.out.println("found a server with parameters:" + serverMetadata);
 
+            System.out.println("found a server with parameters:" + serverMetadata);
             metadataList.add(serverMetadata);
         }
+
+
+
+        Collections.sort(metadataList, new Comparator<ServerMetadata>() {
+            @Override
+            public int compare(ServerMetadata o1, ServerMetadata o2) {
+                return (int)(o2.getMetrics().getStartDate().getTime() - o1.getMetrics().getStartDate().getTime());
+            }
+        });
+        System.out.println("Sorted by startDate:");
+        for(ServerMetadata metadata: metadataList){
+            System.out.println("server:" + metadata);
+        }
+
 
         return  metadataList;
     }
