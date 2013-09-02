@@ -17,4 +17,5 @@ import java.io.Serializable;
 public interface IClientEJB extends Serializable {
     public IGliaClient getClient();
     public <T> Object getProxy(Class<T> interfaceClass) throws Exception;
+    public String getContextXML();
 }

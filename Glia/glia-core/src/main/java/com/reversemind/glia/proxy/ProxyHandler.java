@@ -3,6 +3,7 @@ package com.reversemind.glia.proxy;
 import com.reversemind.glia.GliaPayload;
 import com.reversemind.glia.GliaPayloadStatus;
 import com.reversemind.glia.client.GliaClient;
+import com.reversemind.glia.client.IGliaClient;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -18,10 +19,10 @@ import java.lang.reflect.Method;
  */
 public class ProxyHandler implements InvocationHandler {
 
-    private GliaClient gliaClient;
+    private IGliaClient gliaClient;
     private Class interfaceClass;
 
-    public ProxyHandler(GliaClient gliaClient, Class interfaceClass){
+    public ProxyHandler(IGliaClient gliaClient, Class interfaceClass){
         this.gliaClient = gliaClient;
         this.interfaceClass = interfaceClass;
     }

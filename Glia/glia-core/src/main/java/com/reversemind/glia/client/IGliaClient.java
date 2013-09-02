@@ -1,5 +1,8 @@
 package com.reversemind.glia.client;
 
+import com.reversemind.glia.GliaPayload;
+
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -21,5 +24,7 @@ public interface IGliaClient extends Serializable {
     public int getPort();
     public String getHost();
 
+    public void send(GliaPayload gliaPayloadSend) throws IOException;
+    public GliaPayload getGliaPayload();
 
 }

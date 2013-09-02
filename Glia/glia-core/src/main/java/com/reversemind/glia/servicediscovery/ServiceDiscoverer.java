@@ -72,19 +72,18 @@ public class ServiceDiscoverer implements Serializable, Closeable {
             metadataList.add(serverMetadata);
         }
 
-
-
         Collections.sort(metadataList, new Comparator<ServerMetadata>() {
             @Override
             public int compare(ServerMetadata o1, ServerMetadata o2) {
                 return (int)(o2.getMetrics().getStartDate().getTime() - o1.getMetrics().getStartDate().getTime());
             }
         });
+
+        // TODO need correct logging
         System.out.println("Sorted by startDate:");
         for(ServerMetadata metadata: metadataList){
             System.out.println("server:" + metadata);
         }
-
 
         return  metadataList;
     }

@@ -1,6 +1,7 @@
 package com.reversemind.glia.proxy;
 
 import com.reversemind.glia.client.GliaClient;
+import com.reversemind.glia.client.IGliaClient;
 
 import java.io.Serializable;
 import java.lang.reflect.Proxy;
@@ -17,12 +18,12 @@ public class ProxyFactory implements Serializable {
     private static final ProxyFactory proxyFactory = new ProxyFactory();
 
     //TODO make it non-static
-    private static GliaClient gliaClient;
+    private static IGliaClient gliaClient;
 
     private ProxyFactory(){
     }
 
-    public static ProxyFactory getInstance(GliaClient client){
+    public static ProxyFactory getInstance(IGliaClient client){
         gliaClient = client;
         return proxyFactory;
     }
