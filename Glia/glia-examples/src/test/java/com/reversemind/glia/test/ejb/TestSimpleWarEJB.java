@@ -8,10 +8,11 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import javax.inject.Inject;
 
 /**
  *
@@ -51,32 +52,32 @@ public class TestSimpleWarEJB {
 
                         .resolveAsFiles())
 
-                .addPackages(true, IAddressDAO.class.getPackage())
-                .addPackages(true, AddressNode.class.getPackage())
-                .addPackages(true, AddressNodeExistException.class.getPackage())
-                .addPackages(true, ru.ttk.baloo.address.service.AddressSearchLocal.class.getPackage())
-                .addPackages(true, IAddressService.class.getPackage())
-
-                .addPackages(true, ru.ttk.baloo.address.shared.PHouse.class.getPackage())
-
-                .addPackages(true, ApplicationProperties.class.getPackage())
-
-                .addAsResource("address-mapper.xml", "address-mapper.xml")
-
-                .addAsResource("glia-interface-map.xml", "META-INF/glia-interface-map.xml")
-                .addAsResource("glia-server-context.xml", "META-INF/glia-server-context.xml")
-                .addAsResource("glia-server.properties", "META-INF/glia-server.properties")
-
-                .addAsResource("glia-client-context.xml", "META-INF/glia-client-context.xml")
-                .addAsResource("glia-client.properties", "META-INF/glia-client.properties")
-
-                .addAsResource("configuration.properties", "configuration.properties")
-                .addAsResource("spring/application.xml", "spring/application.xml")
-                .addAsResource("beanRefContext.xml", "beanRefContext.xml")
-
-
-                .addAsResource("test-persistence-production.xml", "META-INF/persistence.xml")
-                .addAsWebInfResource("jbossas-ds-production.xml", "jbossas-ds.xml")
+//                .addPackages(true, IAddressDAO.class.getPackage())
+//                .addPackages(true, AddressNode.class.getPackage())
+//                .addPackages(true, AddressNodeExistException.class.getPackage())
+//                .addPackages(true, ru.ttk.baloo.address.service.AddressSearchLocal.class.getPackage())
+//                .addPackages(true, IAddressService.class.getPackage())
+//
+//                .addPackages(true, ru.ttk.baloo.address.shared.PHouse.class.getPackage())
+//
+//                .addPackages(true, ApplicationProperties.class.getPackage())
+//
+//                .addAsResource("address-mapper.xml", "address-mapper.xml")
+//
+//                .addAsResource("glia-interface-map.xml", "META-INF/glia-interface-map.xml")
+//                .addAsResource("glia-server-context.xml", "META-INF/glia-server-context.xml")
+//                .addAsResource("glia-server.properties", "META-INF/glia-server.properties")
+//
+//                .addAsResource("glia-client-context.xml", "META-INF/glia-client-context.xml")
+//                .addAsResource("glia-client.properties", "META-INF/glia-client.properties")
+//
+//                .addAsResource("configuration.properties", "configuration.properties")
+//                .addAsResource("spring/application.xml", "spring/application.xml")
+//                .addAsResource("beanRefContext.xml", "beanRefContext.xml")
+//
+//
+//                .addAsResource("test-persistence-production.xml", "META-INF/persistence.xml")
+//                .addAsWebInfResource("jbossas-ds-production.xml", "jbossas-ds.xml")
 
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
