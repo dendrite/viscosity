@@ -40,5 +40,4 @@ public class ClientEJBDiscovery extends AbstractClientEJB implements IClientEJB,
     public IGliaClient getClient() {
         return this.client;
     }
-
 }
