@@ -9,6 +9,7 @@
     <modules>
         <module>glia-examples</module>
         <module>glia-core</module>
+        <module>glia-ejb</module>
     </modules>
     <name>glia</name>
 

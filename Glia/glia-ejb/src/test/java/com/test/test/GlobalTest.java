@@ -1,8 +1,7 @@
-package com.reversemind.glia.test.ejb;
+package com.test.test;
 
-import com.reversemind.glia.simple.SimpleEJB;
-import com.reversemind.glia.simple.shared.ISimpleEJB;
-import com.reversemind.glia.zookeeper.StartZookeeper;
+import com.simple.test.ISimpleEJB;
+import com.simple.test.SimpleEJB;
 import org.apache.log4j.Logger;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
@@ -13,25 +12,18 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import sun.util.LocaleServiceProviderPool;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 
 /**
  *
  */
 @RunWith(Arquillian.class)
-public class TestSimpleWarEJB {
+public class GlobalTest {
 
-    private final static Logger LOG = Logger.getLogger(TestSimpleWarEJB.class);
-
-//    @Inject
-//    GliaClient gliaClient;
+    private final static Logger LOG = Logger.getLogger(GlobalTest.class);
 
     @Inject
     ISimpleEJB simpleEJB;
@@ -44,7 +36,7 @@ public class TestSimpleWarEJB {
         // Не стучимся на remote репы
         resolver.goOffline();
 
-        WebArchive archive = ShrinkWrap.create(WebArchive.class, TestSimpleWarEJB.class.getName() + ".war")
+        WebArchive archive = ShrinkWrap.create(WebArchive.class, "SimpleOtherTest.war")
 
                 // .artifact("GROUPID:ARTIFACTID:TYPE:VERSION")
                 .addAsLibraries(resolver
@@ -68,7 +60,7 @@ public class TestSimpleWarEJB {
 //                .addPackages(true, com.reversemind.glia.simple.GliaClient.class.getPackage())
 //                .addPackages(true, StartZookeeper.class.getPackage())
 //                .addPackages(true, GliaClient.class.getPackage())
-                    .addPackages(true, SimpleEJB.class.getPackage())
+                .addPackages(true, SimpleEJB.class.getPackage())
 
 //                .addAsResource("META-INF/glia-interface-map.xml", "META-INF/glia-interface-map.xml")
 //                .addAsResource("META-INF/glia-server-context.xml", "META-INF/glia-server-context.xml")
@@ -83,30 +75,9 @@ public class TestSimpleWarEJB {
         return archive;
     }
 
-//    @Ignore
     @Test
-    public void testSomething() throws InterruptedException {
-
-//        gliaClient
-        StartZookeeper.start();
-
-        Thread.sleep(10000);
-
-        StartZookeeper.stop();
-
-    }
-
-//    @Ignore
-    @Test
-    public void testSimple() throws Exception {
-//        LOG.info(":Simple test");
-//
-//        ISimpleEJB simpleEJB = gliaClient.getProxy(ISimpleEJB.class);
-    }
-
-    @Test
-    public void simpleTest(){
-        System.out.println("VALUE:=" + simpleEJB.getResult("sdfsdf"));
+    public void testSimple(){
+        System.out.println("@@@@@@@@@@@@:" + simpleEJB.getResult("wdfewrfer"));
     }
 
 }

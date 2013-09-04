@@ -1,4 +1,4 @@
-package com.reversemind.glia.simple.shared;
+package com.simple.test;
 
 import javax.ejb.Local;
 import java.io.Serializable;
