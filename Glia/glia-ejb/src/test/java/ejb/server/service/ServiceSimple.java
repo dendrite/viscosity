@@ -12,12 +12,41 @@ import javax.ejb.Stateless;
 public class ServiceSimple implements IServiceSimple {
 
     @Override
-    public String functionNumberOne(String parameter1, String parameter2) {
-        return "functionNumberOne - summ par1:" + parameter1 + " par2:" + parameter2;
+    public String functionNumber1(String parameter1, String parameter2) {
+        this.delay();
+        return "FN #1 - summ par1:" + parameter1 + " par2:" + parameter2;
     }
 
     @Override
-    public String functionNumberTwo(String parameter1, int parameter2) {
-        return "functionNumberTwo - summ par1:" + parameter1 + " par2*10:" + parameter2*10;
+    public String functionNumber2(String parameter1, String parameter2) {
+        this.delay();
+        return "FN #2 - summ par1:" + parameter1 + " par2:" + parameter2;
     }
+
+    @Override
+    public String functionNumber3(String parameter1, String parameter2) {
+        this.delay();
+        return "FN #3 - summ par1:" + parameter1 + " par2:" + parameter2;
+    }
+
+    @Override
+    public String functionNumber4(String parameter1, String parameter2) {
+        this.delay();
+        return "FN #4 - summ par1:" + parameter1 + " par2:" + parameter2;
+    }
+
+    @Override
+    public String functionNumber5(String parameter1, String parameter2) {
+        this.delay();
+        return "FN #5 - summ par1:" + parameter1 + " par2:" + parameter2;
+    }
+
+    private void delay() {
+        try {
+            Thread.sleep(Math.round(1000 * Math.random()));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
