@@ -14,7 +14,7 @@
     </util:map>
 
     <util:map id="ejbMap" map-class="java.util.HashMap" key-type="java.lang.Class" value-type="java.lang.String">
-        <entry key="ejb.shared.ISimpleService" value="java:global/ServerTest/SimpleService!ejb.shared.ISimpleService"/>
+        <entry key="ejb.shared.IServiceSimple" value="java:global/ServerTest/ServiceSimple!ejb.shared.IServiceSimple"/>
     </util:map>
 
 </beans>

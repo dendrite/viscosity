@@ -1,6 +1,6 @@
 package ejb.server.service;
 
-import ejb.shared.ISimpleService;
+import ejb.shared.IServiceSimple;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -8,8 +8,8 @@ import javax.ejb.Stateless;
 /**
  */
 @Stateless
-@Local(ISimpleService.class)
-public class SimpleService implements ISimpleService {
+@Local(IServiceSimple.class)
+public class ServiceSimple implements IServiceSimple {
 
     @Override
     public String functionNumberOne(String parameter1, String parameter2) {

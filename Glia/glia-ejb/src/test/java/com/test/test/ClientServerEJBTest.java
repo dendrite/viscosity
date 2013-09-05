@@ -2,8 +2,8 @@ package com.test.test;
 
 import ejb.client.ClientSimple;
 import ejb.server.ServerSimple;
-import ejb.server.service.SimpleService;
-import ejb.shared.ISimpleService;
+import ejb.server.service.ServiceSimple;
+import ejb.shared.IServiceSimple;
 import ejb.zookeeper.RunZookeeper;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
@@ -26,7 +26,7 @@ import javax.inject.Inject;
 public class ClientServerEJBTest {
 
     @Inject
-    ISimpleService simpleService;
+    IServiceSimple simpleService;
 
     @Inject
     ClientSimple clientSimple;
@@ -60,8 +60,8 @@ public class ClientServerEJBTest {
 
                         .resolveAsFiles())
 
-                .addPackages(true, ISimpleService.class.getPackage())
-                .addPackages(true, SimpleService.class.getPackage())
+                .addPackages(true, IServiceSimple.class.getPackage())
+                .addPackages(true, ServiceSimple.class.getPackage())
                 .addPackages(true, ServerSimple.class.getPackage())
                 .addPackages(true, RunZookeeper.class.getPackage())
                 .addPackages(true, ClientSimple.class.getPackage())
@@ -87,7 +87,7 @@ public class ClientServerEJBTest {
 
     @Test
     public void testClient() throws Exception {
-        ISimpleService proxyService = clientSimple.getProxy(ISimpleService.class);
+        IServiceSimple proxyService = clientSimple.getProxy(IServiceSimple.class);
         System.out.println("proxyService: " + proxyService.functionNumberOne("1","2"));
     }
 
