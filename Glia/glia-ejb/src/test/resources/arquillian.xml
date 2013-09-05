@@ -11,10 +11,6 @@
 
     <container qualifier="jbossas-managed" default="true">
         <configuration>
-
-            <!--It's a correct relative path to maven's uploadable JBoss -->
-            <!--<property name="jbossHome">address-test/target/jboss-as-7.1.1.Final</property>-->
-
             <!--I think it's a better practice just use a preconfigures JBoss-->
             <!--<property name="jbossHome">/jbossas7_test</property>-->
             <property name="jbossHome">/usr/jboss/test_jbossas7</property>
@@ -28,17 +24,4 @@
             <property name="password">admin123</property>
         </configuration>
     </container>
-
-    <!--<extension qualifier="persistence">-->
-        <!--&lt;!&ndash;java:/datasource/arquillian - this is added dynamically look jbossas-ds.xml&ndash;&gt;-->
-        <!--<property name="defaultDataSource">java:/datasource/arquillian</property>-->
-        <!--&lt;!&ndash;<property name="userTransactionJndi">java:jboss/UserTransaction</property>&ndash;&gt;-->
-        <!--&lt;!&ndash;<property name="alwaysExcludeFromDataSetsComparision">id</property>&ndash;&gt;-->
-    <!--</extension>-->
-
-    <!--<extension qualifier="persistence-dbunit">-->
-        <!--<property name="datatypeFactory">org.dbunit.ext.postgresql.PostgresqlDataTypeFactory</property>-->
-        <!--&lt;!&ndash;<property name="excludeTablesFromCleanup">hibernate_sequence</property>&ndash;&gt;-->
-    <!--</extension>-->
-
 </arquillian>

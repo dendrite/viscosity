@@ -1,7 +1,7 @@
 package com.test.test;
 
 import ejb.client.ClientSimple;
-import ejb.server.GliaSimpleServer;
+import ejb.server.ServerSimple;
 import ejb.server.service.SimpleService;
 import ejb.shared.ISimpleService;
 import ejb.zookeeper.RunZookeeper;
@@ -62,7 +62,7 @@ public class ClientServerEJBTest {
 
                 .addPackages(true, ISimpleService.class.getPackage())
                 .addPackages(true, SimpleService.class.getPackage())
-                .addPackages(true, GliaSimpleServer.class.getPackage())
+                .addPackages(true, ServerSimple.class.getPackage())
                 .addPackages(true, RunZookeeper.class.getPackage())
                 .addPackages(true, ClientSimple.class.getPackage())
 

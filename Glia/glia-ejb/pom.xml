@@ -26,11 +26,6 @@
             </testResource>
             <testResource>
                 <directory>${project.basedir}/src/test/resources-server</directory>
-                <!--<includes>-->
-                    <!--<include>META-INF/glia-interface-map.xml</include>-->
-                    <!--<include>META-INF/glia-server-context.xml</include>-->
-                    <!--<include>META-INF/glia-server.properties</include>-->
-                <!--</includes>-->
             </testResource>
         </testResources>
 
@@ -69,79 +64,18 @@
             <groupId>com.reversemind</groupId>
             <artifactId>glia-core</artifactId>
             <version>1.7.5-SNAPSHOT</version>
-            <!--<type>jar</type>-->
-            <!--<scope>test</scope>-->
         </dependency>
 
 
+        <!--ARQUILLIAN-->
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
 
 
-        <!--&lt;!&ndash;JBOSS + EJB&ndash;&gt;-->
-
-        <!--&lt;!&ndash;JNDI LOOKUP JBOSS&ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.jboss.spec.javax.ejb</groupId>-->
-            <!--<artifactId>jboss-ejb-api_3.1_spec</artifactId>-->
-            <!--<version>1.0.2.Final</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.jboss.as</groupId>-->
-            <!--<artifactId>jboss-as-naming</artifactId>-->
-            <!--<version>7.1.1.Final</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.jboss.spec.javax.transaction</groupId>-->
-            <!--<artifactId>jboss-transaction-api_1.1_spec</artifactId>-->
-            <!--<version>1.0.0.Final</version>-->
-            <!--<scope>runtime</scope>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.jboss.logging</groupId>-->
-            <!--<artifactId>jboss-logging</artifactId>-->
-            <!--<version>3.1.2.GA</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.jboss</groupId>-->
-            <!--<artifactId>jboss-ejb-client</artifactId>-->
-            <!--<version>1.0.9.Final</version>-->
-            <!--<scope>runtime</scope>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; Remote EJB accesses can be secured &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.jboss.sasl</groupId>-->
-            <!--<artifactId>jboss-sasl</artifactId>-->
-            <!--<version>1.0.3.Final</version>-->
-            <!--<scope>runtime</scope>-->
-        <!--</dependency>-->
-
-
-
-        <!--&lt;!&ndash; data serialization for invoking remote EJBs &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>org.jboss.marshalling</groupId>-->
-            <!--<artifactId>jboss-marshalling-river</artifactId>-->
-            <!--<version>1.3.9.GA</version>-->
-            <!--<scope>runtime</scope>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.jboss.remoting3</groupId>-->
-            <!--<artifactId>jboss-remoting</artifactId>-->
-            <!--<scope>runtime</scope>-->
-            <!--<version>3.2.14.GA</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.jboss.ejb3</groupId>-->
-            <!--<artifactId>jboss-ejb3-ext-api</artifactId>-->
-            <!--<version>2.0.0-beta-3</version>-->
-        <!--</dependency>-->
-
+        <!--JBOSS XNIO-->
         <dependency>
             <groupId>org.jboss.xnio</groupId>
             <artifactId>xnio-api</artifactId>
@@ -157,18 +91,10 @@
         </dependency>
 
 
-
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.8.1</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-container</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -196,36 +122,6 @@
                     <scope>test</scope>
                 </dependency>
             </dependencies>
-            <!-- This optional build configuration downloads and extracts JBoss AS automatically -->
-            <!-- Remove it if you want to use an existing installation defined by the JBOSS_HOME environment variable -->
-            <!--<build>-->
-                <!--<plugins>-->
-                    <!--<plugin>-->
-                        <!--<artifactId>maven-dependency-plugin</artifactId>-->
-                        <!--<executions>-->
-                            <!--<execution>-->
-                                <!--<id>unpack</id>-->
-                                <!--<phase>process-test-classes</phase>-->
-                                <!--<goals>-->
-                                    <!--<goal>unpack</goal>-->
-                                <!--</goals>-->
-                                <!--<configuration>-->
-                                    <!--<artifactItems>-->
-                                        <!--<artifactItem>-->
-                                            <!--<groupId>org.jboss.as</groupId>-->
-                                            <!--<artifactId>jboss-as-dist</artifactId>-->
-                                            <!--<version>7.1.1.Final</version>-->
-                                            <!--<type>zip</type>-->
-                                            <!--<overWrite>false</overWrite>-->
-                                            <!--<outputDirectory>target</outputDirectory>-->
-                                        <!--</artifactItem>-->
-                                    <!--</artifactItems>-->
-                                <!--</configuration>-->
-                            <!--</execution>-->
-                        <!--</executions>-->
-                    <!--</plugin>-->
-                <!--</plugins>-->
-            <!--</build>-->
         </profile>
     </profiles>
 
