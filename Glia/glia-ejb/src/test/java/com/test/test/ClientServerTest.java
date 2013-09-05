@@ -23,7 +23,7 @@ import javax.inject.Inject;
  *
  */
 @RunWith(Arquillian.class)
-public class ClientServerEJBTest {
+public class ClientServerTest {
 
     @Inject
     IServiceSimple simpleService;
