@@ -30,7 +30,7 @@ public class ServerEJB implements Serializable {
 //        System.setProperty("java.security.auth.login.config","/opt/zookeeper/conf");
         System.setProperty("curator-log-events", "true");
 
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-server-context.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(this.getContextXML());
         GliaServerFactory.Builder builderAdvertiser = applicationContext.getBean("serverBuilder",GliaServerFactory.Builder.class);
 
         System.out.println("--------------------------------------------------------");
@@ -71,5 +71,9 @@ public class ServerEJB implements Serializable {
             this.server.shutdown();
             System.out.println("SERVER SHUTDOWN");
         }
+    }
+
+    public String getContextXML(){
+        return "META-INF/glia-server-context.xml";
     }
 }

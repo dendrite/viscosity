@@ -1,8 +1,10 @@
 package com.test.test;
 
-import com.simple.test.ISimpleEJB;
-import com.simple.test.SimpleEJB;
-import org.apache.log4j.Logger;
+import ejb.client.ClientSimple;
+import ejb.server.GliaSimpleServer;
+import ejb.server.service.SimpleService;
+import ejb.shared.ISimpleService;
+import ejb.zookeeper.RunZookeeper;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.junit.Arquillian;
@@ -21,12 +23,13 @@ import javax.inject.Inject;
  *
  */
 @RunWith(Arquillian.class)
-public class GlobalTest {
-
-    private final static Logger LOG = Logger.getLogger(GlobalTest.class);
+public class ClientServerEJBTest {
 
     @Inject
-    ISimpleEJB simpleEJB;
+    ISimpleService simpleService;
+
+    @Inject
+    ClientSimple clientSimple;
 
     @Deployment
     @TargetsContainer("jbossas-managed")
@@ -36,8 +39,8 @@ public class GlobalTest {
         // Не стучимся на remote репы
         resolver.goOffline();
 
-        WebArchive archive = ShrinkWrap.create(WebArchive.class, "SimpleOtherTest.war")
-
+        WebArchive archive = ShrinkWrap.create(WebArchive.class, "ServerTest.war")
+                // tip:
                 // .artifact("GROUPID:ARTIFACTID:TYPE:VERSION")
                 .addAsLibraries(resolver
                         .artifact("org.springframework:spring-core:3.0.7.RELEASE")
@@ -57,17 +60,18 @@ public class GlobalTest {
 
                         .resolveAsFiles())
 
-//                .addPackages(true, com.reversemind.glia.simple.GliaClient.class.getPackage())
-//                .addPackages(true, StartZookeeper.class.getPackage())
-//                .addPackages(true, GliaClient.class.getPackage())
-                .addPackages(true, SimpleEJB.class.getPackage())
+                .addPackages(true, ISimpleService.class.getPackage())
+                .addPackages(true, SimpleService.class.getPackage())
+                .addPackages(true, GliaSimpleServer.class.getPackage())
+                .addPackages(true, RunZookeeper.class.getPackage())
+                .addPackages(true, ClientSimple.class.getPackage())
 
-//                .addAsResource("META-INF/glia-interface-map.xml", "META-INF/glia-interface-map.xml")
-//                .addAsResource("META-INF/glia-server-context.xml", "META-INF/glia-server-context.xml")
-//                .addAsResource("META-INF/glia-server.properties", "META-INF/glia-server.properties")
-//
-//                .addAsResource("META-INF/glia-client-context.xml", "META-INF/glia-client-context.xml")
-//                .addAsResource("META-INF/glia-client.properties", "META-INF/glia-client.properties")
+                .addAsResource("META-INF/glia-interface-map.xml", "META-INF/glia-interface-map.xml")
+                .addAsResource("META-INF/glia-server-context.xml", "META-INF/glia-server-context.xml")
+                .addAsResource("META-INF/glia-server.properties", "META-INF/glia-server.properties")
+
+                .addAsResource("META-INF/glia-client-context.xml", "META-INF/glia-client-context.xml")
+                .addAsResource("META-INF/glia-client.properties", "META-INF/glia-client.properties")
 
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
@@ -76,8 +80,15 @@ public class GlobalTest {
     }
 
     @Test
-    public void testSimple(){
-        System.out.println("@@@@@@@@@@@@:" + simpleEJB.getResult("wdfewrfer"));
+    public void testSimple() throws InterruptedException {
+        System.out.println("############");
+        System.out.println("info:" + simpleService.functionNumberOne("1","2"));
+    }
+
+    @Test
+    public void testClient() throws Exception {
+        ISimpleService proxyService = clientSimple.getProxy(ISimpleService.class);
+        System.out.println("proxyService: " + proxyService.functionNumberOne("1","2"));
     }
 
 }

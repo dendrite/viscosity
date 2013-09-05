@@ -67,6 +67,9 @@ Atomikos - http://www.atomikos.com/
 
 
 * ProxyHandler - What if impossible to load a specific Class
+* look through is glia-server-context.xml - exists?? - just wrap it into exception!
+
+* [DONE] Need GliaServerEJBContainer Arquillian JUnit Test
 
 * [DONE] Create restart method for GliaServer & GliaClient
 * [DONE] Add to Client a timeout as a parameter
@@ -78,8 +81,6 @@ Atomikos - http://www.atomikos.com/
 * Build Client from a Builder pattern
 * Publish in zookeeper a list (names - canonical java names) of interfaces inside a GliaServer
 * [DONE] Make a typezation without cast IAskServer askServer = (IAskServer) gliaClientProxy.getProxy(IAskServer.class);
-
-* look through is glia-server-context.xml - exists?? - just wrap it into exception!
 
 * [DONE] What about a reconnect - tested under EJB
 * [DONE] If connection was lost from client - need to reconnection another instance - tested under EJB
@@ -95,7 +96,7 @@ https://issues.apache.org/jira/browse/ZOOKEEPER-1554
 
 
 * GliaServerEJBContainer - right now tested only for JBoss 7.1.1.Final - test dependency for different application servers (GlassFish, JBoss)
-* Need GliaServerEJBContainer Arquillian JUnit Test
+
 
 * Some troubles with metrics update in zookeeper
 
