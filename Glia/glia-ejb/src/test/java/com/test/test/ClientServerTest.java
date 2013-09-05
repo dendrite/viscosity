@@ -101,7 +101,7 @@ public class ClientServerTest {
     public void testMutliThreaded() throws Exception {
 
         // Number of threads
-        final int size = 30;
+        final int size = 100;
 
         IServiceSimple proxyService = clientSimple.getProxy(IServiceSimple.class);
 
@@ -166,7 +166,7 @@ public class ClientServerTest {
 
         private IServiceSimple serviceSimple;
         private int number = 0;
-        private String localString = "";
+        private String resultValue = "";
 
         ClientCallable(IServiceSimple serviceSimple, int number){
             this.serviceSimple = serviceSimple;
@@ -183,26 +183,26 @@ public class ClientServerTest {
 
             switch (currentValue){
                 case 0:
-                        this.localString = serviceSimple.functionNumber1("1", "1");
+                        this.resultValue = this.serviceSimple.functionNumber1("1", "1");
                         break;
                 case 1:
-                        this.localString = serviceSimple.functionNumber2("2", "2");
+                        this.resultValue = this.serviceSimple.functionNumber2("2", "2");
                         break;
                 case 2:
-                        this.localString = serviceSimple.functionNumber3("3","3");
+                        this.resultValue = this.serviceSimple.functionNumber3("3","3");
                         break;
                 case 3:
-                        this.localString = serviceSimple.functionNumber4("4","4");
+                        this.resultValue = this.serviceSimple.functionNumber4("4","4");
                         break;
                 case 4:
-                        this.localString = serviceSimple.functionNumber5("5","5");
+                        this.resultValue = this.serviceSimple.functionNumber5("5","5");
                         break;
                 default:
-                        this.localString = serviceSimple.functionNumber1("1", "1");
+                        this.resultValue = this.serviceSimple.functionNumber1("1", "1");
                         break;
             }
 
-            return "CL:" + (this.number+1) + " " + this.localString;
+            return "CL:" + (this.number+1) + " " + this.resultValue;
         }
     }
 

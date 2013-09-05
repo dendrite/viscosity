@@ -42,11 +42,11 @@ public class ServiceSimple implements IServiceSimple {
     }
 
     private void delay() {
-        try {
-            Thread.sleep(Math.round(1000 * Math.random()));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(Math.round(1000 * Math.random()));
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
 }
