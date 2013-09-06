@@ -180,7 +180,7 @@ public class ClientServerTest {
     public void testMutliThreaded() throws Exception {
 
         // Number of threads
-        final int size = 5;
+        final int size = 30;
 
 
         System.out.println("clientSimple1:" + clientSimple);
@@ -251,7 +251,7 @@ public class ClientServerTest {
     public void testMutliThreadProxyClient() throws Exception {
 
         // Number of threads
-        final int size = 5;
+        final int size = 30;
 
 
         System.out.println("clientSimple1:" + clientSimple);

@@ -1,6 +1,7 @@
 package com.reversemind.glia.proxy;
 
 import com.reversemind.glia.client.ClientPool;
+import com.reversemind.glia.client.ClientPoolFactory;
 import com.reversemind.glia.client.IGliaClient;
 
 import java.lang.reflect.InvocationHandler;
@@ -24,10 +25,24 @@ public class ProxyHandlerPool extends AbstractProxyHandler implements Invocation
     public IGliaClient getGliaClient() throws Exception{
         if(this.gliaClient == null){
 //            synchronized (this.gliaClient){
+            try{
                 this.gliaClient = this.clientPool.borrowObject();
-                System.out.println("PPOL METRICS:" + this.clientPool.printPoolMetrics());
+            }catch (Exception ex){
+                ex.printStackTrace();
+                System.out.println("Try to reload pool");
+                ClientPoolFactory clientPoolFactory = this.clientPool.getClientPoolFactory();
+                this.clientPool.clear();
+                this.clientPool.close();
+                this.clientPool = null;
+                this.clientPool = new ClientPool(clientPoolFactory);
+
+                this.gliaClient = this.clientPool.borrowObject();
+            }
+
+
 //            }
         }
+        System.out.println("PPOL METRICS:" + this.clientPool.printPoolMetrics());
         return this.gliaClient;
     }
 
