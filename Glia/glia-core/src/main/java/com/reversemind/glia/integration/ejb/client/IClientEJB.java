@@ -1,6 +1,7 @@
 package com.reversemind.glia.integration.ejb.client;
 
 import com.reversemind.glia.client.GliaClient;
+import com.reversemind.glia.client.GliaClientServerDiscovery;
 import com.reversemind.glia.client.IGliaClient;
 
 import javax.ejb.Local;
@@ -15,7 +16,10 @@ import java.io.Serializable;
  */
 @Local
 public interface IClientEJB extends Serializable {
-    public IGliaClient getClient();
+
+    public String getGliaClientBeanName();
+    public Class getGliaClientBeanClass();
+
     public <T> Object getProxy(Class<T> interfaceClass) throws Exception;
     public String getContextXML();
 }

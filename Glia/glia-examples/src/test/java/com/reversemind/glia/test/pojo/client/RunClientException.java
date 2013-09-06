@@ -19,7 +19,7 @@ public class RunClientException {
         GliaClient client = new GliaClient(serverHost, serverPort);
         client.start();
 
-        ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance(client).newProxyInstance(ISimplePojo.class);
+        ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance().newProxyInstance(client, ISimplePojo.class);
 
         System.out.println("\n\n=======================");
 

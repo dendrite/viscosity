@@ -47,6 +47,7 @@ public class GliaClient implements IGliaClient, Serializable {
     private ChannelFactory channelFactory;
     private long futureTaskTimeOut = FUTURE_TASK_TIME_OUT;
     private boolean running = false;
+    private boolean occupied = false;
 
     protected GliaClient() {
         this.port = 7000;
@@ -66,7 +67,6 @@ public class GliaClient implements IGliaClient, Serializable {
         this.host = host;
         this.port = port;
         this.gliaPayload = null;
-
 
         if(timeout > 0){
             this.futureTaskTimeOut = timeout;
@@ -93,7 +93,7 @@ public class GliaClient implements IGliaClient, Serializable {
     }
 
     public boolean isRunning() {
-        return running;
+        return this.running;
     }
 
     @Override
@@ -128,40 +128,40 @@ public class GliaClient implements IGliaClient, Serializable {
     }
 
     /**
-     * Will wait maximum for a 2 seconds
+     * Will wait maximum for a this.futureTaskTimeOut ms
      * @return
      */
     public GliaPayload getGliaPayload() {
 
         if(this.futureTask != null){
-
             try {
-
                 this.setGliaPayload(this.futureTask.get(this.futureTaskTimeOut, TimeUnit.MILLISECONDS));
-
             } catch (TimeoutException e) {
-                LOG.log(Level.WARNING,"TimeoutException futureTask == HERE");
+                LOG.log(Level.WARNING, "TimeoutException futureTask == HERE", e);
                 this.futureTask.cancel(true);
-                //e.printStackTrace();
             } catch (InterruptedException e) {
-                LOG.log(Level.WARNING,"InterruptedException futureTask == HERE");
-                //e.printStackTrace();
+                LOG.log(Level.WARNING, "InterruptedException futureTask == HERE", e);
             } catch (ExecutionException e) {
-                LOG.log(Level.WARNING,"ExecutionException futureTask == HERE");
-                //e.printStackTrace();
-            }catch(CancellationException ce){
-                LOG.log(Level.WARNING,"Future task was Canceled - YES!!!");
+                LOG.log(Level.WARNING, "ExecutionException futureTask == HERE", e);
+            } catch (CancellationException ce) {
+                LOG.log(Level.WARNING, "Future task was Canceled - YES !!!");
             } catch (Exception e) {
-                LOG.log(Level.WARNING,"GENERAL Exception futureTask == HERE");
-                e.printStackTrace();
+                LOG.log(Level.WARNING, "GENERAL Exception futureTask == HERE",e);
             }
         }
+
+        this.occupied = false;
 
         if(this.gliaPayload != null){
             return this.gliaPayload;
         }
 
         return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_SERVER_TIMEOUT);
+    }
+
+    @Override
+    public boolean isOccupied() {
+        return this.occupied;
     }
 
     private void setGliaPayload(GliaPayload inGliaPayload) {
@@ -185,6 +185,9 @@ public class GliaClient implements IGliaClient, Serializable {
             if(gliaPayloadSend != null){
                 LOG.info("Send from GliaClient gliaPayload:" + gliaPayloadSend.toString());
                 gliaPayloadSend.setClientTimestamp(System.currentTimeMillis());
+
+                // client is occupied
+                this.occupied = true;
                 this.channel.write(gliaPayloadSend);
 
                 this.shutDownExecutor();
@@ -223,6 +226,7 @@ public class GliaClient implements IGliaClient, Serializable {
         this.clientBootstrap = null;
 
         this.running = false;
+        this.occupied = false;
     }
 
     @Override

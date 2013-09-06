@@ -1,5 +1,6 @@
 package com.reversemind.glia.integration.ejb.client;
 
+import com.reversemind.glia.client.ClientPool;
 import com.reversemind.glia.client.GliaClient;
 import com.reversemind.glia.client.GliaClientServerDiscovery;
 import com.reversemind.glia.client.IGliaClient;
@@ -35,10 +36,32 @@ import java.util.Date;
 @Singleton
 public class ClientEJB extends AbstractClientEJB implements IClientEJB, Serializable  {
 
-    private GliaClient client;
+    /**
+     *
+     * Name look at glia-client-context.xml
+     *
+         <bean id="gliaClientServerDiscovery" class="com.reversemind.glia.client.GliaClientServerDiscovery" scope="prototype">
+             <constructor-arg index="0" value="${glia.client.zookeeper.connection}" />
+             <constructor-arg index="1" value="${glia.client.zookeeper.base.path}" />
+             <constructor-arg index="2" value="${glia.client.service.name}" />
+             <constructor-arg index="3" value="${glia.client.timeout}" />
+             <constructor-arg index="4" ref="selectorStrategy" />
+         </bean>
 
-    @Override
-    public IGliaClient getClient() {
-        return this.client;
+
+         <bean id="gliaClient" class="com.reversemind.glia.client.GliaClient" scope="prototype">
+             <constructor-arg index="0" value="${glia.client.service.host}" />
+             <constructor-arg index="1" value="${glia.client.service.port}" />
+         </bean>
+     *
+     * @return
+     */
+    public String getGliaClientBeanName(){
+        return "gliaClient";
     }
+
+    public Class getGliaClientBeanClass(){
+        return GliaClient.class;
+    }
+
 }

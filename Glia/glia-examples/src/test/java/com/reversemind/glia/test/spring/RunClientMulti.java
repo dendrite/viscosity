@@ -36,7 +36,7 @@ public class RunClientMulti implements Serializable {
                 public void run() {
 
                     for(int i=0;i<1;i++){
-                        ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance(client).newProxyInstance(ISimplePojo.class);
+                        ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance().newProxyInstance(client, ISimplePojo.class);
 
                         List<PAddressNode> list = simplePojoProxy.searchAddress(this.getName());
 

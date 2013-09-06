@@ -17,23 +17,19 @@ public class ProxyFactory implements Serializable {
 
     private static final ProxyFactory proxyFactory = new ProxyFactory();
 
-    //TODO make it non-static
-    private static IGliaClient gliaClient;
-
     private ProxyFactory(){
     }
 
-    public static ProxyFactory getInstance(IGliaClient client){
-        gliaClient = client;
+    public static ProxyFactory getInstance(){
         return proxyFactory;
     }
 
-    public Object newProxyInstance(Class interfaceClass){
-
+    public Object newProxyInstance(IGliaClient client, Class interfaceClass){
+        // make map for classLoader - key is a interfaceClass.name
         ClassLoader classLoader = interfaceClass.getClassLoader();
-        System.out.println(" ^^^^^^^^^^ GLIA PROXY FACTORY gliaClient:" + gliaClient);
+        System.out.println(" ^^^^^^^^^^ GLIA PROXY FACTORY gliaClient:" + client);
         System.out.println(" ^^^^^^^^^^ GLIA PROXY FACTORY classLoader:" + classLoader);
-
-        return Proxy.newProxyInstance(classLoader, new Class[]{interfaceClass}, new ProxyHandler(gliaClient, interfaceClass));
+        return Proxy.newProxyInstance(classLoader, new Class[]{interfaceClass}, new ProxyHandler(client, interfaceClass));
     }
+
 }

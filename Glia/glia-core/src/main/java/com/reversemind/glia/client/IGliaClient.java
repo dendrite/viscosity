@@ -27,4 +27,5 @@ public interface IGliaClient extends Serializable {
     public void send(GliaPayload gliaPayloadSend) throws IOException;
     public GliaPayload getGliaPayload();
 
+    public boolean isOccupied();
 }

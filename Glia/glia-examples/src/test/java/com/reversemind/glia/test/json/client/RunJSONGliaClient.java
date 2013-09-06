@@ -21,7 +21,7 @@ public class RunJSONGliaClient {
         gliaClient.start();
 
         // create proxy for remote service
-        IDoSomething doSomething = (IDoSomething) ProxyFactory.getInstance(gliaClient).newProxyInstance(IDoSomething.class);
+        IDoSomething doSomething = (IDoSomething) ProxyFactory.getInstance().newProxyInstance(gliaClient, IDoSomething.class);
 
         // call remote server
         String jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago"));

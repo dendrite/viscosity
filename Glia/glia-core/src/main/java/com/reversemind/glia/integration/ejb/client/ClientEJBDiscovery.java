@@ -34,10 +34,11 @@ import java.util.Date;
 @Singleton
 public class ClientEJBDiscovery extends AbstractClientEJB implements IClientEJB, Serializable {
 
-    private GliaClientServerDiscovery client;
+    public String getGliaClientBeanName(){
+        return "gliaClientServerDiscovery";
+    }
 
-    @Override
-    public IGliaClient getClient() {
-        return this.client;
+    public Class getGliaClientBeanClass(){
+        return GliaClientServerDiscovery.class;
     }
 }

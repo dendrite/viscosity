@@ -27,7 +27,7 @@ public class RunClient {
         client.start();
 
 
-        ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance(client).newProxyInstance(ISimplePojo.class);
+        ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance().newProxyInstance(client,ISimplePojo.class);
 
         List<PAddressNode> list = simplePojoProxy.searchAddress("Москва");
 

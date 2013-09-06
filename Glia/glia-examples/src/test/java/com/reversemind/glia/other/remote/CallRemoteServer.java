@@ -27,7 +27,7 @@ public class CallRemoteServer implements Serializable {
         GliaClient client = new GliaClient(serverHost,serverPort);
         client.start();
 
-        IAddressSearch addressSearch = (IAddressSearch) ProxyFactory.getInstance(client).newProxyInstance(IAddressSearch.class);
+        IAddressSearch addressSearch = (IAddressSearch) ProxyFactory.getInstance().newProxyInstance(client, IAddressSearch.class);
 
         List<AddressSearchResult> list = addressSearch.doSearch("Чонгарский");
         if(list != null && list.size() > 0){

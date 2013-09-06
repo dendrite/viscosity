@@ -19,7 +19,7 @@ public class ServiceSimple implements IServiceSimple {
 
     @Override
     public String functionNumber2(String parameter1, String parameter2) {
-        this.delay();
+        this.delay(1000);
         return "FN #2 - summ par1:" + parameter1 + " par2:" + parameter2;
     }
 
@@ -47,6 +47,19 @@ public class ServiceSimple implements IServiceSimple {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void delay(long delayTime) {
+        try {
+            Thread.sleep(delayTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }
