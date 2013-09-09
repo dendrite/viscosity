@@ -321,6 +321,7 @@ public class ClientServerTest {
         System.out.println("\n\n\n ====== DONE ====== \n\n");
     }
 
+
     class ClientCallable implements Callable<String>{
 
         private IServiceSimple serviceSimple;
