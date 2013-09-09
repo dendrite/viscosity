@@ -23,6 +23,8 @@ import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -110,6 +112,13 @@ public class ClientServerTest {
         System.out.println(clientPool.printPoolMetrics());
     }
 
+    @Test
+    public void testPoolSize(){
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-client-context.xml");
+        int poolSize = applicationContext.getBean("poolSize", java.lang.Integer.class);
+        System.out.println("Pool size:" + poolSize);
+    }
+
 
 
 
@@ -180,8 +189,7 @@ public class ClientServerTest {
     public void testMutliThreaded() throws Exception {
 
         // Number of threads
-        final int size = 30;
-
+        final int size = 20;
 
         System.out.println("clientSimple1:" + clientSimple);
 
@@ -251,8 +259,7 @@ public class ClientServerTest {
     public void testMutliThreadProxyClient() throws Exception {
 
         // Number of threads
-        final int size = 30;
-
+        final int size = 20;
 
         System.out.println("clientSimple1:" + clientSimple);
 
@@ -262,7 +269,6 @@ public class ClientServerTest {
             System.out.println("proxyService:" + proxyService);
             serviceSimpleList.add(proxyService);
         }
-
 
         List<ClientCallable> clientCallableList = new ArrayList<ClientCallable>();
 
@@ -341,6 +347,7 @@ public class ClientServerTest {
                 currentValue = this.number % 5;
             }
 
+            try{
             switch (currentValue){
                 case 0:
                         this.resultValue = this.serviceSimple.functionNumber1("1", "1");
@@ -362,6 +369,11 @@ public class ClientServerTest {
                         break;
             }
 
+            }catch(Exception ex){
+                System.out.println("Callable exception");
+                ex.printStackTrace();
+                return "CL:" + (this.number+1) + " " + "EXCEPTION!!!!";
+            }
             return "CL:" + (this.number+1) + " " + this.resultValue;
         }
     }

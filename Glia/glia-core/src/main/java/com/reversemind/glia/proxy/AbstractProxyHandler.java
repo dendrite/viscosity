@@ -30,7 +30,7 @@ public abstract class AbstractProxyHandler implements InvocationHandler {
             throw new RuntimeException("Client is null");
         }
 
-//        synchronized (this.getGliaClient()){
+        synchronized (this.getGliaClient()){
             System.out.println("\n\n\n" + "!!!!!!!!!!!!!!!!\n" + "Invoke REMOTE METHOD\n\n\n");
 
             System.out.println("Method:" + method.getName());
@@ -57,7 +57,7 @@ public abstract class AbstractProxyHandler implements InvocationHandler {
             if(this.getGliaClient() != null){
                 System.out.println(" =GLIA= is running gliaClient:" + this.getGliaClient().isRunning());
             }
-            assert getGliaClient() != null;
+            assert this.getGliaClient() != null;
 
             // TODO need to refactor this catcher
             try{
@@ -108,7 +108,7 @@ public abstract class AbstractProxyHandler implements InvocationHandler {
 //        System.out.println("==7");
 
 
-//        } //synchronized
+        } //synchronized
 
         return null;
     }

@@ -8,7 +8,7 @@ import org.apache.commons.pool.impl.GenericObjectPool;
  */
 public class ClientPool extends GenericObjectPool<IGliaClient> {
 
-
+    private static int START_POOL_SIZE = 10;
     private ClientPoolFactory clientPoolFactory;
 
     /**
@@ -18,9 +18,16 @@ public class ClientPool extends GenericObjectPool<IGliaClient> {
      * @param clientPoolFactory
      */
     public ClientPool(ClientPoolFactory clientPoolFactory){
-        // int maxActive, byte whenExhaustedAction, long maxWait
-        super(clientPoolFactory, 30, (byte)1, 60 * 1000);
+        // int maxActive, byte WHEN_EXHAUSTED_GROW, long maxWait
+        super(clientPoolFactory, START_POOL_SIZE, GenericObjectPool.WHEN_EXHAUSTED_GROW, 30 * 1000);
         this.clientPoolFactory = clientPoolFactory;
+    }
+
+    public ClientPool(ClientPoolFactory clientPoolFactory, int poolSize){
+        // int maxActive, byte WHEN_EXHAUSTED_GROW, long maxWait
+        super(clientPoolFactory, poolSize, GenericObjectPool.WHEN_EXHAUSTED_GROW, 30 * 1000);
+        this.clientPoolFactory = clientPoolFactory;
+        START_POOL_SIZE = poolSize;
     }
 
     public ClientPoolFactory getClientPoolFactory(){

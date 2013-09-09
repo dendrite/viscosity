@@ -12,6 +12,7 @@ public class ClientPoolFactory extends BasePoolableObjectFactory<IGliaClient> {
     private String contextXML;
     private String beanName;
     private Class<? extends IGliaClient> clientClazz;
+    private int poolSize;
 
     public ClientPoolFactory(String contextXML, String beanName, Class<? extends IGliaClient> clientClazz) {
         this.contextXML = contextXML;

@@ -30,4 +30,8 @@
         <constructor-arg index="1" value="${glia.client.service.port}" />
     </bean>
 
+    <bean id="poolSize" class="java.lang.Integer">
+        <constructor-arg index="0" value="${glia.client.pool.size}" />
+    </bean>
+
 </beans>

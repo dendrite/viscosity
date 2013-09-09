@@ -30,13 +30,13 @@ public class ProxyHandlerPool extends AbstractProxyHandler implements Invocation
             }catch (Exception ex){
                 ex.printStackTrace();
                 System.out.println("Try to reload pool");
-                ClientPoolFactory clientPoolFactory = this.clientPool.getClientPoolFactory();
-                this.clientPool.clear();
-                this.clientPool.close();
-                this.clientPool = null;
-                this.clientPool = new ClientPool(clientPoolFactory);
-
-                this.gliaClient = this.clientPool.borrowObject();
+//                ClientPoolFactory clientPoolFactory = this.clientPool.getClientPoolFactory();
+//                this.clientPool.clear();
+//                this.clientPool.close();
+//                this.clientPool = null;
+//                this.clientPool = new ClientPool(clientPoolFactory);
+//
+//                this.gliaClient = this.clientPool.borrowObject();
             }
 
 

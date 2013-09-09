@@ -4,6 +4,8 @@ import com.reversemind.glia.client.ClientPool;
 import com.reversemind.glia.client.ClientPoolFactory;
 import com.reversemind.glia.proxy.ProxyFactoryPool;
 import com.reversemind.glia.proxy.ProxySendException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -51,8 +53,12 @@ public abstract class AbstractClientEJB implements IClientEJB, Serializable {
     private void initPool(){
         if(clientPool == null){
 //            synchronized (clientPool){
+
+                ApplicationContext applicationContext = new ClassPathXmlApplicationContext(this.getContextXML());
+                 int poolSize = applicationContext.getBean("poolSize", java.lang.Integer.class);
+                System.out.println("Pool start size:" + poolSize);
                 ClientPoolFactory clientPoolFactory = new ClientPoolFactory(this.getContextXML(), this.getGliaClientBeanName(), this.getGliaClientBeanClass());
-                clientPool = new ClientPool(clientPoolFactory);
+                clientPool = new ClientPool(clientPoolFactory, poolSize);
                 System.out.println("Client pool RUN !!!");
 //            }
         }
