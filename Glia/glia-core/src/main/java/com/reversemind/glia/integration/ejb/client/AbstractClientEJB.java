@@ -16,19 +16,11 @@ import java.io.Serializable;
  */
 public abstract class AbstractClientEJB implements IClientEJB, Serializable {
 
-    //protected IGliaClient client;
     protected ProxyFactoryPool proxyFactoryPool = null;
     private static ClientPool clientPool;
 
     @PostConstruct
     public void init(){
-        // Wait a little -
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            // LOG.error()
-            e.printStackTrace();
-        }
         this.localInit();
     }
 
@@ -52,15 +44,12 @@ public abstract class AbstractClientEJB implements IClientEJB, Serializable {
 
     private void initPool(){
         if(clientPool == null){
-//            synchronized (clientPool){
-
                 ApplicationContext applicationContext = new ClassPathXmlApplicationContext(this.getContextXML());
                  int poolSize = applicationContext.getBean("poolSize", java.lang.Integer.class);
                 System.out.println("Pool start size:" + poolSize);
                 ClientPoolFactory clientPoolFactory = new ClientPoolFactory(this.getContextXML(), this.getGliaClientBeanName(), this.getGliaClientBeanClass());
                 clientPool = new ClientPool(clientPoolFactory, poolSize);
                 System.out.println("Client pool RUN !!!");
-//            }
         }
         System.out.println("Client pool already initialized");
     }

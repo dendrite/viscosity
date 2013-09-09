@@ -12,7 +12,7 @@ public class ClientPool extends GenericObjectPool<IGliaClient> {
     private ClientPoolFactory clientPoolFactory;
 
     /**
-     * Right now only max 5 clients
+     * Right now only max 10 clients
      *
      *
      * @param clientPoolFactory

@@ -189,7 +189,7 @@ public class ClientServerTest {
     public void testMutliThreaded() throws Exception {
 
         // Number of threads
-        final int size = 20;
+        final int size = 10;
 
         System.out.println("clientSimple1:" + clientSimple);
 
@@ -252,6 +252,11 @@ public class ClientServerTest {
             System.out.println("- " + writes[i]);
         }
         System.out.println("\n\n\n ====== DONE ====== \n\n");
+
+
+
+
+
     }
 
 
@@ -325,6 +330,13 @@ public class ClientServerTest {
             System.out.println("- " + writes[i]);
         }
         System.out.println("\n\n\n ====== DONE ====== \n\n");
+
+        Thread.sleep(20000);
+        System.out.println("\n\n\n\n+++++++++++++++++++++++++");
+        System.out.println("New system:");
+        IServiceSimple proxyService2 = clientSimple.getProxy(IServiceSimple.class);
+        proxyService2.functionNumber1("1","1");
+
     }
 
 
