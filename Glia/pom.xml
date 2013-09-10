@@ -10,6 +10,7 @@
         <module>glia-examples</module>
         <module>glia-core</module>
         <module>glia-ejb</module>
+        <module>glia-pojo</module>
     </modules>
     <name>glia</name>
 

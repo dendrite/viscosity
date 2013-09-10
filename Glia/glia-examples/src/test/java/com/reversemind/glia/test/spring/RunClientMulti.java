@@ -61,9 +61,6 @@ public class RunClientMulti implements Serializable {
             threadArray[i].start();
         }
 
-
-
-
     }
 
 }
