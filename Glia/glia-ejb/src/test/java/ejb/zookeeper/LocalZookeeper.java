@@ -20,6 +20,8 @@ public class LocalZookeeper extends ZooKeeperServerMain implements Runnable {
      * @param configPath
      */
     public static void start(String[] configPath) {
+        System.setProperty("java.net.preferIPv4Stack", "true");
+
         serverConfig = new ServerConfig();
         serverConfig.parse(configPath);
         zookeeperServer = new LocalZookeeper();

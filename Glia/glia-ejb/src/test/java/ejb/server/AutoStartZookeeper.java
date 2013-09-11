@@ -16,12 +16,12 @@ public class AutoStartZookeeper {
 
     @PostConstruct
     public void init(){
-        RunZookeeper.start();
+//        RunZookeeper.start();
     }
 
     @PreDestroy
     public void shutdown(){
-        RunZookeeper.stop();
+//        RunZookeeper.stop();
     }
 
 }

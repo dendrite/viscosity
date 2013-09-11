@@ -24,22 +24,41 @@ public class ProxyHandlerPool extends AbstractProxyHandler implements Invocation
     @Override
     public IGliaClient getGliaClient() throws Exception{
         if(this.gliaClient == null){
-//            synchronized (this.gliaClient){
             try{
-                this.gliaClient = this.clientPool.borrowObject();
+                synchronized (this.clientPool){
+                    this.gliaClient = this.clientPool.borrowObject();
+                }
             }catch (Exception ex){
                 ex.printStackTrace();
-                System.out.println("Try to reload pool");
-//                ClientPoolFactory clientPoolFactory = this.clientPool.getClientPoolFactory();
-//                this.clientPool.clear();
-//                this.clientPool.close();
-//                this.clientPool = null;
-//                this.clientPool = new ClientPool(clientPoolFactory);
-//
-//                this.gliaClient = this.clientPool.borrowObject();
+                System.out.println("Could not get a gliaClient from Pool #1 - try again");
+
+                try{
+                    Thread.sleep(300);
+                    synchronized (this.clientPool){
+                        this.gliaClient = this.clientPool.borrowObject();
+                    }
+                }catch (Exception ex2){
+                    ex.printStackTrace();
+                    System.out.println("Could not get a gliaClient from Pool #2 - Try to reload pool");
+
+                    try{
+                        ClientPoolFactory clientPoolFactory = this.clientPool.getClientPoolFactory();
+                        this.clientPool.clear();
+                        this.clientPool.close();
+                        this.clientPool = null;
+                        this.clientPool = new ClientPool(clientPoolFactory);
+
+                        synchronized (this.clientPool){
+                            this.gliaClient = this.clientPool.borrowObject();
+                        }
+                    }catch(Exception ex3){
+                        ex.printStackTrace();
+                        System.out.println("Could not get a glia client after reloaded pool #3");
+                    }
+
+                }
+
             }
-
-
 //            }
         }
         System.out.println("PPOL METRICS:" + this.clientPool.printPoolMetrics());
@@ -62,6 +81,21 @@ public class ProxyHandlerPool extends AbstractProxyHandler implements Invocation
                     ex.printStackTrace();
                 }
                 this.gliaClient = null;
+            }
+        }
+    }
+
+    @Override
+    public void returnClient(IGliaClient gliaClient) throws Exception {
+        if(gliaClient != null){
+            synchronized (gliaClient){
+                try{
+                    this.clientPool.returnObject(gliaClient);
+                }catch(Exception ex){
+                    System.out.println("EXCEPTION COULD NOT RETURN gliaClient into Pool #2");
+                    ex.printStackTrace();
+                }
+                gliaClient = null;
             }
         }
     }

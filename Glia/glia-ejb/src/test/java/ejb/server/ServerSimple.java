@@ -18,7 +18,7 @@ public class ServerSimple extends ServerEJBAdvertiser implements Serializable {
     public void init(){
         try {
             // Cause zookeeper should be started earlier
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

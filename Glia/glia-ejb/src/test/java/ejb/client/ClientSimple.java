@@ -29,7 +29,7 @@ public class ClientSimple extends ClientEJBDiscovery implements Serializable {
 //        super.init();
 //    }
 
-    @Lock(LockType.READ)
+//    @Lock(LockType.READ)
     @Override
     public <T> T getProxy(Class<T> interfaceClass) throws Exception {
         return super.getProxy(interfaceClass);

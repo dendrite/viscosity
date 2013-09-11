@@ -20,17 +20,23 @@ public abstract class AbstractProxyHandler implements InvocationHandler {
     public abstract IGliaClient getGliaClient() throws Exception;
     public abstract Class getInterfaceClass();
     public abstract void returnClient() throws Exception;
+    public abstract void returnClient(IGliaClient gliaClient) throws Exception;
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-        if(this.getGliaClient() == null){
+        IGliaClient localGliaClient = null;
+        synchronized (this.getGliaClient()){
+            localGliaClient = this.getGliaClient();
+        }
+
+        if(localGliaClient == null){
             System.out.println(" ^^^^^ gliaClient is NULL !!!"  + Thread.currentThread().getName());
             this.returnClient();
             throw new RuntimeException("Client is null");
         }
 
-        synchronized (this.getGliaClient()){
+        synchronized (localGliaClient){
             System.out.println("\n\n\n" + "!!!!!!!!!!!!!!!!\n" + "Invoke REMOTE METHOD\n\n\n");
 
             System.out.println("Method:" + method.getName());
@@ -53,35 +59,35 @@ public abstract class AbstractProxyHandler implements InvocationHandler {
             gliaPayload.setInterfaceClass(this.getInterfaceClass());
 
             System.out.println(" =GLIA= CREATED ON CLIENT a PAYLOAD:" + gliaPayload);
-            System.out.println(" =GLIA= gliaClient:" + this.getGliaClient());
-            if(this.getGliaClient() != null){
+            System.out.println(" =GLIA= gliaClient:" + localGliaClient);
+            if(localGliaClient != null){
                 System.out.println(" =GLIA= is running gliaClient:" + this.getGliaClient().isRunning());
             }
-            assert this.getGliaClient() != null;
+//            assert this.getGliaClient() != null;
 
             // TODO need to refactor this catcher
             try{
-                this.getGliaClient().send(gliaPayload);
+                localGliaClient.send(gliaPayload);
             }catch(IOException ex){
                 System.out.println(" =GLIA= gliaClient.send(gliaPayload);" + ex.getMessage());
                 ex.printStackTrace();
 
                 System.out.println("=GLIA= gliaClient going to restart a client and send again data");
-                this.getGliaClient().restart();
+                localGliaClient.restart();
 
                 try{
-                    this.getGliaClient().send(gliaPayload);
+                    localGliaClient.send(gliaPayload);
                 }catch (IOException ex2){
                     System.out.println("After second send - exception");
                     ex2.printStackTrace();
-                    this.returnClient();
+                    this.returnClient(localGliaClient);
                     throw new ProxySendException("=GLIA= Could not to send data into server - let's reconnect" );
                 }
             }
 
             long bT = System.currentTimeMillis();
-            GliaPayload fromServer = this.getGliaClient().getGliaPayload();
-            this.returnClient();
+            GliaPayload fromServer = localGliaClient.getGliaPayload();
+            this.returnClient(localGliaClient);
             if(fromServer.getThrowable() != null){
                 // TODO What if impossible to load a specific Class
                 Constructor constructor = fromServer.getThrowable().getCause().getClass().getConstructor(new Class[]{String.class});
@@ -97,7 +103,7 @@ public abstract class AbstractProxyHandler implements InvocationHandler {
 
         } //synchronized
 
-        this.returnClient();
+        this.returnClient(localGliaClient);
 
         return null;
     }

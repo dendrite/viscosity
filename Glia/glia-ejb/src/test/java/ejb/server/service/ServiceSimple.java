@@ -14,31 +14,31 @@ public class ServiceSimple implements IServiceSimple {
     @Override
     public String functionNumber1(String parameter1, String parameter2) {
         this.delay();
-        return "FN #1 - summ par1:" + parameter1 + " par2:" + parameter2;
+        return "FN #1 - summ par1:" + parameter1 + " par2:" + parameter2 + " thread:" + Thread.currentThread().getName();
     }
 
     @Override
     public String functionNumber2(String parameter1, String parameter2) {
         this.delay();
-        return "FN #2 - summ par1:" + parameter1 + " par2:" + parameter2;
+        return "FN #2 - summ par1:" + parameter1 + " par2:" + parameter2+ " thread:" + Thread.currentThread().getName();
     }
 
     @Override
     public String functionNumber3(String parameter1, String parameter2) {
         this.delay();
-        return "FN #3 - summ par1:" + parameter1 + " par2:" + parameter2;
+        return "FN #3 - summ par1:" + parameter1 + " par2:" + parameter2 + " thread:" + Thread.currentThread().getName();
     }
 
     @Override
     public String functionNumber4(String parameter1, String parameter2) {
         this.delay();
-        return "FN #4 - summ par1:" + parameter1 + " par2:" + parameter2;
+        return "FN #4 - summ par1:" + parameter1 + " par2:" + parameter2 + " thread:" + Thread.currentThread().getName();
     }
 
     @Override
     public String functionNumber5(String parameter1, String parameter2) {
         this.delay();
-        return "FN #5 - summ par1:" + parameter1 + " par2:" + parameter2;
+        return "FN #5 - summ par1:" + parameter1 + " par2:" + parameter2 + " thread:" + Thread.currentThread().getName();
     }
 
     private void delay() {

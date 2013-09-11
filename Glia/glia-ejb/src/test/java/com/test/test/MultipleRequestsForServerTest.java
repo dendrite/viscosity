@@ -48,7 +48,6 @@ public class MultipleRequestsForServerTest {
 
         WebArchive archive = ShrinkWrap.create(WebArchive.class, "ServerTest.war")
 
-
                 // tip:
                 // .artifact("GROUPID:ARTIFACTID:TYPE:VERSION")
                 .addAsLibraries(resolver
@@ -64,7 +63,7 @@ public class MultipleRequestsForServerTest {
 
                         .artifact("log4j:log4j:1.2.16")
 
-                        .artifact("com.reversemind:glia-core:1.7.7-SNAPSHOT")
+                        .artifact("com.reversemind:glia-core:1.7.8-SNAPSHOT")
 
                         .artifact("net.sf.dozer:dozer:5.4.0")
                         .artifact("com.google.code.gson:gson:2.2.4")
@@ -92,10 +91,90 @@ public class MultipleRequestsForServerTest {
         return archive;
     }
 
+
     @Test
-    public void testMultiRequestForServer() throws Exception {
+    public void testSingleClientsForServer() throws Exception {
         // Number of threads
-        final int size = 5;
+        final int size = 20;
+
+        System.out.println("clientSimple1:" + clientSimple);
+
+        IServiceSimple proxyService = clientSimple.getProxy(IServiceSimple.class);
+
+        List<ClientCallableForServer> clientCallableList = new ArrayList<ClientCallableForServer>();
+
+        for(int i=0; i<size; i++){
+            clientCallableList.add(new ClientCallableForServer(proxyService,i));
+        }
+
+        List<FutureTask<String>> futureTaskList = new ArrayList<FutureTask<String>>();
+        for(ClientCallableForServer clientCallable: clientCallableList){
+            futureTaskList.add(new FutureTask<String>(clientCallable));
+        }
+
+        long beginTime = System.currentTimeMillis();
+        ExecutorService executor = Executors.newFixedThreadPool(futureTaskList.size());
+        for(FutureTask<String> futureTask: futureTaskList){
+            executor.execute(futureTask);
+        }
+
+        boolean ready = false;
+        int[] dones = new int[futureTaskList.size()];
+        String[] writes = new String[futureTaskList.size()];
+
+        int indexValue = 0;
+        while(!ready){
+
+            int count = 0;
+            indexValue = 0;
+            for(FutureTask<String> futureTask: futureTaskList){
+                if(futureTask.isDone() & dones[indexValue] == 0){
+                    writes[indexValue] = futureTask.get();
+                    dones[indexValue] = 1;
+                }
+                indexValue++;
+            }
+
+            for(int k=0; k<dones.length; k++){
+                if(dones[k] == 1){
+                    count++;
+                }
+            }
+
+            if(count == futureTaskList.size()){
+                ready = true;
+            }
+
+//            Thread.sleep(500);
+        }
+
+        System.out.println("\n\n\n ====== DONE ====== ");
+        System.out.println("  time:" + (System.currentTimeMillis()-beginTime) + "ms\n\n");
+        executor.shutdown();
+
+        for(int i=0; i<writes.length; i++){
+            System.out.println("- " + writes[i]);
+        }
+        System.out.println("\n\n\n ====== DONE ====== \n\n");
+
+        Thread.sleep(20000);
+        System.out.println("\n\n\n\n+++++++++++++++++++++++++");
+        System.out.println("New system:");
+        IServiceSimple proxyService2 = clientSimple.getProxy(IServiceSimple.class);
+        proxyService2.functionNumber1("1","1");
+
+
+        System.out.println("\n\n\n\n===========================");
+        System.out.println("And just sleep for empty pool");
+        Thread.sleep(40000);
+        IServiceSimple proxyService3 = clientSimple.getProxy(IServiceSimple.class);
+        proxyService3.functionNumber1("1","1");
+    }
+
+    @Test
+    public void testMultiClientsForServer() throws Exception {
+        // Number of threads
+        final int size = 30;
 
         System.out.println("clientSimple1:" + clientSimple);
 
@@ -197,13 +276,13 @@ public class MultipleRequestsForServerTest {
                         this.resultValue = this.serviceSimple.functionNumber2("2", "2");
                         break;
                     case 2:
-                        this.resultValue = this.serviceSimple.functionNumber3("3","3");
+                        this.resultValue = this.serviceSimple.functionNumber3("3", "3");
                         break;
                     case 3:
-                        this.resultValue = this.serviceSimple.functionNumber4("4","4");
+                        this.resultValue = this.serviceSimple.functionNumber4("4", "4");
                         break;
                     case 4:
-                        this.resultValue = this.serviceSimple.functionNumber5("5","5");
+                        this.resultValue = this.serviceSimple.functionNumber5("5", "5");
                         break;
                     default:
                         this.resultValue = this.serviceSimple.functionNumber1("1", "1");

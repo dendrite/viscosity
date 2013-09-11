@@ -40,4 +40,8 @@ public class ProxyHandler extends AbstractProxyHandler implements InvocationHand
     @Override
     public void returnClient() {
     }
+
+    @Override
+    public void returnClient(IGliaClient gliaClient) throws Exception {
+    }
 }
