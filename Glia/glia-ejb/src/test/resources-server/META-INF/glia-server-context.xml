@@ -33,7 +33,7 @@
     </bean>
 
     <!--Builder for advertiser server-->
-    <bean id="serverBuilderAdvertiser" class="com.reversemind.glia.server.GliaServerFactory.Builder" >
+    <bean id="serverBuilderAdvertiser" class="com.reversemind.glia.server.GliaServerFactory.Builder" scope="prototype">
         <property name="payloadWorker" ref="serverPayloadProcessor" />
 
         <property name="name" value="${glia.server.advertiser.name}" />

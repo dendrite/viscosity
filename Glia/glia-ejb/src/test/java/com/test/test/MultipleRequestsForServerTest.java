@@ -1,17 +1,11 @@
 package com.test.test;
 
-import com.reversemind.glia.client.ClientPool;
-import com.reversemind.glia.client.ClientPoolFactory;
-import com.reversemind.glia.client.GliaClientServerDiscovery;
-import com.reversemind.glia.client.IGliaClient;
-import com.reversemind.glia.proxy.ProxyFactory;
 import com.test.pool.ClientFactory;
 import ejb.client.ClientSimple;
 import ejb.server.ServerSimple;
 import ejb.server.service.ServiceSimple;
 import ejb.shared.IServiceSimple;
 import ejb.zookeeper.RunZookeeper;
-import org.apache.commons.pool.impl.GenericObjectPool;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.junit.Arquillian;
@@ -23,8 +17,6 @@ import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -38,7 +30,7 @@ import java.util.concurrent.FutureTask;
  *
  */
 @RunWith(Arquillian.class)
-public class ClientServerTest {
+public class MultipleRequestsForServerTest {
 
     @Inject
     IServiceSimple simpleService;
@@ -101,170 +93,9 @@ public class ClientServerTest {
     }
 
     @Test
-    public void testClientPoolFactory() throws Exception {
-        ClientPoolFactory clientPoolFactory = new ClientPoolFactory("META-INF/glia-client-context.xml", "gliaClientServerDiscovery", GliaClientServerDiscovery.class);
-        ClientPool clientPool = new ClientPool(clientPoolFactory);
-
-        System.out.println(clientPool.printPoolMetrics());
-        IGliaClient gliaClient = clientPool.borrowObject();
-
-
-        System.out.println(clientPool.printPoolMetrics());
-    }
-
-    @Test
-    public void testPoolSize(){
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-client-context.xml");
-        int poolSize = applicationContext.getBean("poolSize", java.lang.Integer.class);
-        System.out.println("Pool size:" + poolSize);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @Test
-    public void testClientPool() throws Exception {
-        ClientFactory clientFactory = new ClientFactory("META-INF/glia-client-context.xml","gliaClientServerDiscovery", GliaClientServerDiscovery.class);
-        GenericObjectPool<IGliaClient> pool = new GenericObjectPool<IGliaClient>(clientFactory, 5);
-
-        System.out.println("pool.getMaxActive():" + pool.getMaxActive());
-        System.out.println("pool.getMaxIdle():" + pool.getMaxIdle());
-        System.out.println("pool.getNumActive():" + pool.getNumActive());
-        System.out.println("pool.getNumIdle():" + pool.getNumIdle());
-
-        Thread.sleep(20000);
-
-        IGliaClient gliaClient = pool.borrowObject();
-
-        System.out.println("IGliaClient gliaClient - " + gliaClient);
-        ProxyFactory proxyFactory = ProxyFactory.getInstance();
-
-        System.out.println("pool.getMaxActive():" + pool.getMaxActive());
-        System.out.println("pool.getMaxIdle():" + pool.getMaxIdle());
-        System.out.println("pool.getNumActive():" + pool.getNumActive());
-        System.out.println("pool.getNumIdle():" + pool.getNumIdle());
-
-        IServiceSimple proxyService = (IServiceSimple) proxyFactory.newProxyInstance(gliaClient, IServiceSimple.class);
-        System.out.println("proxyService: " + proxyService.functionNumber1("1", "2"));
-
-        pool.returnObject(gliaClient);
-
-        System.out.println("pool.getMaxActive():" + pool.getMaxActive());
-        System.out.println("pool.getMaxIdle():" + pool.getMaxIdle());
-        System.out.println("pool.getNumActive():" + pool.getNumActive());
-        System.out.println("pool.getNumIdle():" + pool.getNumIdle());
-
-
-    }
-
-    @Test
-    public void testSimple() throws InterruptedException {
-        System.out.println("############");
-        System.out.println("info:" + simpleService.functionNumber1("1", "2"));
-    }
-
-    @Test
-    public void testClient() throws Exception {
-        IServiceSimple proxyService = clientSimple.getProxy(IServiceSimple.class);
-        System.out.println("proxyService: " + proxyService.functionNumber1("1", "2"));
-    }
-
-    @Test
-    public void testMutliThreaded() throws Exception {
-
+    public void testMultiRequestForServer() throws Exception {
         // Number of threads
-        final int size = 10;
-
-        System.out.println("clientSimple1:" + clientSimple);
-
-        IServiceSimple proxyService = clientSimple.getProxy(IServiceSimple.class);
-        System.out.println("proxyService:" + proxyService);
-
-
-        List<ClientCallable> clientCallableList = new ArrayList<ClientCallable>();
-
-        for(int i=0; i<size; i++){
-            clientCallableList.add(new ClientCallable(proxyService,i));
-        }
-
-        List<FutureTask<String>> futureTaskList = new ArrayList<FutureTask<String>>();
-        for(ClientCallable clientCallable: clientCallableList){
-            futureTaskList.add(new FutureTask<String>(clientCallable));
-        }
-
-        long beginTime = System.currentTimeMillis();
-        ExecutorService executor = Executors.newFixedThreadPool(futureTaskList.size());
-        for(FutureTask<String> futureTask: futureTaskList){
-            executor.execute(futureTask);
-        }
-
-        boolean ready = false;
-        int[] dones = new int[futureTaskList.size()];
-        String[] writes = new String[futureTaskList.size()];
-
-        int indexValue = 0;
-        while(!ready){
-
-            int count = 0;
-            indexValue = 0;
-            for(FutureTask<String> futureTask: futureTaskList){
-                if(futureTask.isDone() & dones[indexValue] == 0){
-                    writes[indexValue] = futureTask.get();
-                    dones[indexValue] = 1;
-                }
-                indexValue++;
-            }
-
-            for(int k=0; k<dones.length; k++){
-                if(dones[k] == 1){
-                    count++;
-                }
-            }
-
-            if(count == futureTaskList.size()){
-                ready = true;
-            }
-
-//            Thread.sleep(500);
-        }
-
-        System.out.println("\n\n\n ====== DONE ====== ");
-        System.out.println("  time:" + (System.currentTimeMillis()-beginTime) + "ms\n\n");
-        executor.shutdown();
-
-        for(int i=0; i<writes.length; i++){
-            System.out.println("- " + writes[i]);
-        }
-        System.out.println("\n\n\n ====== DONE ====== \n\n");
-
-
-
-
-
-    }
-
-
-    @Test
-    public void testMutliThreadProxyClient() throws Exception {
-
-        // Number of threads
-        final int size = 20;
+        final int size = 5;
 
         System.out.println("clientSimple1:" + clientSimple);
 
@@ -275,14 +106,14 @@ public class ClientServerTest {
             serviceSimpleList.add(proxyService);
         }
 
-        List<ClientCallable> clientCallableList = new ArrayList<ClientCallable>();
+        List<ClientCallableForServer> clientCallableList = new ArrayList<ClientCallableForServer>();
 
         for(int i=0; i<size; i++){
-            clientCallableList.add(new ClientCallable(serviceSimpleList.get(i),i));
+            clientCallableList.add(new ClientCallableForServer(serviceSimpleList.get(i),i));
         }
 
         List<FutureTask<String>> futureTaskList = new ArrayList<FutureTask<String>>();
-        for(ClientCallable clientCallable: clientCallableList){
+        for(ClientCallableForServer clientCallable: clientCallableList){
             futureTaskList.add(new FutureTask<String>(clientCallable));
         }
 
@@ -336,17 +167,15 @@ public class ClientServerTest {
         System.out.println("New system:");
         IServiceSimple proxyService2 = clientSimple.getProxy(IServiceSimple.class);
         proxyService2.functionNumber1("1","1");
-
     }
 
-
-    class ClientCallable implements Callable<String>{
+    class ClientCallableForServer implements Callable<String> {
 
         private IServiceSimple serviceSimple;
         private int number = 0;
         private String resultValue = "";
 
-        ClientCallable(IServiceSimple serviceSimple, int number){
+        ClientCallableForServer(IServiceSimple serviceSimple, int number){
             this.serviceSimple = serviceSimple;
             this.number = number;
         }
@@ -360,26 +189,26 @@ public class ClientServerTest {
             }
 
             try{
-            switch (currentValue){
-                case 0:
+                switch (currentValue){
+                    case 0:
                         this.resultValue = this.serviceSimple.functionNumber1("1", "1");
                         break;
-                case 1:
+                    case 1:
                         this.resultValue = this.serviceSimple.functionNumber2("2", "2");
                         break;
-                case 2:
+                    case 2:
                         this.resultValue = this.serviceSimple.functionNumber3("3","3");
                         break;
-                case 3:
+                    case 3:
                         this.resultValue = this.serviceSimple.functionNumber4("4","4");
                         break;
-                case 4:
+                    case 4:
                         this.resultValue = this.serviceSimple.functionNumber5("5","5");
                         break;
-                default:
+                    default:
                         this.resultValue = this.serviceSimple.functionNumber1("1", "1");
                         break;
-            }
+                }
 
             }catch(Exception ex){
                 System.out.println("Callable exception");
@@ -389,5 +218,7 @@ public class ClientServerTest {
             return "CL:" + (this.number+1) + " " + this.resultValue;
         }
     }
+
+
 
 }

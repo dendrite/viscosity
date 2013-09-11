@@ -55,8 +55,13 @@ public class ProxyHandlerPool extends AbstractProxyHandler implements Invocation
     public void returnClient() throws Exception {
         if(this.gliaClient != null){
             synchronized (this.gliaClient){
-                this.clientPool.returnObject(this.gliaClient);
-//                this.gliaClient = null;
+                try{
+                    this.clientPool.returnObject(this.gliaClient);
+                }catch(Exception ex){
+                    System.out.println("EXCEPTION COULD NOT RETURN gliaClient into Pool");
+                    ex.printStackTrace();
+                }
+                this.gliaClient = null;
             }
         }
     }

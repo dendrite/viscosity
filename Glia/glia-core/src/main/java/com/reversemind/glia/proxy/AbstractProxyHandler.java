@@ -79,15 +79,11 @@ public abstract class AbstractProxyHandler implements InvocationHandler {
                 }
             }
 
-//        System.out.println("==1");
-            //Thread.sleep(100);
-//        System.out.println("==2");
             long bT = System.currentTimeMillis();
             GliaPayload fromServer = this.getGliaClient().getGliaPayload();
             this.returnClient();
             if(fromServer.getThrowable() != null){
                 // TODO What if impossible to load a specific Class
-
                 Constructor constructor = fromServer.getThrowable().getCause().getClass().getConstructor(new Class[]{String.class});
                 String[] exceptionMessage = {fromServer.getThrowable().getCause().getMessage()};
                 throw (Throwable) constructor.newInstance(exceptionMessage);
@@ -95,20 +91,13 @@ public abstract class AbstractProxyHandler implements InvocationHandler {
 
             System.out.println("==2.5 Get back from server for:" + (System.currentTimeMillis() - bT) + " ms");
 
-//        System.out.println("==3");
-
-//        System.out.println(fromServer);
-//        System.out.println("==4");
             if(fromServer!=null && fromServer.getStatus() != null){
-//            System.out.println("==5");
-//            System.out.println("fromServer.getResultResponse()\n\n" + fromServer.getResultResponse());
-//            System.out.println("==6");
                 return fromServer.getResultResponse();
             }
-//        System.out.println("==7");
-
 
         } //synchronized
+
+        this.returnClient();
 
         return null;
     }
