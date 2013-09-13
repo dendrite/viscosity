@@ -31,4 +31,21 @@ public class ClientPoolFactory extends BasePoolableObjectFactory<IGliaClient> {
         return client;
     }
 
+//    public void destroyObject(IGliaClient client) throws Exception {
+//        System.out.println("Going to destroy client:" + client);
+//        if(client != null && client.isOccupied() == false){
+//            client.shutdown();
+//            client = null;
+//            System.out.println("Client destroyed");
+//        }
+//    }
+
+    public void activateObject(IGliaClient client) throws Exception {
+
+    }
+
+    public void passivateObject(IGliaClient client) throws Exception {
+
+    }
+
 }

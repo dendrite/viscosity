@@ -35,9 +35,19 @@ public class ClientFactory extends BasePoolableObjectFactory<IGliaClient> {
         return client;
     }
 
-//    public void passivateObject(Object obj) throws Exception {
-//        if(obj instanceof Employee) {
-//            ((Employee)obj).setName(null);
-//        } else throw new Exception("Unknown object");
-//    }
+    public void destroyObject(IGliaClient client) throws Exception  {
+        if(client != null){
+            client.shutdown();
+            client = null;
+        }
+    }
+
+    public void activateObject(IGliaClient client) throws Exception {
+
+    }
+
+    public void passivateObject(IGliaClient client) throws Exception {
+
+    }
+
 }
