@@ -29,7 +29,7 @@ public class GliaClient implements IGliaClient, Serializable {
     // TODO replace logger for SLF4J
     private static final Logger LOG = Logger.getLogger(GliaClient.class.getName());
 
-    private static final long SERVER_CONNECTION_TIMEOUT = 30000;    // 30 sec
+    private static final long SERVER_CONNECTION_TIMEOUT = 20000;    // 30 sec
     private static final long EXECUTOR_TIME_OUT = 60000;            // 1 min
     private static final long FUTURE_TASK_TIME_OUT = 30000;         // 30 sec
     private ExecutorService executor;
@@ -257,6 +257,20 @@ public class GliaClient implements IGliaClient, Serializable {
         this.start();
     }
 
+    private void shutDownChannelFuture(){
+        channelFuture.getCause().printStackTrace();
+        channelFactory.releaseExternalResources();
+        channelFuture = null;
+        running = false;
+    }
+
+    private void shutDownChannelFuture(ChannelFuture channelFutureLocal){
+        channelFutureLocal.getCause().printStackTrace();
+        channelFactory.releaseExternalResources();
+        channelFutureLocal = null;
+        running = false;
+    }
+
     /**
      * Start a GliaClient
      *
@@ -352,21 +366,120 @@ public class GliaClient implements IGliaClient, Serializable {
         //    workerExecutor.shutdown();
         //    thriftServer.releaseExternalResources();
 
+
+        /*
+
+
+            BEFORE version 1.8.0-SNAPSHOT
+
+         */
         // !!! see also - http://massapi.com/class/cl/ClientBootstrap.html
 //        System.out.println("1");
         // just wait for server connection for 3sec.
-        channelFuture.await(SERVER_CONNECTION_TIMEOUT);
-        if (!channelFuture.isSuccess()) {
-            channelFuture.getCause().printStackTrace();
-            channelFactory.releaseExternalResources();
-            this.running = false;
-        }else{
-            this.running = true;
-        }
+//        channelFuture.await(SERVER_CONNECTION_TIMEOUT);
+//        if (!channelFuture.isSuccess()) {
+//            channelFuture.getCause().printStackTrace();
+//            channelFactory.releaseExternalResources();
+//            this.running = false;
+//        }else{
+//            this.running = true;
+//        }
+
+
+
+
 
         // if need to disconnect right after server response
         //  channelFuture.getChannel().getCloseFuture().awaitUninterruptibly();
         //  channelFactory.releaseExternalResources();
+
+
+//        channelFuture.addListener(new ChannelFutureListener() {
+//            public void operationComplete(ChannelFuture future) throws Exception {
+//                if (future.isSuccess()) {
+//                    // Connection attempt succeeded:
+//                    // Begin to accept incoming traffic.
+//                    //inboundChannel.setReadable(true);
+//                    System.out.println("Client connected");
+//                    running = true;
+//                } else {
+//                    System.out.println("Failed connect to server");
+//                    // Close the connection if the connection attempt has failed.
+//                    //inboundChannel.close();
+//                    //shutDownChannelFuture();
+//                    System.out.println("Shutdown all");
+//                    shutDownChannelFuture(future);
+//                }
+//            }
+//        });
+
+//       if(channelFuture != null && !channelFuture.isSuccess()){
+//           shutDownChannelFuture();
+//       }
+
+        /*
+
+
+            AFTER VERSION 1.8.0-SNAPSHOT
+
+
+         */
+        // SOURCE !!! http://massapi.com/class/cl/ClientBootstrap.html
+
+
+        // Start the connection attempt.
+//        channelFuture.awaitUninterruptibly();
+
+
+        // Need to repair it
+
+        boolean goAway = false;
+        long countGoAway = 0;
+        final long stepGoAway = 100; //ms
+
+        System.out.println("Warming up 1.8.0-SNAPSHOT ...");
+        while(goAway == false | countGoAway < (SERVER_CONNECTION_TIMEOUT / stepGoAway)){
+
+            Thread.sleep(stepGoAway);
+            if (!channelFuture.isSuccess()) {
+                this.running = false;
+                goAway = true;
+            }else{
+                this.running = true;
+                goAway = true;
+                countGoAway = (SERVER_CONNECTION_TIMEOUT / stepGoAway) + 10;
+            }
+            countGoAway++;
+            System.out.println("Count down for connection tomeout:" + countGoAway*stepGoAway + ":ms future:" + channelFuture.isSuccess() + " running:" + this.running);
+        }
+
+        if(this.running == false){
+            System.out.println("After ");
+            channelFuture.getCause().printStackTrace();
+            channelFactory.releaseExternalResources();
+            channelFuture = null;
+        }
+
+
+
+
+//        CountDownLatch latch;
+//
+//        System.out.println("Warming up 1.8.0-SNAPSHOT ...");
+//        for (long i = 0; i < 10000; i++) {
+//            latch = new CountDownLatch(1);
+//            try {
+//                latch.await();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            if(i % 1000 == 0){
+//                System.out.println("i:" + i);
+//            }
+//        }
+//
+//        Thread.sleep(100);
+//        System.out.println("Warmed up 1.8.0-SNAPSHOT ");
 
     }
 
