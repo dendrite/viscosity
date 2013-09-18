@@ -26,6 +26,7 @@ public class RunServer implements Serializable {
                 .setPort(7012)
                 .setAutoSelectPort(false)
                 .setKeepClientAlive(false)
+                .setUseMetrics(true)
                 .build();
 
         System.out.println("Started on port:" + server.getPort());

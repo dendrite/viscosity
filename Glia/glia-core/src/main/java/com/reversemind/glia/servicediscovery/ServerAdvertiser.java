@@ -51,7 +51,7 @@ public class ServerAdvertiser implements Serializable {
             discovery.start();
 
             ServiceInstance serviceInstance = this.getInstance();
-            LOG.info("Service:" + serviceInstance + " is available");
+//            LOG.info("Service:" + serviceInstance + " is available");
             discovery.registerService(serviceInstance);
 
             // TODO ??????

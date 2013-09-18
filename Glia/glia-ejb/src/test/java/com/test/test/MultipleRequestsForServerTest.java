@@ -17,6 +17,7 @@ import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.w3c.dom.html.HTMLOptGroupElement;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class MultipleRequestsForServerTest {
 
                         .artifact("log4j:log4j:1.2.16")
 
-                        .artifact("com.reversemind:glia-core:1.8.0-SNAPSHOT")
+                        .artifact("com.reversemind:glia-core:1.8.1-SNAPSHOT")
 
                         .artifact("net.sf.dozer:dozer:5.4.0")
                         .artifact("com.google.code.gson:gson:2.2.4")
@@ -91,6 +92,18 @@ public class MultipleRequestsForServerTest {
         return archive;
     }
 
+
+    @Test
+    public void testMetricsUpdateTime() throws InterruptedException {
+        System.out.println("Metrics update time:");
+
+        int count = 0;
+        while(count < 50){
+            Thread.sleep(1000);
+        }
+
+        System.out.println("Done test");
+    }
 
     @Test
     public void testSingleClientsForServer() throws Exception {

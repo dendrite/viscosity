@@ -437,7 +437,7 @@ public class GliaClient implements IGliaClient, Serializable {
         long countGoAway = 0;
         final long stepGoAway = 100; //ms
 
-        System.out.println("Warming up 1.8.0-SNAPSHOT ...");
+        System.out.println("Warming up 1.8.1-SNAPSHOT ...");
         while(goAway == false | countGoAway < (SERVER_CONNECTION_TIMEOUT / stepGoAway)){
 
             Thread.sleep(stepGoAway);

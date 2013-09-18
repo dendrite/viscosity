@@ -41,6 +41,8 @@ public class ServiceDiscoverer implements Serializable, Closeable {
     private String zookeeperConnectionString;
     private String basePath;
 
+    private int privateCounter = 0;
+
     public ServiceDiscoverer(String zookeeperConnectionString, String basePath) {
         curatorFramework = CuratorFrameworkFactory.builder()
                 .connectionTimeoutMs(1000)
@@ -93,7 +95,11 @@ public class ServiceDiscoverer implements Serializable, Closeable {
         serverAdvertiser.advertiseAvailability();
         this.listServerAdvertiser.add(serverAdvertiser);
 
-        System.out.println("advertised... a " + serverMetadata);
+        if(this.privateCounter++ > 10){
+            System.out.println(this.privateCounter + " = advertised... a " + serverMetadata);
+            this.privateCounter = 0;
+        }
+
     }
 
     private InstanceSerializerFactory getInstanceSerializerFactory() {
