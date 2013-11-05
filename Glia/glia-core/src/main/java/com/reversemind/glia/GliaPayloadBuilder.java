@@ -20,6 +20,7 @@ public class GliaPayloadBuilder implements Serializable {
         GliaPayload gliaPayload = new GliaPayload();
         gliaPayload.setServerTimestamp(System.currentTimeMillis());
         gliaPayload.setStatus(gliaPayloadStatus);
+        gliaPayload.setThrowable(null);
         return gliaPayload;
     }
 

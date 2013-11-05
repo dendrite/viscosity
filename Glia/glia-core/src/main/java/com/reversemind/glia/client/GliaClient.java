@@ -132,15 +132,18 @@ public class GliaClient implements IGliaClient, Serializable {
      * @return
      */
     public GliaPayload getGliaPayload() {
+        Throwable _throwable = null;
 
         if(this.futureTask != null){
             try {
                 this.setGliaPayload(this.futureTask.get(this.futureTaskTimeOut, TimeUnit.MILLISECONDS));
             } catch (TimeoutException e) {
                 LOG.log(Level.WARNING, "TimeoutException futureTask == HERE", e);
+                _throwable = new TimeoutException("TimeoutException futureTask == HERE");
                 this.futureTask.cancel(true);
             } catch (InterruptedException e) {
                 LOG.log(Level.WARNING, "InterruptedException futureTask == HERE", e);
+                _throwable = new InterruptedException("InterruptedException futureTask == HERE");
             } catch (ExecutionException e) {
                 LOG.log(Level.WARNING, "ExecutionException futureTask == HERE", e);
             } catch (CancellationException ce) {
@@ -156,7 +159,7 @@ public class GliaClient implements IGliaClient, Serializable {
             return this.gliaPayload;
         }
 
-        return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_SERVER_TIMEOUT);
+        return GliaPayloadBuilder.buildErrorPayload(GliaPayloadStatus.ERROR_SERVER_TIMEOUT, _throwable);
     }
 
     @Override
@@ -437,7 +440,7 @@ public class GliaClient implements IGliaClient, Serializable {
         long countGoAway = 0;
         final long stepGoAway = 100; //ms
 
-        System.out.println("Warming up 1.8.1-SNAPSHOT ...");
+        System.out.println("Warming up 1.8.2-SNAPSHOT ...");
         while(goAway == false | countGoAway < (SERVER_CONNECTION_TIMEOUT / stepGoAway)){
 
             Thread.sleep(stepGoAway);

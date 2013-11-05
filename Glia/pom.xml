@@ -4,7 +4,7 @@
     <groupId>com.reversemind</groupId>
     <artifactId>glia</artifactId>
     <packaging>pom</packaging>
-    <version>1.8.1-SNAPSHOT</version>
+    <version>1.8.2-SNAPSHOT</version>
 
     <modules>
         <module>glia-examples</module>
@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <glia.version>1.8.1-SNAPSHOT</glia.version>
+        <glia.version>1.8.2-SNAPSHOT</glia.version>
     </properties>
 
     <distributionManagement>

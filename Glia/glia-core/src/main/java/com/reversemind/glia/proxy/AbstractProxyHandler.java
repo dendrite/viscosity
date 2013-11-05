@@ -90,9 +90,15 @@ public abstract class AbstractProxyHandler implements InvocationHandler {
             this.returnClient(localGliaClient);
             if(fromServer.getThrowable() != null){
                 // TODO What if impossible to load a specific Class
-                Constructor constructor = fromServer.getThrowable().getCause().getClass().getConstructor(new Class[]{String.class});
-                String[] exceptionMessage = {fromServer.getThrowable().getCause().getMessage()};
-                throw (Throwable) constructor.newInstance(exceptionMessage);
+                if(fromServer.getThrowable().getCause() == null){
+                    Constructor constructor =  fromServer.getThrowable().getClass().getConstructor(new Class[]{String.class});
+                    String[] exceptionMessage = {fromServer.getThrowable().getMessage()};
+                    throw (Throwable) constructor.newInstance(exceptionMessage);
+                }else{
+                    Constructor constructor = fromServer.getThrowable().getCause().getClass().getConstructor(new Class[]{String.class});
+                    String[] exceptionMessage = {fromServer.getThrowable().getCause().getMessage()};
+                    throw (Throwable) constructor.newInstance(exceptionMessage);
+                }
             }
 
             System.out.println("==2.5 Get back from server for:" + (System.currentTimeMillis() - bT) + " ms");
