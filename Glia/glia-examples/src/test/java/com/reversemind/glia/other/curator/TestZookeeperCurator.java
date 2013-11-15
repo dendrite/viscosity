@@ -5,16 +5,18 @@ import com.netflix.curator.framework.CuratorFrameworkFactory;
 import com.netflix.curator.retry.ExponentialBackoffRetry;
 import com.netflix.curator.retry.RetryNTimes;
 import com.netflix.curator.utils.EnsurePath;
-import com.reversemind.glia.servicediscovery.serializer.InstanceSerializerFactory;
 import org.apache.zookeeper.CreateMode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public class TestZookeeperCurator {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TestZookeeperCurator.class);
 
     @Ignore
     @Test
@@ -57,7 +59,7 @@ public class TestZookeeperCurator {
         CuratorFramework client = CuratorFrameworkFactory.newClient(connectionString, new ExponentialBackoffRetry(500, 3));
         client.start();
 
-        System.out.println(client.getNamespace());
+        LOG.debug(client.getNamespace());
 
         //String path = "/zookeeper/testNode_EPH_" + System.currentTimeMillis();
         //String path = "/testNode_EPH_" + System.currentTimeMillis();
@@ -69,7 +71,7 @@ public class TestZookeeperCurator {
         //client.create().withMode(CreateMode.PERSISTENT).forPath(path, value.getBytes());
 
         byte[] some = client.getData().forPath(path);
-        System.out.println("Get back is:" + new String(some));
+        LOG.debug("Get back is:" + new String(some));
 
         // Let's check that EPHEMERAL will be deleted at the end of client session
         Thread.sleep(600000);
@@ -80,17 +82,17 @@ public class TestZookeeperCurator {
     private void createHierarchy(CuratorFramework client, String paths, String pathSeparator) throws Exception {
 
         String[] elements = paths.split(pathSeparator);
-        if(elements.length > 1){
+        if (elements.length > 1) {
             String path = "";
-            if(elements[0].length() >0){
+            if (elements[0].length() > 0) {
                 path += "/" + elements[0];
             }
-            for(int i=1; i<elements.length; i++){
+            for (int i = 1; i < elements.length; i++) {
                 path += "/" + elements[i];
-                try{
+                try {
                     client.create().forPath(path);
-                }catch(Exception ex){
-                    System.out.println("Node '"+ path +"' exist");
+                } catch (Exception ex) {
+                    LOG.error("Node '" + path + "' exist", ex);
                 }
             }
 
@@ -99,7 +101,6 @@ public class TestZookeeperCurator {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Ignore
@@ -133,11 +134,11 @@ public class TestZookeeperCurator {
         CuratorFramework client = CuratorFrameworkFactory.newClient(connectionString, new ExponentialBackoffRetry(500, 3));
         client.start();
 
-        System.out.println( client.checkExists().forPath(hierarchyPath) );
+        LOG.debug("" + client.checkExists().forPath(hierarchyPath));
 
-        this.createHierarchy(client,hierarchyPath, "/");
+        this.createHierarchy(client, hierarchyPath, "/");
 
-        System.out.println( client.checkExists().forPath(hierarchyPath) );
+        LOG.debug("" + client.checkExists().forPath(hierarchyPath));
 
     }
 
@@ -158,12 +159,10 @@ public class TestZookeeperCurator {
         curatorFramework.start();
 
         String hierarchyPath = "/baloo/application/address/server/GLIA_SERVER/NODE2";
-        System.out.println(curatorFramework.checkExists().forPath(hierarchyPath));
-
+        LOG.debug("" + curatorFramework.checkExists().forPath(hierarchyPath));
 
 
     }
-
 
 
     @Ignore

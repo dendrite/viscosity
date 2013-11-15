@@ -1,5 +1,8 @@
 package com.reversemind.glia.other.future;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.Delayed;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -8,6 +11,8 @@ import java.util.concurrent.TimeUnit;
  *
  */
 public class DelayedImpl<T> implements Delayed {
+
+    private static final Logger LOG = LoggerFactory.getLogger(DelayedImpl.class);
 
     private Future<T> task;
     private final long maxExecTimeMinutes = 1;//MAX_THREAD_LIFE_MINUTES;
@@ -18,7 +23,7 @@ public class DelayedImpl<T> implements Delayed {
     }
 
     public long getDelay(TimeUnit unit) {
-        return unit.convert((startInMillis + maxExecTimeMinutes*60*1000) - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+        return unit.convert((startInMillis + maxExecTimeMinutes * 60 * 1000) - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
     }
 
     public int compareTo(Delayed o) {

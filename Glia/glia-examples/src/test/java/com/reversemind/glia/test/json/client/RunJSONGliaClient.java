@@ -1,10 +1,10 @@
 package com.reversemind.glia.test.json.client;
 
 import com.reversemind.glia.client.GliaClient;
+import com.reversemind.glia.proxy.ProxyFactory;
 import com.reversemind.glia.test.json.Settings;
 import com.reversemind.glia.test.json.shared.IDoSomething;
 import com.reversemind.glia.test.json.shared.JSONBuilder;
-import com.reversemind.glia.proxy.ProxyFactory;
 
 import java.util.Map;
 import java.util.Set;
@@ -25,15 +25,14 @@ public class RunJSONGliaClient {
 
         // call remote server
         String jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago"));
-        System.out.println("Server response: " + jsonString);
+        LOG.debug("Server response: " + jsonString);
 
 
-
-        System.out.println("\n\nMake a second interface:");
+        LOG.debug("\n\nMake a second interface:");
         // call remote server
         jsonString = doSomething.doExtraThing(JSONBuilder.buildJSONQuery("Chicago"), "SIMPLE STRING");
 
-        System.out.println("Server response: " + jsonString);
+        LOG.debug("Server response: " + jsonString);
 //
 //        // jut test yourself for little highload
 //        for(int i=0;i<1;i++){
@@ -46,11 +45,11 @@ public class RunJSONGliaClient {
         // get status from response
         String serverResponseStatus = (String) serverResponseMap.get(Settings.SEARCH_STATUS);
         if (serverResponseStatus.equals(Settings.SEARCH_STATUS_OK)) {
-            System.out.println("Yep!");
+            LOG.debug("Yep!");
 
             Set<String> keys = serverResponseMap.keySet();
             for (String key : keys) {
-                System.out.println(key + ":" + serverResponseMap.get(key));
+                LOG.debug(key + ":" + serverResponseMap.get(key));
             }
         }
 

@@ -1,11 +1,16 @@
 package com.reversemind.glia.other.future;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.*;
 
 /**
  *
  */
 public class FutureTaskExample {
+
+    private static final Logger LOG = LoggerFactory.getLogger(FutureTaskExample.class);
 
     static class FirstProcess<String> implements Callable<String> {
 
@@ -24,26 +29,26 @@ public class FutureTaskExample {
 
                     @Override
                     public String call() throws Exception {
-                        System.out.println("start task");
+                        LOG.debug("start task");
                         Thread.sleep(1000 * 5);
-                        System.out.println("Task Done");
+                        LOG.debug("Task Done");
                         return (String) "1000 * 2";
                     }
 
                 }
         );
         executor.execute(futureOne);
-        System.out.println("Execute task");
+        LOG.debug("Execute task");
         while (!futureOne.isDone()) {
             try {
                 // I wait until both processes are finished.
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                LOG.error("", e);
             }
         }
 
-        System.out.println("FUTURE GET:" + futureOne.get());
+        LOG.debug("FUTURE GET:" + futureOne.get());
         executor.shutdown();
     }
 

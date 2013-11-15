@@ -5,12 +5,10 @@ import com.reversemind.glia.proxy.ProxyFactory;
 import com.reversemind.glia.test.pojo.shared.ISimplePojo;
 import com.reversemind.glia.test.pojo.shared.PAddressNode;
 import com.reversemind.glia.test.pojo.shared.Settings;
-import com.reversemind.glia.test.pojo.shared.SimpleException;
-
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Date: 4/24/13

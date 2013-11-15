@@ -20,29 +20,30 @@ public class RunClientMulti implements Serializable {
     static GliaClient client;
 
     public static void main(String... args) throws Exception {
-        System.out.println("Run client");
+        LOG.debug("Run client");
 
         int serverPort = 7000;
         String serverHost = "localhost";
 
-        client = new GliaClient(serverHost,serverPort);
+        client = new GliaClient(serverHost, serverPort);
         client.start();
 
         Thread[] threadArray = new Thread[10];
 
-        for(int i=0; i<10;i++){
-            threadArray[i] = new Thread(){
+        for (int i = 0; i < 10; i++) {
+            threadArray[i] = new Thread() {
                 long vl = System.currentTimeMillis();
+
                 public void run() {
 
-                    for(int i=0;i<1;i++){
+                    for (int i = 0; i < 1; i++) {
                         ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance().newProxyInstance(client, ISimplePojo.class);
 
                         List<PAddressNode> list = simplePojoProxy.searchAddress(this.getName());
 
                         if (list != null && list.size() > 0) {
                             for (PAddressNode addressNode : list) {
-                                System.out.println("" + this.getName() +"-node:" + addressNode);
+                                LOG.debug("" + this.getName() + "-node:" + addressNode);
                             }
                         }
                         try {
@@ -57,7 +58,7 @@ public class RunClientMulti implements Serializable {
             //Thread.sleep(1);
         }
 
-        for(int i=0; i<10;i++){
+        for (int i = 0; i < 10; i++) {
             threadArray[i].start();
         }
 

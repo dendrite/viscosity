@@ -1,6 +1,9 @@
 package com.reversemind.glia.test.servericediscovery;
 
-import com.reversemind.glia.server.*;
+import com.reversemind.glia.server.GliaPayloadProcessor;
+import com.reversemind.glia.server.GliaServerFactory;
+import com.reversemind.glia.server.IGliaPayloadProcessor;
+import com.reversemind.glia.server.IGliaServer;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -48,7 +51,7 @@ public class TestGliaServerSelfAdvertiser implements Serializable {
         server01.start();
         server02.start();
 
-        for(int i=0;i<100;i++){
+        for (int i = 0; i < 100; i++) {
             Thread.sleep(1000);
             //server01.updateMetrics();
             server01.getMetrics().addRequest(10);

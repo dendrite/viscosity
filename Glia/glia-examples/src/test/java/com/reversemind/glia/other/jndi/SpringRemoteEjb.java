@@ -1,19 +1,19 @@
 package com.reversemind.glia.other.jndi;
 
 import cluster.IAddressSearch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.Serializable;
 
 /**
- * Date: 4/25/13
- * Time: 11:06 AM
  *
- * @author konilovsky
- * @since 1.0
  */
 public class SpringRemoteEjb implements Serializable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SpringRemoteEjb.class);
 
     public static void main(String... args) {
 
@@ -24,9 +24,9 @@ public class SpringRemoteEjb implements Serializable {
         ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring-jndi.xml");
 
 
-        final IAddressSearch addressSearch = (IAddressSearch)context.getBean("beanAddressSearch");
+        final IAddressSearch addressSearch = (IAddressSearch) context.getBean("beanAddressSearch");
 
-        System.out.println(addressSearch.doSearch("Чонгарский"));
+        LOG.debug("" + addressSearch.doSearch("Moscow"));
 
         //No Spring just POJO
 

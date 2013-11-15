@@ -54,12 +54,12 @@ public class OtherSimpleTest {
                 .addPackages(true, SimpleEJB.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
-        System.out.println("archive:" + archive.toString(true));
+        LOG.debug("archive:" + archive.toString(true));
         return archive;
     }
 
     @Test
-    public void testSimple(){
+    public void testSimple() {
         LOG.info("INFO MESSAGE");
     }
 }

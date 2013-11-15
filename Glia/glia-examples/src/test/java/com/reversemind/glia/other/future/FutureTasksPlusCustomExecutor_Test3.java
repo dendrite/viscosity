@@ -1,25 +1,26 @@
 package com.reversemind.glia.other.future;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.util.concurrent.*;
 
 /**
- * Date: 4/26/13
- * Time: 11:04 AM
  *
- * @author konilovsky
- * @since 1.0
  */
 public class FutureTasksPlusCustomExecutor_Test3 implements Serializable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(FutureTasksPlusCustomExecutor_Test3.class);
 
     public static void main(String... args) {
 
 
-        try{
+        try {
 
             ExecutorService executor = new ThreadPoolExecutor(0, 1,
-                                                                1L, TimeUnit.SECONDS,
-                                                                new SynchronousQueue<Runnable>());
+                    1L, TimeUnit.SECONDS,
+                    new SynchronousQueue<Runnable>());
 
             FutureTask<String> future = new FutureTask<String>(
                     new Callable<String>() {
@@ -57,10 +58,10 @@ public class FutureTasksPlusCustomExecutor_Test3 implements Serializable {
 //                // interrupted
 //            }
 
-            System.out.println("GET VALUE FROM FUTURE:" + future.get());
+            LOG.debug("GET VALUE FROM FUTURE:" + future.get());
 
-        }catch(Exception ex){
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            LOG.error("", ex);
         }
 
     }

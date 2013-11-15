@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Date: 4/22/13
  * Time: 7:28 PM
- *
+ * <p/>
  * DTO for PrimeFaces autocomplete
  *
  * @author

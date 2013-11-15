@@ -25,7 +25,7 @@ public class GreeterTest {
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
                 .addClasses(Greeter.class, Greeter.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-        // System.out.println(jar.toString(true));
+        // LOG.debug(jar.toString(true));
         return jar;
     }
 

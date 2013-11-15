@@ -26,12 +26,12 @@ public class RunServerFromSpringContext implements Serializable {
         Map<Class, Class> map = payloadProcessor.getPojoMap();
         Set<Class> set = map.keySet();
         for (Class clazz : set) {
-            System.out.println(clazz.getCanonicalName() + "|" + map.get(clazz).getCanonicalName());
+            LOG.debug(clazz.getCanonicalName() + "|" + map.get(clazz).getCanonicalName());
         }
 
         GliaServer server = (GliaServer) context.getBean("gliaServer");
         if (server != null) {
-            System.out.println("!!!!");
+            LOG.debug("!!!!");
         }
 
         server.start();

@@ -10,7 +10,6 @@ import java.util.*;
 
 /**
  * Test JSON generation with
- *
  */
 public class TestJSON {
 
@@ -39,8 +38,7 @@ public class TestJSON {
         addressMap.put("versions", list);
 
         String jsonString = mapper.writeValueAsString(addressMap);
-        System.out.println(jsonString);
-
+        LOG.debug(jsonString);
 
 
         // Read JSON string back
@@ -50,7 +48,7 @@ public class TestJSON {
 
         Set<String> keys = addressMapBack.keySet();
         for (String key : keys) {
-            System.out.println(key + ":" + addressMapBack.get(key));
+            LOG.debug(key + ":" + addressMapBack.get(key));
         }
 
     }

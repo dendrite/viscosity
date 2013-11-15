@@ -3,6 +3,8 @@ package com.reversemind.glia.other.future;
 import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.concurrent.*;
@@ -16,16 +18,18 @@ import java.util.concurrent.*;
  */
 public class FutureTask_TimeOut_Example implements Serializable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(FutureTask_TimeOut_Example.class);
+
     @Ignore
     @Test
-    public void testFutureTaskTimeOutExample(){
+    public void testFutureTaskTimeOutExample() {
 
         final long EXECUTOR_TIME_OUT = 1000;    // 1sec
         final long FUTURE_TASK_TIME_OUT = 2000; // 2 sec
 
         ExecutorService executor = new ThreadPoolExecutor(0, 1,
-                                                            EXECUTOR_TIME_OUT, TimeUnit.MILLISECONDS,
-                                                            new SynchronousQueue<Runnable>());
+                EXECUTOR_TIME_OUT, TimeUnit.MILLISECONDS,
+                new SynchronousQueue<Runnable>());
 
         FutureTask<String> future = new FutureTask<String>(
                 new Callable<String>() {
@@ -45,30 +49,27 @@ public class FutureTask_TimeOut_Example implements Serializable {
         try {
             resultFromFutureTask = future.get(FUTURE_TASK_TIME_OUT, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
-            System.out.println("TimeoutException == HERE");
+            LOG.error("TimeoutException == HERE", e);
             future.cancel(true);
-            e.printStackTrace();
         } catch (InterruptedException e) {
-            System.out.println("InterruptedException == HERE");
-            e.printStackTrace();
+            LOG.error("InterruptedException == HERE", e);
         } catch (ExecutionException e) {
-            System.out.println("ExecutionException == HERE");
-            e.printStackTrace();
+            LOG.error("ExecutionException == HERE", e);
         }
 
-        System.out.println("resultFromFutureTask:" + resultFromFutureTask);
-        Assert.assertEquals("EMPTY",resultFromFutureTask);
+        LOG.debug("resultFromFutureTask:" + resultFromFutureTask);
+        Assert.assertEquals("EMPTY", resultFromFutureTask);
 
-        if(future.isCancelled()){
-            System.out.println("Task was canceled");
+        if (future.isCancelled()) {
+            LOG.debug("Task was canceled");
             executor.shutdown();
         }
 
-        if(future.isDone()){
+        if (future.isDone()) {
             executor.shutdown();
         }
 
-        if(!executor.isShutdown()){
+        if (!executor.isShutdown()) {
             executor.shutdown();
         }
 

@@ -1,6 +1,9 @@
 package com.reversemind.glia.test.servericediscovery;
 
-import com.reversemind.glia.server.*;
+import com.reversemind.glia.server.GliaPayloadProcessor;
+import com.reversemind.glia.server.GliaServerFactory;
+import com.reversemind.glia.server.IGliaPayloadProcessor;
+import com.reversemind.glia.server.IGliaServer;
 import com.reversemind.glia.servicediscovery.ServiceDiscoverer;
 import com.reversemind.glia.servicediscovery.serializer.ServerMetadata;
 import com.reversemind.glia.servicediscovery.serializer.ServerMetadataBuilder;
@@ -24,7 +27,7 @@ public class TestServiceDiscovery implements Serializable {
     @Test
     public void testAdvertise() throws InterruptedException, IOException {
 
-        final String SERVICE_NAME= "ADDRESS";
+        final String SERVICE_NAME = "ADDRESS";
         final String ZOOKEEPER_CONNECTION_STRING = "localhost:2181";
         final String BASE_PATH = "/baloo/services/" + SERVICE_NAME;
 

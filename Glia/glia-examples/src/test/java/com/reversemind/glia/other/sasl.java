@@ -5,6 +5,8 @@ import com.netflix.curator.framework.CuratorFrameworkFactory;
 import com.netflix.curator.retry.RetryOneTime;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooDefs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
@@ -16,6 +18,8 @@ import java.io.Serializable;
  * @since 1.0
  */
 public class sasl implements Serializable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(sasl.class);
 
     public static void main(String... args) throws Exception {
 
@@ -29,10 +33,10 @@ public class sasl implements Serializable {
 
         Thread.sleep(3000);
 
-        System.out.println("creating the node..");
+        LOG.debug("creating the node..");
         client.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT)
                 .withACL(ZooDefs.Ids.CREATOR_ALL_ACL).forPath("/node01", "some text".getBytes());
-        System.out.println("node created");
+        LOG.debug("node created");
 
         client.close();
     }

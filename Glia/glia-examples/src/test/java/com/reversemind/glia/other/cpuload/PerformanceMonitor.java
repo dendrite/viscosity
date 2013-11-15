@@ -1,42 +1,46 @@
 package com.reversemind.glia.other.cpuload;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.management.ManagementFactory;
 
 /**
  *
  */
 public class PerformanceMonitor {
-    static long lastSystemTime      = 0;
-    static long lastProcessCpuTime  = 0;
-    public static int  availableProcessors = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
-    public synchronized double getCpuUsage()
-    {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PerformanceMonitor.class);
+
+    static long lastSystemTime = 0;
+    static long lastProcessCpuTime = 0;
+    public static int availableProcessors = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
+
+    public synchronized double getCpuUsage() {
         ManagementFactory.getThreadMXBean().setThreadCpuTimeEnabled(true);
-        if ( lastSystemTime == 0 )
-        {
+        if (lastSystemTime == 0) {
             baselineCounters();
             //  return ;
         }
 
-        long systemTime     = System.nanoTime();
+        long systemTime = System.nanoTime();
         long processCpuTime = 0;
 
         processCpuTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
-        double cpuUsage = (double) (processCpuTime - lastProcessCpuTime ) / ( systemTime - lastSystemTime )*100.0;
+        double cpuUsage = (double) (processCpuTime - lastProcessCpuTime) / (systemTime - lastSystemTime) * 100.0;
 
-        lastSystemTime     = systemTime;
+        lastSystemTime = systemTime;
         lastProcessCpuTime = processCpuTime;
 
         return cpuUsage / availableProcessors;
     }
 
     static float javacpu = 0;
-    static double uptime =0;
+    static double uptime = 0;
 
     public void _getJavaRuntime() {
 
-        System.out.println("!!!" + ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage());
+        LOG.debug("!!!" + ManagementFactory.getOperatingSystemMXBean().getSystemLoadAverage());
 
 //        OperatingSystemMXBean osbean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 //        RuntimeMXBean runbean = (RuntimeMXBean) ManagementFactory.getRuntimeMXBean();
@@ -60,31 +64,30 @@ public class PerformanceMonitor {
 //        uptime = runbean.getUptime();
     }
 
-    private void baselineCounters()
-    {
+    private void baselineCounters() {
         lastSystemTime = System.nanoTime();
 
         //lastProcessCpuTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
         lastProcessCpuTime = 0;
         long[] ids = ManagementFactory.getThreadMXBean().getAllThreadIds();
-        for(int i=0; i<ids.length; i++){
-            if(ManagementFactory.getThreadMXBean().getThreadCpuTime(ids[i]) >= 0){
+        for (int i = 0; i < ids.length; i++) {
+            if (ManagementFactory.getThreadMXBean().getThreadCpuTime(ids[i]) >= 0) {
                 lastProcessCpuTime += ManagementFactory.getThreadMXBean().getThreadCpuTime(ids[i]);
             }
 
         }
     }
 
-        public static void main(String[] args) throws InterruptedException {
-//        System.out.println(Runtime.getRuntime().availableProcessors());
+    public static void main(String[] args) throws InterruptedException {
+//        LOG.debug(Runtime.getRuntime().availableProcessors());
 //        System.exit(0);
         PerformanceMonitor monitor = new PerformanceMonitor();
-        while(true){
+        while (true) {
             //Thread.sleep(1000);
             start();
             double usage = monitor.getCpuUsage();
             monitor._getJavaRuntime();
-            System.out.println("Current CPU usage in per cents : " + usage + " - " + javacpu + " " + uptime);
+            LOG.debug("Current CPU usage in per cents : " + usage + " - " + javacpu + " " + uptime);
         }
     }
 
@@ -121,13 +124,13 @@ public class PerformanceMonitor {
 //    }
 //
 //    public static void main(String[] args) {
-////        System.out.println(Runtime.getRuntime().availableProcessors());
+////        LOG.debug(Runtime.getRuntime().availableProcessors());
 ////        System.exit(0);
 //        PerformanceMonitor monitor = new PerformanceMonitor();
 //        for (int i = 0; i < 10000; i++) {
 //            start();
 //            double usage = monitor.getCpuUsage();
-//            if (usage != 0) System.out.println("Current CPU usage in pourcentage : " + usage);
+//            if (usage != 0) LOG.debug("Current CPU usage in % : " + usage);
 //        }
 //    }
 

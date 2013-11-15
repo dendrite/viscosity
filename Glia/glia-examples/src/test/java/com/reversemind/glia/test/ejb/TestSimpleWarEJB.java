@@ -13,13 +13,9 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import sun.util.LocaleServiceProviderPool;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 
 /**
@@ -68,7 +64,7 @@ public class TestSimpleWarEJB {
 //                .addPackages(true, com.reversemind.glia.simple.GliaClient.class.getPackage())
 //                .addPackages(true, StartZookeeper.class.getPackage())
 //                .addPackages(true, GliaClient.class.getPackage())
-                    .addPackages(true, SimpleEJB.class.getPackage())
+                .addPackages(true, SimpleEJB.class.getPackage())
 
 //                .addAsResource("META-INF/glia-interface-map.xml", "META-INF/glia-interface-map.xml")
 //                .addAsResource("META-INF/glia-server-context.xml", "META-INF/glia-server-context.xml")
@@ -79,11 +75,11 @@ public class TestSimpleWarEJB {
 
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
-        System.out.println("archive:" + archive.toString(true));
+        LOG.debug("archive:" + archive.toString(true));
         return archive;
     }
 
-//    @Ignore
+    //    @Ignore
     @Test
     public void testSomething() throws InterruptedException {
 
@@ -96,7 +92,7 @@ public class TestSimpleWarEJB {
 
     }
 
-//    @Ignore
+    //    @Ignore
     @Test
     public void testSimple() throws Exception {
 //        LOG.info(":Simple test");
@@ -105,8 +101,8 @@ public class TestSimpleWarEJB {
     }
 
     @Test
-    public void simpleTest(){
-        System.out.println("VALUE:=" + simpleEJB.getResult("sdfsdf"));
+    public void simpleTest() {
+        LOG.debug("VALUE:=" + simpleEJB.getResult("sdfsdf"));
     }
 
 }

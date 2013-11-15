@@ -1,6 +1,9 @@
 package com.reversemind.glia.test.json.server;
 
-import com.reversemind.glia.server.*;
+import com.reversemind.glia.server.GliaPayloadProcessor;
+import com.reversemind.glia.server.GliaServerFactory;
+import com.reversemind.glia.server.IGliaPayloadProcessor;
+import com.reversemind.glia.server.IGliaServer;
 import com.reversemind.glia.test.json.Settings;
 import com.reversemind.glia.test.json.shared.IDoSomething;
 
@@ -28,7 +31,7 @@ public class RunJSONGliaServer {
         // just wait for a minute 5 sec * 120 = 10 minutes
         while (count++ < 120) {
             Thread.sleep(5000);
-            System.out.println(gliaServer.getMetrics());
+            LOG.debug(gliaServer.getMetrics());
         }
 
         gliaServer.shutdown();

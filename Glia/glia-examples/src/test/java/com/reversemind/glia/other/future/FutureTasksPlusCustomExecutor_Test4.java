@@ -1,5 +1,8 @@
 package com.reversemind.glia.other.future;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.util.concurrent.*;
 
@@ -12,13 +15,15 @@ import java.util.concurrent.*;
  */
 public class FutureTasksPlusCustomExecutor_Test4 implements Serializable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(FutureTasksPlusCustomExecutor_Test4.class);
+
     public static void main(String... args) {
 
-        try{
+        try {
 
             ExecutorService executor = new ThreadPoolExecutor(0, 1,
-                                                                1L, TimeUnit.SECONDS,
-                                                                new SynchronousQueue<Runnable>());
+                    1L, TimeUnit.SECONDS,
+                    new SynchronousQueue<Runnable>());
 
             FutureTask<String> future = new FutureTask<String>(
                     new Callable<String>() {
@@ -41,20 +46,20 @@ public class FutureTasksPlusCustomExecutor_Test4 implements Serializable {
             try {
                 executor.awaitTermination(2, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
-                System.out.println("Time is UP!!!!!!");
+                LOG.debug("Time is UP!!!!!!");
             }
 
 
-            if(future.isCancelled()){
-                System.out.println("FUTURE is Canceled");
+            if (future.isCancelled()) {
+                LOG.debug("FUTURE is Canceled");
             }
 
-            if(future.isDone()){
-                System.out.println("GEt some values from Future:" + future.get());
+            if (future.isDone()) {
+                LOG.debug("GEt some values from Future:" + future.get());
             }
 
 
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 

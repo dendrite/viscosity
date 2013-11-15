@@ -3,17 +3,17 @@ package com.reversemind.glia;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.Serializable;
+import java.io.StringReader;
 import java.net.URLDecoder;
 
 /**
@@ -24,6 +24,8 @@ import java.net.URLDecoder;
  * @since 1.0
  */
 public class go implements Serializable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(go.class);
 
     public static void main(String... args) throws Exception {
 
@@ -37,7 +39,7 @@ public class go implements Serializable {
 
         Document doc = Jsoup.connect(parseUrl)
                 .ignoreContentType(true)
-                //.userAgent(getAgent())
+                        //.userAgent(getAgent())
                 .timeout(3000)
                 .followRedirects(true)
                 .referrer("http://www.google.com")
@@ -45,7 +47,7 @@ public class go implements Serializable {
 
 
         //&quot;
-        //System.out.println(doc.html().toString());
+        //LOG.debug(doc.html().toString());
         Element masthead = doc.select("body").first();
         String values = masthead.html();
         //values = values.replaceAll("\\&quot;","\"").replaceAll("\"","\"");
@@ -54,49 +56,42 @@ public class go implements Serializable {
 //        replaceAll("\\'","'");
 
 
-
-
-        System.out.println(values);
+        LOG.debug(values);
         JsonReader reader = new JsonReader(new StringReader(values));
         reader.setLenient(true);
 
 
-
         JsonObject jsonObject = new JsonParser().parse(reader).getAsJsonObject();
-        System.out.println(jsonObject);
+        LOG.debug("" + jsonObject);
 
 
         doc.outputSettings().charset("UTF-8");
         String title = doc.title();
 
-        System.out.println(URLDecoder.decode(doc.body().html().toString(),"UTF-8"));
-        System.out.println(doc.html());
+        LOG.debug(URLDecoder.decode(doc.body().html().toString(), "UTF-8"));
+        LOG.debug(doc.html());
 
-        String s2 = Jsoup.clean(doc.html(),Whitelist.basic());
-        System.out.println(s2);
+        String s2 = Jsoup.clean(doc.html(), Whitelist.basic());
+        LOG.debug(s2);
 
 //        String htmlText = Jsoup.clean( doc.body().html(), Whitelist.simpleText() );
-//        System.out.println("htmlText == " +  htmlText);
-
+//        LOG.debug("htmlText == " +  htmlText);
 
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode actualObj = mapper.readValue(doc.html().toString(), JsonNode.class);
-        System.out.println(actualObj);
-
-
+        LOG.debug("" + actualObj);
 
 
         String result = URLDecoder.decode("\u003cb\u003e\u041e\u0442\u0432\u0435", "UTF-8");
-        System.out.println("result = " + result);
-
+        LOG.debug("result = " + result);
 
 
         //yourArray = new Gson().fromJson(jsonObject.get("fieldIwant"), yourArrayType);
 
 
 //
-//        System.out.println("\n\n");
+//        LOG.debug("\n\n");
 //
 //        //StringUtils.newStringUtf8(Base64.decodeBase64(s));
 //
@@ -119,8 +114,8 @@ public class go implements Serializable {
 //        bw.close();
     }
 
-    public static String getAgent(){
-        int index = (int)Math.round(Math.random() * (agents.length-1));
+    public static String getAgent() {
+        int index = (int) Math.round(Math.random() * (agents.length - 1));
         return agents[index];
     }
 

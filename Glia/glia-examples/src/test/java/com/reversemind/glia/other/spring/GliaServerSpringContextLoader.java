@@ -4,6 +4,8 @@ import com.reversemind.glia.GliaPayload;
 import com.reversemind.glia.server.GliaServerFactory;
 import com.reversemind.glia.server.IGliaPayloadProcessor;
 import com.reversemind.glia.server.IGliaServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -15,41 +17,38 @@ import java.util.Map;
  */
 public class GliaServerSpringContextLoader implements Serializable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(GliaServerSpringContextLoader.class);
+
     public static void main(String... args) throws InterruptedException {
 
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-server-context.xml");
 
-        GliaServerFactory.Builder builderAdvertiser = applicationContext.getBean("serverBuilderAdvertiser",GliaServerFactory.Builder.class);
+        GliaServerFactory.Builder builderAdvertiser = applicationContext.getBean("serverBuilderAdvertiser", GliaServerFactory.Builder.class);
 
-        System.out.println("--------------------------------------------------------");
-        System.out.println("Builder properties:");
-        System.out.println("Name:" + builderAdvertiser.getName());
-        System.out.println("Instance Name:" + builderAdvertiser.getInstanceName());
-        System.out.println("port:" + builderAdvertiser.getPort());
-        System.out.println("isAutoSelectPort:" + builderAdvertiser.isAutoSelectPort());
+        LOG.debug("--------------------------------------------------------");
+        LOG.debug("Builder properties:");
+        LOG.debug("Name:" + builderAdvertiser.getName());
+        LOG.debug("Instance Name:" + builderAdvertiser.getInstanceName());
+        LOG.debug("port:" + builderAdvertiser.getPort());
+        LOG.debug("isAutoSelectPort:" + builderAdvertiser.isAutoSelectPort());
 
-        System.out.println("Type:" + builderAdvertiser.getType());
+        LOG.debug("Type:" + builderAdvertiser.getType());
 
-        System.out.println("Zookeeper connection string:" + builderAdvertiser.getZookeeperHosts());
-        System.out.println("Zookeeper base path:" + builderAdvertiser.getServiceBasePath());
-
-
-
-
-
+        LOG.debug("Zookeeper connection string:" + builderAdvertiser.getZookeeperHosts());
+        LOG.debug("Zookeeper base path:" + builderAdvertiser.getServiceBasePath());
 
 
         IGliaServer server = builderAdvertiser.build();
 
-        System.out.println("\n\n");
-        System.out.println("--------------------------------------------------------");
-        System.out.println("After server initialization - properties");
-        System.out.println("\n");
-        System.out.println("Server properties:");
-        System.out.println("......");
-        System.out.println("Name:" + server.getName());
-        System.out.println("Instance Name:" + server.getInstanceName());
-        System.out.println("port:" + server.getPort());
+        LOG.debug("\n\n");
+        LOG.debug("--------------------------------------------------------");
+        LOG.debug("After server initialization - properties");
+        LOG.debug("\n");
+        LOG.debug("Server properties:");
+        LOG.debug("......");
+        LOG.debug("Name:" + server.getName());
+        LOG.debug("Instance Name:" + server.getInstanceName());
+        LOG.debug("port:" + server.getPort());
 
         server.start();
 
@@ -58,9 +57,8 @@ public class GliaServerSpringContextLoader implements Serializable {
         server.shutdown();
 
 
-
-        GliaServerFactory.Builder builderSimple = (GliaServerFactory.Builder)applicationContext.getBean("serverBuilderSimple");
-        System.out.println(builderSimple.port());
+        GliaServerFactory.Builder builderSimple = (GliaServerFactory.Builder) applicationContext.getBean("serverBuilderSimple");
+        LOG.debug(builderSimple.port());
 
         IGliaServer serverSimple = builderSimple
                 .setAutoSelectPort(true)
@@ -91,15 +89,15 @@ public class GliaServerSpringContextLoader implements Serializable {
                 }).build();
 
 
-        System.out.println("\n\n");
-        System.out.println("--------------------------------------------------------");
-        System.out.println("Simple Glia server");
-        System.out.println("\n");
-        System.out.println("Server properties:");
-        System.out.println("......");
-        System.out.println("Name:" + serverSimple.getName());
-        System.out.println("Instance Name:" + serverSimple.getInstanceName());
-        System.out.println("port:" + serverSimple.getPort());
+        LOG.debug("\n\n");
+        LOG.debug("--------------------------------------------------------");
+        LOG.debug("Simple Glia server");
+        LOG.debug("\n");
+        LOG.debug("Server properties:");
+        LOG.debug("......");
+        LOG.debug("Name:" + serverSimple.getName());
+        LOG.debug("Instance Name:" + serverSimple.getInstanceName());
+        LOG.debug("port:" + serverSimple.getPort());
 
     }
 
