@@ -3,6 +3,7 @@ package com.reversemind.glia.server;
 import com.reversemind.glia.servicediscovery.ServiceDiscoverer;
 import com.reversemind.glia.servicediscovery.serializer.ServerMetadata;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -18,6 +19,8 @@ import java.util.TimerTask;
  */
 public class GliaServerAdvertiser extends GliaServer implements Serializable {
 
+    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(GliaServerAdvertiser.class);
+
     private String zookeeperHosts;
     private String serviceBasePath;
     private ServiceDiscoverer serviceDiscoverer;
@@ -28,19 +31,19 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
 
     private boolean useMetrics = false;
     private long periodPublishMetrics = 1000; // ms
+
     /**
-     *
      * @param builder
      */
-    public GliaServerAdvertiser(GliaServerFactory.Builder builder){
+    public GliaServerAdvertiser(GliaServerFactory.Builder builder) {
         super(builder);
 
-        if(StringUtils.isEmpty(builder.getZookeeperHosts())){
+        if (StringUtils.isEmpty(builder.getZookeeperHosts())) {
             throw new RuntimeException("Need zookeeper connection string");
         }
         this.zookeeperHosts = builder.getZookeeperHosts();
 
-        if(StringUtils.isEmpty(builder.getServiceBasePath())){
+        if (StringUtils.isEmpty(builder.getServiceBasePath())) {
             throw new RuntimeException("Need zookeeper base path string");
         }
         this.serviceBasePath = builder.getServiceBasePath();
@@ -54,16 +57,16 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
         );
 
         this.useMetrics = builder.isUseMetrics();
-        if(builder.isUseMetrics()){
+        if (builder.isUseMetrics()) {
 
             this.periodPublishMetrics = builder.getPeriodPublishMetrics();
 
             System.out.println("builder.getPeriodPublishMetrics() == " + builder.getPeriodPublishMetrics());
-            if(builder.getPeriodPublishMetrics() < 0){
+            if (builder.getPeriodPublishMetrics() < 0) {
                 this.periodPublishMetrics = 1000; //ms
             }
 
-            System.out.println("this.periodPublishMetrics == " + this.periodPublishMetrics);
+            LOG.debug("this.periodPublishMetrics == " + this.periodPublishMetrics);
 
             this.metricsUpdateTask = new MetricsUpdateTask();
             this.timer = new Timer();
@@ -85,7 +88,7 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
     /**
      * Update different metrics
      */
-    public void updateMetrics(){
+    public void updateMetrics() {
         this.metadata = new ServerMetadata(
                 this.getName(),
                 this.getInstanceName(),
@@ -102,8 +105,8 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
     @Override
     public void shutdown() {
         super.shutdown();
-        if(this.serviceDiscoverer != null){
-            synchronized (this.serviceDiscoverer){
+        if (this.serviceDiscoverer != null) {
+            synchronized (this.serviceDiscoverer) {
                 try {
                     this.serviceDiscoverer.close();
                 } catch (IOException e) {
@@ -114,7 +117,6 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public ServerMetadata getMetadata() {
@@ -124,7 +126,7 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
     /**
      *
      */
-    private class MetricsUpdateTask extends TimerTask{
+    private class MetricsUpdateTask extends TimerTask {
         @Override
         public void run() {
             updateMetrics();

@@ -1,5 +1,7 @@
 package com.reversemind.glia.server;
 
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 
 /**
@@ -11,7 +13,9 @@ import java.io.Serializable;
  */
 public class GliaServerFactory implements Serializable {
 
-    private GliaServerFactory(){
+    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(GliaServerFactory.class);
+
+    private GliaServerFactory() {
     }
 
     /**
@@ -20,14 +24,14 @@ public class GliaServerFactory implements Serializable {
      * @return new Builder();
      */
     //public static Builder builder(Builder.Type setType){
-    public static Builder builder(){
+    public static Builder builder() {
         return new Builder();
     }
 
     /**
      *
      */
-    public static class Builder{
+    public static class Builder {
 
         private String name = null;
         private String instanceName = null;
@@ -49,31 +53,33 @@ public class GliaServerFactory implements Serializable {
 
         /**
          * Actually this Counstructor should be a private but for Spring Context it's opened
-         *
          */
-        public Builder(){
+        public Builder() {
         }
 
         /**
          * Using type SIMPLE, ZOOKEEPER_ADVERTISER to build server
-         *
+         * <p/>
          * for SIMPLE GliaServerSimple
          * for ZOOKEEPER_ADVERTISER GliaServerAdvertiser
          *
          * @return
          */
-        public IGliaServer build(){
-            if(this.payloadWorker == null){
+        public IGliaServer build() {
+            if (this.payloadWorker == null) {
                 throw new RuntimeException("Assign a setPayloadWorker to server!");
             }
-            switch(this.type){
-                case SIMPLE: return new GliaServerSimple(this);
-                case ZOOKEEPER_ADVERTISER: return new GliaServerAdvertiser(this);
-                default: return new GliaServerSimple(this);
+            switch (this.type) {
+                case SIMPLE:
+                    return new GliaServerSimple(this);
+                case ZOOKEEPER_ADVERTISER:
+                    return new GliaServerAdvertiser(this);
+                default:
+                    return new GliaServerSimple(this);
             }
         }
 
-        public Builder setPayloadWorker(IGliaPayloadProcessor gliaPayloadWorker){
+        public Builder setPayloadWorker(IGliaPayloadProcessor gliaPayloadWorker) {
             this.payloadWorker = gliaPayloadWorker;
             return this;
         }
@@ -167,7 +173,7 @@ public class GliaServerFactory implements Serializable {
          * @return
          */
         public Builder setKeepClientAlive(boolean keepClientAlive) {
-            System.out.println(" =GLIA= goint to set keep client alive:" + keepClientAlive);
+            LOG.debug(" =GLIA= goint to set keep client alive:" + keepClientAlive);
             this.keepClientAlive = keepClientAlive;
             return this;
         }
@@ -244,7 +250,7 @@ public class GliaServerFactory implements Serializable {
             return this.zookeeperHosts;
         }
 
-        public enum Type{
+        public enum Type {
             SIMPLE, ZOOKEEPER_ADVERTISER
         }
     }

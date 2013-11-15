@@ -32,6 +32,7 @@ public class GliaPayload implements Serializable {
         this.clientTimestamp = System.currentTimeMillis();
         this.serverTimestamp = System.currentTimeMillis();
         this.status = GliaPayloadStatus.ERROR_UNKNOWN;
+        this.throwable = null;
     }
 
     public Object getResultResponse() {

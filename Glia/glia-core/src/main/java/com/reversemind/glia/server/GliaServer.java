@@ -11,6 +11,7 @@ import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.serialization.ClassResolvers;
 import org.jboss.netty.handler.codec.serialization.ObjectDecoder;
 import org.jboss.netty.handler.codec.serialization.ObjectEncoder;
+import org.slf4j.LoggerFactory;
 
 
 import java.io.IOException;
@@ -31,6 +32,8 @@ import java.util.concurrent.Executors;
  */
 public abstract class GliaServer implements IGliaServer, Serializable {
 
+    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(GliaServer.class);
+
     private String name;
     private String instanceName;
     private String host = "localhost";
@@ -48,11 +51,10 @@ public abstract class GliaServer implements IGliaServer, Serializable {
     private IGliaPayloadProcessor gliaPayloadWorker;
 
     /**
-     *
      * @param builder
      */
-    public GliaServer(GliaServerFactory.Builder builder){
-        if(builder == null){
+    public GliaServer(GliaServerFactory.Builder builder) {
+        if (builder == null) {
             throw new RuntimeException("Builder is empty");
         }
 
@@ -65,16 +67,16 @@ public abstract class GliaServer implements IGliaServer, Serializable {
             this.port = builder.port();
         }
 
-        if(builder.getPayloadWorker() == null){
+        if (builder.getPayloadWorker() == null) {
             throw new RuntimeException("Assign a setPayloadWorker to server!");
         }
         this.gliaPayloadWorker = builder.getPayloadWorker();
 
         // drop connection from client or not
-        System.out.println(" =GLIA= set value for KeepClientAlive from builder:" + builder.isKeepClientAlive());
+        LOG.warn(" =GLIA= set value for KeepClientAlive from builder:" + builder.isKeepClientAlive());
         this.keepClientAlive = builder.isKeepClientAlive();
 
-        this.name = StringUtils.isEmpty(builder.getName()) ?  UUID.randomUUID().toString() : builder.getName();
+        this.name = StringUtils.isEmpty(builder.getName()) ? UUID.randomUUID().toString() : builder.getName();
         this.instanceName = StringUtils.isEmpty(builder.getInstanceName()) ? UUID.randomUUID().toString() : builder.getInstanceName();
 
         // TODO need to detect HOST NAME
@@ -83,26 +85,26 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         this.metrics = new Metrics();
     }
 
-    private String getIpAddress(){
+    private String getIpAddress() {
         Set<String> ipSet = new TreeSet<String>();
         Enumeration<NetworkInterface> n = null;
         try {
             n = NetworkInterface.getNetworkInterfaces();
 
-            for (; n.hasMoreElements();) {
+            for (; n.hasMoreElements(); ) {
                 NetworkInterface e = n.nextElement();
                 Enumeration<InetAddress> a = e.getInetAddresses();
-                for (; a.hasMoreElements();) {
+                for (; a.hasMoreElements(); ) {
                     InetAddress inetAddress = a.nextElement();
-                    if (inetAddress.getHostAddress() != null){
+                    if (inetAddress.getHostAddress() != null) {
                         ipSet.add(inetAddress.getHostAddress());
                     }
                 }
             }
 
             if (ipSet != null && ipSet.size() > 0) {
-                for(String ip: ipSet){
-                    if (!ip.equals("127.0.0.1") & !ip.equalsIgnoreCase("localhost") ){
+                for (String ip : ipSet) {
+                    if (!ip.equals("127.0.0.1") & !ip.equalsIgnoreCase("localhost")) {
                         return ip;
                     }
                 }
@@ -121,7 +123,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
      *
      * @return
      */
-    private int detectFreePort(){
+    private int detectFreePort() {
         try {
             ServerSocket serverSocket = new ServerSocket(0);
             if (serverSocket.getLocalPort() == -1) {
@@ -139,7 +141,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
                 }
                 try {
                     Thread.sleep(100);
-                    System.out.println("Waiting for closing autodiscovered socket try number#" + count);
+                    LOG.info("Waiting for closing auto discovered socket try number#" + count);
                 } catch (InterruptedException e) {
                     System.exit(-100);
                     throw new RuntimeException("Could not start GliaServer");
@@ -147,12 +149,11 @@ public abstract class GliaServer implements IGliaServer, Serializable {
             }
             serverSocket = null;
 
-
             return detectedPortNumber;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
+        throw new RuntimeException("Could not start GliaServer 'cause no any available free port in system");
     }
 
     /**
@@ -219,8 +220,8 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         this.serverBootstrap.bind(new InetSocketAddress(port));
 
         // TODO use CORRECT LOGGGING
-        System.out.println(this.toString());
-        System.out.println("\n\nServer started\n\n");
+        LOG.debug(this.toString());
+        LOG.warn("\n\nServer started\n\n");
 
         // TODO need to detect HOST NAME
         this.setHost(this.getIpAddress());
@@ -248,18 +249,18 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         }
     }
 
-    private void setHost(String hostName){
+    private void setHost(String hostName) {
         // TODO remove from test implementation code
         this.host = hostName;
     }
 
-    public String getHost(){
+    public String getHost() {
         // TODO remove from test implementation code
         return this.host;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "\n\n\n" +
                 " GliaServer " +
                 "\n-------------------" +

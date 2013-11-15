@@ -1,19 +1,16 @@
 package com.reversemind.glia.integration.ejb.server;
 
-import com.reversemind.glia.server.GliaServer;
 import com.reversemind.glia.server.GliaServerFactory;
-import com.reversemind.glia.server.IGliaPayloadProcessor;
 import com.reversemind.glia.server.IGliaServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import java.io.Serializable;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Date: 5/17/13
@@ -25,6 +22,8 @@ import java.util.Set;
 @Singleton
 public class ServerEJBAdvertiser implements Serializable {
 
+    private final static Logger LOG = LoggerFactory.getLogger(ServerEJBAdvertiser.class);
+
     private IGliaServer server;
 
     public IGliaServer getServer() {
@@ -32,60 +31,55 @@ public class ServerEJBAdvertiser implements Serializable {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
 
         //https://issues.apache.org/jira/browse/ZOOKEEPER-1554
         //System.setProperty("java.security.auth.login.config","/opt/zookeeper/conf/jaas.conf");
 //        System.setProperty("java.security.auth.login.config","/opt/zookeeper/conf");
         System.setProperty("curator-log-events", "true");
 
-        System.out.println("this.getContextXML():" + this.getContextXML());
+        LOG.debug("this.getContextXML():" + this.getContextXML());
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext(this.getContextXML());
 
-        GliaServerFactory.Builder builderAdvertiser = applicationContext.getBean("serverBuilderAdvertiser",GliaServerFactory.Builder.class);
+        GliaServerFactory.Builder builderAdvertiser = applicationContext.getBean("serverBuilderAdvertiser", GliaServerFactory.Builder.class);
 
-        System.out.println("--------------------------------------------------------");
-        System.out.println("Builder properties:");
-        System.out.println("Name:" + builderAdvertiser.getName());
-        System.out.println("Instance Name:" + builderAdvertiser.getInstanceName());
-        System.out.println("port:" + builderAdvertiser.getPort());
-        System.out.println("isAutoSelectPort:" + builderAdvertiser.isAutoSelectPort());
-
-        System.out.println("Type:" + builderAdvertiser.getType());
-
-        System.out.println("Zookeeper connection string:" + builderAdvertiser.getZookeeperHosts());
-        System.out.println("Zookeeper base path:" + builderAdvertiser.getServiceBasePath());
-
-
+        LOG.info("--------------------------------------------------------");
+        LOG.info("Builder properties:");
+        LOG.info("Name:" + builderAdvertiser.getName());
+        LOG.info("Instance Name:" + builderAdvertiser.getInstanceName());
+        LOG.info("port:" + builderAdvertiser.getPort());
+        LOG.info("isAutoSelectPort:" + builderAdvertiser.isAutoSelectPort());
+        LOG.info("Type:" + builderAdvertiser.getType());
+        LOG.info("Zookeeper connection string:" + builderAdvertiser.getZookeeperHosts());
+        LOG.info("Zookeeper base path:" + builderAdvertiser.getServiceBasePath());
 
         this.server = builderAdvertiser.build();
 
-        System.out.println("\n\n");
-        System.out.println("--------------------------------------------------------");
-        System.out.println("After server initialization - properties");
-        System.out.println("\n");
-        System.out.println("Server properties:");
-        System.out.println("......");
-        System.out.println("Name:" + this.server.getName());
-        System.out.println("Instance Name:" + this.server.getInstanceName());
-        System.out.println("port:" + this.server.getPort());
+        LOG.info("\n\n");
+        LOG.info("--------------------------------------------------------");
+        LOG.info("After server initialization - properties");
+        LOG.info("\n");
+        LOG.info("Server properties:");
+        LOG.info("......");
+        LOG.info("Name:" + this.server.getName());
+        LOG.info("Instance Name:" + this.server.getInstanceName());
+        LOG.info("port:" + this.server.getPort());
 
         this.server.start();
 
-        System.out.println("Server started");
-
+        LOG.warn("Server started");
     }
 
     @PreDestroy
-    public void destroy(){
-        if(this.server != null){
+    public void destroy() {
+        if (this.server != null) {
             //server SHUTDOWN
             this.server.shutdown();
-            System.out.println("SERVER SHUTDOWN");
+            LOG.warn("SERVER SHUTDOWN");
         }
     }
 
-    public String getContextXML(){
+    public String getContextXML() {
         return "META-INF/glia-server-context.xml";
     }
 

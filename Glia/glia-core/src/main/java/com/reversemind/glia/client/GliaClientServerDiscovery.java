@@ -3,6 +3,8 @@ package com.reversemind.glia.client;
 import com.reversemind.glia.servicediscovery.ServiceDiscoverer;
 import com.reversemind.glia.servicediscovery.serializer.ServerMetadata;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -16,6 +18,8 @@ import java.io.Serializable;
  */
 public class GliaClientServerDiscovery extends GliaClient implements IGliaClient, Serializable {
 
+    private final static Logger LOG = LoggerFactory.getLogger(GliaClientServerDiscovery.class);
+
     private String zookeeperHosts;
     private String serviceBasePath;
     private String serviceName;
@@ -24,7 +28,6 @@ public class GliaClientServerDiscovery extends GliaClient implements IGliaClient
     private ServiceDiscoverer serviceDiscoverer;
 
     /**
-     *
      * @param zookeeperHosts
      * @param serviceBasePath
      * @param serviceName
@@ -47,8 +50,8 @@ public class GliaClientServerDiscovery extends GliaClient implements IGliaClient
     @Override
     public void start() throws Exception {
         ServerMetadata serverMetadata = this.serverSelectorStrategy.selectServer(this.serviceDiscoverer.discover(this.serviceName));
-        if(serverMetadata != null && !StringUtils.isEmpty(serverMetadata.getHost()) && serverMetadata.getPort() > 0){
-            System.out.println("found server:" + serverMetadata);
+        if (serverMetadata != null && !StringUtils.isEmpty(serverMetadata.getHost()) && serverMetadata.getPort() > 0) {
+            LOG.info("found server:" + serverMetadata);
             this.port = serverMetadata.getPort();
             this.host = serverMetadata.getHost();
             super.start();
@@ -58,9 +61,9 @@ public class GliaClientServerDiscovery extends GliaClient implements IGliaClient
     }
 
     @Override
-    public void shutdown(){
+    public void shutdown() {
         super.shutdown();
-        if(this.serviceDiscoverer != null){
+        if (this.serviceDiscoverer != null) {
             try {
                 this.serviceDiscoverer.close();
             } catch (IOException e) {

@@ -9,13 +9,13 @@ import org.jboss.netty.handler.codec.serialization.ClassResolvers;
 import org.jboss.netty.handler.codec.serialization.ObjectDecoder;
 import org.jboss.netty.handler.codec.serialization.ObjectEncoder;
 import com.reversemind.glia.GliaPayload;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.util.concurrent.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Date: 4/24/13
@@ -26,8 +26,7 @@ import java.util.logging.Logger;
  */
 public class GliaClient implements IGliaClient, Serializable {
 
-    // TODO replace logger for SLF4J
-    private static final Logger LOG = Logger.getLogger(GliaClient.class.getName());
+    private final static Logger LOG = LoggerFactory.getLogger(GliaClient.class);
 
     private static final long SERVER_CONNECTION_TIMEOUT = 20000;    // 30 sec
     private static final long EXECUTOR_TIME_OUT = 60000;            // 1 min
@@ -59,8 +58,7 @@ public class GliaClient implements IGliaClient, Serializable {
         this.port = port;
         this.gliaPayload = null;
         this.executor = this.getExecutor();
-        // TODO what about LOG no console
-        System.out.println("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
+        LOG.warn("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
     }
 
     public GliaClient(String host, int port, long timeout) {
@@ -68,14 +66,14 @@ public class GliaClient implements IGliaClient, Serializable {
         this.port = port;
         this.gliaPayload = null;
 
-        if(timeout > 0){
+        if (timeout > 0) {
             this.futureTaskTimeOut = timeout;
-        }else{
+        } else {
             this.futureTaskTimeOut = FUTURE_TASK_TIME_OUT;
         }
 
         this.executor = this.getExecutor();
-        System.out.println("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
+        LOG.warn("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
     }
 
     /**
@@ -84,10 +82,10 @@ public class GliaClient implements IGliaClient, Serializable {
      * @param timeOut
      */
     public void setClientTimeOut(long timeOut) {
-        System.out.println("Going to set client timeout for:" + timeOut + " ms");
-        if(timeOut > 0){
+        LOG.warn("Going to set client timeout for:" + timeOut + " ms");
+        if (timeOut > 0) {
             this.futureTaskTimeOut = timeOut;
-        }else{
+        } else {
             this.futureTaskTimeOut = FUTURE_TASK_TIME_OUT;
         }
     }
@@ -107,14 +105,13 @@ public class GliaClient implements IGliaClient, Serializable {
     }
 
     /**
-     *
      * @param object
      */
     private void serverListener(Object object) {
-        if(object instanceof GliaPayload){
+        if (object instanceof GliaPayload) {
             LOG.info("SERVER LISTENER = arrived from server");
             this.gliaPayload = ((GliaPayload) object);
-            if(this.futureTask != null){
+            if (this.futureTask != null) {
                 this.futureTask.cancel(true);
                 this.shutDownExecutor();
             }
@@ -129,12 +126,13 @@ public class GliaClient implements IGliaClient, Serializable {
 
     /**
      * Will wait maximum for a this.futureTaskTimeOut ms
+     *
      * @return
      */
     public GliaPayload getGliaPayload() {
         Throwable _throwable = null;
 
-        if(this.futureTask != null){
+        if (this.futureTask != null) {
             try {
                 this.setGliaPayload(this.futureTask.get(this.futureTaskTimeOut, TimeUnit.MILLISECONDS));
             } catch (TimeoutException e) {
@@ -143,19 +141,18 @@ public class GliaClient implements IGliaClient, Serializable {
                 this.futureTask.cancel(true);
             } catch (InterruptedException e) {
                 LOG.log(Level.WARNING, "InterruptedException futureTask == HERE", e);
-                _throwable = new InterruptedException("InterruptedException futureTask == HERE");
             } catch (ExecutionException e) {
                 LOG.log(Level.WARNING, "ExecutionException futureTask == HERE", e);
             } catch (CancellationException ce) {
                 LOG.log(Level.WARNING, "Future task was Canceled - YES !!!");
             } catch (Exception e) {
-                LOG.log(Level.WARNING, "GENERAL Exception futureTask == HERE",e);
+                LOG.log(Level.WARNING, "GENERAL Exception futureTask == HERE", e);
             }
         }
 
         this.occupied = false;
 
-        if(this.gliaPayload != null){
+        if (this.gliaPayload != null) {
             return this.gliaPayload;
         }
 
@@ -174,18 +171,18 @@ public class GliaClient implements IGliaClient, Serializable {
     /**
      * Send to server GliaPayload
      *
-     * @see GliaPayload
      * @param gliaPayloadSend
      * @throws IOException
+     * @see GliaPayload
      */
     public void send(GliaPayload gliaPayloadSend) throws IOException {
         this.setGliaPayload(null);
 
         // clean & start a timer
-        if(this.channel != null && this.channel.isConnected()){
+        if (this.channel != null && this.channel.isConnected()) {
             LOG.info("Connected:" + this.channel.isConnected());
 
-            if(gliaPayloadSend != null){
+            if (gliaPayloadSend != null) {
                 LOG.info("Send from GliaClient gliaPayload:" + gliaPayloadSend.toString());
                 gliaPayloadSend.setClientTimestamp(System.currentTimeMillis());
 
@@ -204,25 +201,25 @@ public class GliaClient implements IGliaClient, Serializable {
     }
 
     /**
-     *  Shutdown a client
+     * Shutdown a client
      */
     @Override
-    public void shutdown(){
+    public void shutdown() {
         this.shutDownExecutor();
 
-        try{
-            if(this.channelFuture != null){
+        try {
+            if (this.channelFuture != null) {
                 this.channelFuture.getChannel().close().awaitUninterruptibly();
                 this.channelFactory.releaseExternalResources();
                 this.channelFactory.shutdown();
             }
 
-            if(this.clientBootstrap != null){
+            if (this.clientBootstrap != null) {
                 this.clientBootstrap.releaseExternalResources();
                 this.clientBootstrap.shutdown();
             }
-        }catch(Exception ex){
-            System.out.println("Could not to shutdown channelFuture && clientBootstrap");
+        } catch (Exception ex) {
+            LOG.warn("Could not to shutdown channelFuture && clientBootstrap");
         }
 
         this.channelFuture = null;
@@ -239,7 +236,7 @@ public class GliaClient implements IGliaClient, Serializable {
         this.gliaPayload = null;
         this.setClientTimeOut(FUTURE_TASK_TIME_OUT);
         this.executor = this.getExecutor();
-        System.out.println("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
+        LOG.warn("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
 
         this.start();
     }
@@ -255,19 +252,19 @@ public class GliaClient implements IGliaClient, Serializable {
 
         this.setClientTimeOut(clientTimeOut);
         this.executor = this.getExecutor();
-        System.out.println("\n\n GliaClient RE-started \n for server:" + host + ":" + port + "\n\n");
+        LOG.warn("\n\n GliaClient RE-started \n for server:" + host + ":" + port + "\n\n");
 
         this.start();
     }
 
-    private void shutDownChannelFuture(){
+    private void shutDownChannelFuture() {
         channelFuture.getCause().printStackTrace();
         channelFactory.releaseExternalResources();
         channelFuture = null;
         running = false;
     }
 
-    private void shutDownChannelFuture(ChannelFuture channelFutureLocal){
+    private void shutDownChannelFuture(ChannelFuture channelFutureLocal) {
         channelFutureLocal.getCause().printStackTrace();
         channelFactory.releaseExternalResources();
         channelFutureLocal = null;
@@ -276,7 +273,7 @@ public class GliaClient implements IGliaClient, Serializable {
 
     /**
      * Start a GliaClient
-     *
+     * <p/>
      * for that case use
      *
      * @throws Exception
@@ -284,7 +281,7 @@ public class GliaClient implements IGliaClient, Serializable {
     @Override
     public void start() throws Exception {
 
-        if(this.running){
+        if (this.running) {
             throw new InstantiationException("Glia client is running");
         }
 
@@ -303,7 +300,7 @@ public class GliaClient implements IGliaClient, Serializable {
                         new ObjectEncoder(),
                         new ObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader()))
                         ,
-                        new SimpleChannelUpstreamHandler(){
+                        new SimpleChannelUpstreamHandler() {
 
                             @Override
                             public void handleUpstream(ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
@@ -332,10 +329,7 @@ public class GliaClient implements IGliaClient, Serializable {
 
                             @Override
                             public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) {
-                                LOG.log(
-                                        Level.WARNING,
-                                        "Unexpected exception from downstream.",
-                                        e.getCause());
+                                LOG.warn("Unexpected exception from downstream.", e.getCause());
                                 e.getChannel().close();
                             }
                         }
@@ -377,7 +371,7 @@ public class GliaClient implements IGliaClient, Serializable {
 
          */
         // !!! see also - http://massapi.com/class/cl/ClientBootstrap.html
-//        System.out.println("1");
+//        LOG.info("1");
         // just wait for server connection for 3sec.
 //        channelFuture.await(SERVER_CONNECTION_TIMEOUT);
 //        if (!channelFuture.isSuccess()) {
@@ -387,9 +381,6 @@ public class GliaClient implements IGliaClient, Serializable {
 //        }else{
 //            this.running = true;
 //        }
-
-
-
 
 
         // if need to disconnect right after server response
@@ -403,14 +394,14 @@ public class GliaClient implements IGliaClient, Serializable {
 //                    // Connection attempt succeeded:
 //                    // Begin to accept incoming traffic.
 //                    //inboundChannel.setReadable(true);
-//                    System.out.println("Client connected");
+//                    LOG.info("Client connected");
 //                    running = true;
 //                } else {
-//                    System.out.println("Failed connect to server");
+//                    LOG.info("Failed connect to server");
 //                    // Close the connection if the connection attempt has failed.
 //                    //inboundChannel.close();
 //                    //shutDownChannelFuture();
-//                    System.out.println("Shutdown all");
+//                    LOG.info("Shutdown all");
 //                    shutDownChannelFuture(future);
 //                }
 //            }
@@ -440,35 +431,33 @@ public class GliaClient implements IGliaClient, Serializable {
         long countGoAway = 0;
         final long stepGoAway = 100; //ms
 
-        System.out.println("Warming up 1.8.2-SNAPSHOT ...");
-        while(goAway == false | countGoAway < (SERVER_CONNECTION_TIMEOUT / stepGoAway)){
+        LOG.warn("Warming up 1.8.5-SNAPSHOT ...");
+        while (goAway == false | countGoAway < (SERVER_CONNECTION_TIMEOUT / stepGoAway)) {
 
             Thread.sleep(stepGoAway);
             if (!channelFuture.isSuccess()) {
                 this.running = false;
                 goAway = true;
-            }else{
+            } else {
                 this.running = true;
                 goAway = true;
                 countGoAway = (SERVER_CONNECTION_TIMEOUT / stepGoAway) + 10;
             }
             countGoAway++;
-            System.out.println("Count down for connection tomeout:" + countGoAway*stepGoAway + ":ms future:" + channelFuture.isSuccess() + " running:" + this.running);
+            LOG.warn("Count down for connection tomeout:" + countGoAway * stepGoAway + ":ms future:" + channelFuture.isSuccess() + " running:" + this.running);
         }
 
-        if(this.running == false){
-            System.out.println("After ");
+        if (this.running == false) {
+            LOG.warn("After ");
             channelFuture.getCause().printStackTrace();
             channelFactory.releaseExternalResources();
             channelFuture = null;
         }
 
 
-
-
 //        CountDownLatch latch;
 //
-//        System.out.println("Warming up 1.8.0-SNAPSHOT ...");
+//        LOG.warn("Warming up 1.8.0-SNAPSHOT ...");
 //        for (long i = 0; i < 10000; i++) {
 //            latch = new CountDownLatch(1);
 //            try {
@@ -477,12 +466,12 @@ public class GliaClient implements IGliaClient, Serializable {
 //                e.printStackTrace();
 //            }
 //            if(i % 1000 == 0){
-//                System.out.println("i:" + i);
+//                LOG.info("i:" + i);
 //            }
 //        }
 //
 //        Thread.sleep(100);
-//        System.out.println("Warmed up 1.8.0-SNAPSHOT ");
+//        LOG.warn("Warmed up 1.8.0-SNAPSHOT ");
 
     }
 
@@ -490,27 +479,27 @@ public class GliaClient implements IGliaClient, Serializable {
      * Creates a thread pool that creates new threads as needed, but
      * will reuse previously constructed threads when they are
      * available.
-     *
+     * <p/>
      * For purpose of GliaClient - just enough a single thread
-     *
+     * <p/>
      * These pools will typically improve the performance
      * of programs that execute many short-lived asynchronous tasks.
-     *
+     * <p/>
      * Calls to <tt>execute</tt> will reuse previously constructed
      * threads if available. If no existing thread is available, a new
      * thread will be created and added to the pool.
-     *
+     * <p/>
      * Threads that have
      * not been used for sixty seconds are terminated and removed from
      * the cache.
-     *
+     * <p/>
      * Thus, a pool that remains idle for long enough will
      * not consume any resources. Note that pools with similar
      * properties but different details (for example, timeout parameters)
      * may be created using {@link ThreadPoolExecutor} constructors.
      *
-     * @see Executors
      * @return ExecutorService
+     * @see Executors
      */
     private ExecutorService getExecutor() {
         if (this.executor == null) {
@@ -529,12 +518,12 @@ public class GliaClient implements IGliaClient, Serializable {
     /**
      * Shutdown a waiting thread from server payload result
      */
-    private void shutDownExecutor(){
+    private void shutDownExecutor() {
         this.shutDownFutureTask();
-        if(this.executor != null && !this.executor.isShutdown()){
-            try{
+        if (this.executor != null && !this.executor.isShutdown()) {
+            try {
                 this.executor.shutdown();
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 // TODO make it more accurate
                 ex.printStackTrace();
             }
@@ -545,8 +534,8 @@ public class GliaClient implements IGliaClient, Serializable {
     /**
      *
      */
-    private void shutDownFutureTask(){
-        if(this.futureTask != null){
+    private void shutDownFutureTask() {
+        if (this.futureTask != null) {
             this.futureTask.cancel(true);
         }
         this.futureTask = null;

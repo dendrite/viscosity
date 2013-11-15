@@ -4,9 +4,13 @@ import com.reversemind.glia.client.GliaClient;
 import com.reversemind.glia.proxy.ProxyFactory;
 import com.reversemind.glia.test.pojo.shared.ISimplePojo;
 import com.reversemind.glia.test.pojo.shared.PAddressNode;
+import com.reversemind.glia.test.pojo.shared.Settings;
 import com.reversemind.glia.test.pojo.shared.SimpleException;
 
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Date: 4/24/13
@@ -17,46 +21,39 @@ import java.util.List;
  */
 public class RunClient {
 
+    private final static Logger LOG = LoggerFactory.getLogger(RunClient.class);
+
     public static void main(String... args) throws Exception {
-        System.out.println("Run client");
+        LOG.info("Run Client");
 
-        int serverPort = 7012;
-        String serverHost = "localhost";
-
-        GliaClient client = new GliaClient(serverHost, serverPort);
+        GliaClient client = new GliaClient(Settings.SERVER_HOST, Settings.SERVER_PORT);
         client.start();
 
-
-        ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance().newProxyInstance(client,ISimplePojo.class);
+        ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance().newProxyInstance(client, ISimplePojo.class);
 
         List<PAddressNode> list = simplePojoProxy.searchAddress("Москва");
 
         if (list != null && list.size() > 0) {
             for (PAddressNode addressNode : list) {
-                System.out.println("node:" + addressNode);
+                LOG.info("node:" + addressNode);
             }
         }
         client.shutdown();
 
-
         Thread.sleep(2000);
 
-
-        System.out.println("Restart client");
+        LOG.info("Restart client");
         client.restart();
 
         Thread.sleep(100);
 
-        list = simplePojoProxy.searchAddress("Москва");
+        list = simplePojoProxy.searchAddress("Moscow");
 
         if (list != null && list.size() > 0) {
             for (PAddressNode addressNode : list) {
-                System.out.println("node:" + addressNode);
+                LOG.info("node:" + addressNode);
             }
         }
-
-
-
 
         client.shutdown();
 

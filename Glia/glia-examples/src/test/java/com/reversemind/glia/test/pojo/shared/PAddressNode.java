@@ -35,8 +35,6 @@ public class PAddressNode implements Serializable {
         this.screenName = screenName;
     }
 
-
-
     @Override
     public String toString() {
         return "PAddressNode{" +

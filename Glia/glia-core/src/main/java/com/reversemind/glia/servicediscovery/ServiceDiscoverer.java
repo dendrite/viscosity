@@ -10,8 +10,9 @@ import com.netflix.curator.x.discovery.ServiceInstance;
 import com.reversemind.glia.server.Metrics;
 import com.reversemind.glia.servicediscovery.serializer.InstanceSerializerFactory;
 import com.reversemind.glia.servicediscovery.serializer.ServerMetadata;
-import org.apache.log4j.Logger;
+
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 public class ServiceDiscoverer implements Serializable, Closeable {
 
-    private static Logger LOG = Logger.getLogger(ServiceDiscoverer.class);
+    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(ServiceDiscoverer.class);
 
     private static final String ZOOKEEPER_CONNECTION_STRING_TEST = "127.0.0.1:2181";
     private static final String BASE_PATH_TEST = "/baloo/services";
@@ -70,24 +71,23 @@ public class ServiceDiscoverer implements Serializable, Closeable {
         for (ServiceInstance<ServerMetadata> instance : serverFinder.getServers(serviceName)) {
             ServerMetadata serverMetadata = instance.getPayload();
 
-            System.out.println("found a server with parameters:" + serverMetadata);
+            LOG.warn("found a server with parameters:" + serverMetadata);
             metadataList.add(serverMetadata);
         }
 
         Collections.sort(metadataList, new Comparator<ServerMetadata>() {
             @Override
             public int compare(ServerMetadata o1, ServerMetadata o2) {
-                return (int)(o2.getMetrics().getStartDate().getTime() - o1.getMetrics().getStartDate().getTime());
+                return (int) (o2.getMetrics().getStartDate().getTime() - o1.getMetrics().getStartDate().getTime());
             }
         });
 
-        // TODO need correct logging
-        System.out.println("Sorted by startDate:");
-        for(ServerMetadata metadata: metadataList){
-            System.out.println("server:" + metadata);
+        LOG.warn("Sorted by startDate:");
+        for (ServerMetadata metadata : metadataList) {
+            LOG.warn("server:" + metadata);
         }
 
-        return  metadataList;
+        return metadataList;
     }
 
     public void advertise(ServerMetadata serverMetadata, String basePath) {
@@ -95,8 +95,8 @@ public class ServiceDiscoverer implements Serializable, Closeable {
         serverAdvertiser.advertiseAvailability();
         this.listServerAdvertiser.add(serverAdvertiser);
 
-        if(this.privateCounter++ > 10){
-            System.out.println(this.privateCounter + " = advertised... a " + serverMetadata);
+        if (this.privateCounter++ > 10) {
+            LOG.debug(this.privateCounter + " = advertised... a " + serverMetadata);
             this.privateCounter = 0;
         }
 
@@ -110,9 +110,9 @@ public class ServiceDiscoverer implements Serializable, Closeable {
 
     @Override
     public void close() throws IOException {
-        if(this.listServerAdvertiser != null && this.listServerAdvertiser.size() >0){
-            for(int i=0; i<this.listServerAdvertiser.size();i++){
-                synchronized (this.listServerAdvertiser.get(i)){
+        if (this.listServerAdvertiser != null && this.listServerAdvertiser.size() > 0) {
+            for (int i = 0; i < this.listServerAdvertiser.size(); i++) {
+                synchronized (this.listServerAdvertiser.get(i)) {
                     this.listServerAdvertiser.get(i).deAdvertiseAvailability();
                     this.listServerAdvertiser.get(i).close();
                 }

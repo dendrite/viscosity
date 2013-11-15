@@ -24,7 +24,7 @@ public class ClientPoolFactory extends BasePoolableObjectFactory<IGliaClient> {
     public IGliaClient makeObject() throws Exception {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext(this.contextXML);
         IGliaClient client = applicationContext.getBean(this.beanName, this.clientClazz);
-        if(client == null){
+        if (client == null) {
             throw new RuntimeException("Could not create gliaClient for beanName:" + beanName + " and Class:" + this.clientClazz + " and contextName:" + this.contextXML);
         }
         client.start();
@@ -32,11 +32,11 @@ public class ClientPoolFactory extends BasePoolableObjectFactory<IGliaClient> {
     }
 
 //    public void destroyObject(IGliaClient client) throws Exception {
-//        System.out.println("Going to destroy client:" + client);
+//        LOG.warn("Going to destroy client:" + client);
 //        if(client != null && client.isOccupied() == false){
 //            client.shutdown();
 //            client = null;
-//            System.out.println("Client destroyed");
+//            LOG.warn("Client destroyed");
 //        }
 //    }
 

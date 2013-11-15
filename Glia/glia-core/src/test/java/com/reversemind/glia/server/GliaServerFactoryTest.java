@@ -4,6 +4,8 @@ import com.reversemind.glia.GliaPayload;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -15,7 +17,9 @@ import static org.junit.Assert.*;
  * @author konilovsky
  * @since 1.0
  */
-public class GliaServerFactoryTest  {
+public class GliaServerFactoryTest {
+
+    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(GliaServerFactoryTest.class);
 
     /**
      * Need a setPayloadWorker
@@ -37,7 +41,7 @@ public class GliaServerFactoryTest  {
      * 'Cause priority to .setAutoSelectPort(true)
      */
     @Test
-    public void testAutoSelectPortNumber(){
+    public void testAutoSelectPortNumber() {
         IGliaServer gliaServer = GliaServerFactory.builder()
                 .setAutoSelectPort(true)
                 .setPort(8000)
@@ -67,10 +71,10 @@ public class GliaServerFactoryTest  {
 
         assertNotNull(gliaServer);
         // 'cause .setAutoSelectPort(true)
-        assertNotEquals(8000,gliaServer.getPort());
+        assertNotEquals(8000, gliaServer.getPort());
 
 
-        if(gliaServer != null){
+        if (gliaServer != null) {
             gliaServer.shutdown();
         }
         assertNotNull(gliaServer);
@@ -103,17 +107,17 @@ public class GliaServerFactoryTest  {
                 }).build();
 
         assertNotNull(gliaServer);
-        // TODO need correct logging
-        System.out.println("port number:" + gliaServer.getPort());
 
-        if(gliaServer != null){
+        LOG.info("port number:" + gliaServer.getPort());
+
+        if (gliaServer != null) {
             gliaServer.shutdown();
         }
         assertNotNull(gliaServer);
     }
 
     @Test
-    public void testAssignPortNumber(){
+    public void testAssignPortNumber() {
 
         IGliaServer gliaServer = GliaServerFactory.builder()
                 .setPayloadWorker(new IGliaPayloadProcessor() {
@@ -143,18 +147,17 @@ public class GliaServerFactoryTest  {
                 .setPort(8000)
                 .build();
 
-        // TODO correct logging
-        System.out.println("port number:" + gliaServer.getPort());
+        LOG.info("port number:" + gliaServer.getPort());
         assertEquals(8000, gliaServer.getPort());
 
-        if(gliaServer != null){
+        if (gliaServer != null) {
             gliaServer.shutdown();
         }
         assertNotNull(gliaServer);
     }
 
     @Test
-    public void testSetNames(){
+    public void testSetNames() {
 
         final String NAME = "GLIA_SERVER_NAME";
         final String NAME_INSTANCE = "GLIA_SERVER_INSTANCE_NAME";
@@ -191,7 +194,7 @@ public class GliaServerFactoryTest  {
         assertEquals(NAME, gliaServer.getName());
         assertEquals(NAME_INSTANCE, gliaServer.getInstanceName());
 
-        if(gliaServer != null){
+        if (gliaServer != null) {
             gliaServer.shutdown();
         }
         assertNotNull(gliaServer);
@@ -199,11 +202,10 @@ public class GliaServerFactoryTest  {
 
     /**
      * // TODO need Netflix Curator - fake zookeeper instance
-     *
      */
     @Ignore
     @Test
-    public void testAutoDiscovery(){
+    public void testAutoDiscovery() {
 
         final String ZOOKEEPER_HOST = "localhost";
         final int ZOOKEEPER_PORT = 2181;
