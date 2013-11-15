@@ -1,16 +1,21 @@
 package com.reversemind.glia.zookeeper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  */
 public class StartZookeeper {
+
+    private static final Logger LOG = LoggerFactory.getLogger(StartZookeeper.class);
 
     public static void start(){
         String port = "2181";
         String dataDirectory = System.getProperty("java.io.tmpdir");
 
         LocalTestZookeeper.start(new String[]{port, dataDirectory});
-        System.out.println(dataDirectory);
+        LOG.debug(dataDirectory);
     }
 
     public static void stop(){
@@ -23,7 +28,7 @@ public class StartZookeeper {
         String dataDirectory = System.getProperty("java.io.tmpdir");
 
         LocalTestZookeeper.start(new String[]{port, dataDirectory});
-        System.out.println(dataDirectory);
+        LOG.debug(dataDirectory);
 
         Thread.sleep(60000);
         LocalTestZookeeper.stop();
