@@ -5,6 +5,8 @@ import com.reversemind.glia.client.IGliaClient;
 import com.test.pool.ClientFactory;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.NoSuchElementException;
 
@@ -13,6 +15,8 @@ import java.util.NoSuchElementException;
  */
 public class TestSimpleObjectPool {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TestSimpleObjectPool.class);
+
     @Test
     public void testSimplePool() throws Exception {
 
@@ -20,29 +24,29 @@ public class TestSimpleObjectPool {
         GenericObjectPool<String> pool = new GenericObjectPool<String>(simpleFactory, 10, GenericObjectPool.WHEN_EXHAUSTED_GROW, 2 * 1000);
 
         String[] strs = new String[10];
-        for(int i=0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
             strs[i] = pool.borrowObject();
         }
 
-        for(String string: strs){
-            System.out.println( "|" + string);
+        for (String string : strs) {
+            LOG.debug("|" + string);
         }
 
         Thread.sleep(5 * 1000);
 
         String extra = null;
-        try{
+        try {
             extra = pool.borrowObject();
-        }catch(NoSuchElementException nex){
+        } catch (NoSuchElementException nex) {
             nex.printStackTrace();
-            System.out.println("!!!");
-        }catch(Exception ex){
+            LOG.debug("!!!");
+        } catch (Exception ex) {
             ex.printStackTrace();
-            System.out.println("!!!!");
+            LOG.debug("!!!!");
         }
 
 
-        System.out.println("Get extra from pool:" + extra);
+        LOG.debug("Get extra from pool:" + extra);
     }
 
 }

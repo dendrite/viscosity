@@ -239,7 +239,7 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
         boolean argumentsAreNull = false;
 
         if (argumentsCount == arguments.length) {
-            ("Not all arguments are null");
+            LOG.info("Not all arguments are null");
             argumentsAreNull = true;
         }
 

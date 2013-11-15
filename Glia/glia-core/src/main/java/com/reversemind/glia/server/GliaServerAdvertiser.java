@@ -61,7 +61,7 @@ public class GliaServerAdvertiser extends GliaServer implements Serializable {
 
             this.periodPublishMetrics = builder.getPeriodPublishMetrics();
 
-            System.out.println("builder.getPeriodPublishMetrics() == " + builder.getPeriodPublishMetrics());
+            LOG.debug("builder.getPeriodPublishMetrics() == " + builder.getPeriodPublishMetrics());
             if (builder.getPeriodPublishMetrics() < 0) {
                 this.periodPublishMetrics = 1000; //ms
             }

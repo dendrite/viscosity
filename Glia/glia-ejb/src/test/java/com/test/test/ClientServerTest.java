@@ -23,6 +23,8 @@ import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -39,6 +41,8 @@ import java.util.concurrent.FutureTask;
  */
 @RunWith(Arquillian.class)
 public class ClientServerTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ClientServerTest.class);
 
     @Inject
     IServiceSimple simpleService;
@@ -96,7 +100,7 @@ public class ClientServerTest {
 
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
-        System.out.println("archive:" + archive.toString(true));
+        LOG.debug("archive:" + archive.toString(true));
         return archive;
     }
 
@@ -105,84 +109,64 @@ public class ClientServerTest {
         ClientPoolFactory clientPoolFactory = new ClientPoolFactory("META-INF/glia-client-context.xml", "gliaClientServerDiscovery", GliaClientServerDiscovery.class);
         ClientPool clientPool = new ClientPool(clientPoolFactory);
 
-        System.out.println(clientPool.printPoolMetrics());
+        LOG.debug(clientPool.printPoolMetrics());
         IGliaClient gliaClient = clientPool.borrowObject();
 
-
-        System.out.println(clientPool.printPoolMetrics());
+        LOG.debug(clientPool.printPoolMetrics());
     }
 
     @Test
-    public void testPoolSize(){
+    public void testPoolSize() {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("META-INF/glia-client-context.xml");
         int poolSize = applicationContext.getBean("poolSize", java.lang.Integer.class);
-        System.out.println("Pool size:" + poolSize);
+        LOG.debug("Pool size:" + poolSize);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test
     public void testClientPool() throws Exception {
-        ClientFactory clientFactory = new ClientFactory("META-INF/glia-client-context.xml","gliaClientServerDiscovery", GliaClientServerDiscovery.class);
+        ClientFactory clientFactory = new ClientFactory("META-INF/glia-client-context.xml", "gliaClientServerDiscovery", GliaClientServerDiscovery.class);
         GenericObjectPool<IGliaClient> pool = new GenericObjectPool<IGliaClient>(clientFactory, 5);
 
-        System.out.println("pool.getMaxActive():" + pool.getMaxActive());
-        System.out.println("pool.getMaxIdle():" + pool.getMaxIdle());
-        System.out.println("pool.getNumActive():" + pool.getNumActive());
-        System.out.println("pool.getNumIdle():" + pool.getNumIdle());
+        LOG.debug("pool.getMaxActive():" + pool.getMaxActive());
+        LOG.debug("pool.getMaxIdle():" + pool.getMaxIdle());
+        LOG.debug("pool.getNumActive():" + pool.getNumActive());
+        LOG.debug("pool.getNumIdle():" + pool.getNumIdle());
 
         Thread.sleep(20000);
 
         IGliaClient gliaClient = pool.borrowObject();
 
-        System.out.println("IGliaClient gliaClient - " + gliaClient);
+        LOG.debug("IGliaClient gliaClient - " + gliaClient);
         ProxyFactory proxyFactory = ProxyFactory.getInstance();
 
-        System.out.println("pool.getMaxActive():" + pool.getMaxActive());
-        System.out.println("pool.getMaxIdle():" + pool.getMaxIdle());
-        System.out.println("pool.getNumActive():" + pool.getNumActive());
-        System.out.println("pool.getNumIdle():" + pool.getNumIdle());
+        LOG.debug("pool.getMaxActive():" + pool.getMaxActive());
+        LOG.debug("pool.getMaxIdle():" + pool.getMaxIdle());
+        LOG.debug("pool.getNumActive():" + pool.getNumActive());
+        LOG.debug("pool.getNumIdle():" + pool.getNumIdle());
 
         IServiceSimple proxyService = (IServiceSimple) proxyFactory.newProxyInstance(gliaClient, IServiceSimple.class);
-        System.out.println("proxyService: " + proxyService.functionNumber1("1", "2"));
+        LOG.debug("proxyService: " + proxyService.functionNumber1("1", "2"));
 
         pool.returnObject(gliaClient);
 
-        System.out.println("pool.getMaxActive():" + pool.getMaxActive());
-        System.out.println("pool.getMaxIdle():" + pool.getMaxIdle());
-        System.out.println("pool.getNumActive():" + pool.getNumActive());
-        System.out.println("pool.getNumIdle():" + pool.getNumIdle());
-
+        LOG.debug("pool.getMaxActive():" + pool.getMaxActive());
+        LOG.debug("pool.getMaxIdle():" + pool.getMaxIdle());
+        LOG.debug("pool.getNumActive():" + pool.getNumActive());
+        LOG.debug("pool.getNumIdle():" + pool.getNumIdle());
 
     }
 
     @Test
     public void testSimple() throws InterruptedException {
-        System.out.println("############");
-        System.out.println("info:" + simpleService.functionNumber1("1", "2"));
+        LOG.debug("############");
+        LOG.debug("info:" + simpleService.functionNumber1("1", "2"));
     }
 
     @Test
     public void testClient() throws Exception {
         IServiceSimple proxyService = clientSimple.getProxy(IServiceSimple.class);
-        System.out.println("proxyService: " + proxyService.functionNumber1("1", "2"));
+        LOG.debug("proxyService: " + proxyService.functionNumber1("1", "2"));
     }
 
     @Test
@@ -191,26 +175,26 @@ public class ClientServerTest {
         // Number of threads
         final int size = 10;
 
-        System.out.println("clientSimple1:" + clientSimple);
+        LOG.debug("clientSimple1:" + clientSimple);
 
         IServiceSimple proxyService = clientSimple.getProxy(IServiceSimple.class);
-        System.out.println("proxyService:" + proxyService);
+        LOG.debug("proxyService:" + proxyService);
 
 
         List<ClientCallable> clientCallableList = new ArrayList<ClientCallable>();
 
-        for(int i=0; i<size; i++){
-            clientCallableList.add(new ClientCallable(proxyService,i));
+        for (int i = 0; i < size; i++) {
+            clientCallableList.add(new ClientCallable(proxyService, i));
         }
 
         List<FutureTask<String>> futureTaskList = new ArrayList<FutureTask<String>>();
-        for(ClientCallable clientCallable: clientCallableList){
+        for (ClientCallable clientCallable : clientCallableList) {
             futureTaskList.add(new FutureTask<String>(clientCallable));
         }
 
         long beginTime = System.currentTimeMillis();
         ExecutorService executor = Executors.newFixedThreadPool(futureTaskList.size());
-        for(FutureTask<String> futureTask: futureTaskList){
+        for (FutureTask<String> futureTask : futureTaskList) {
             executor.execute(futureTask);
         }
 
@@ -219,44 +203,39 @@ public class ClientServerTest {
         String[] writes = new String[futureTaskList.size()];
 
         int indexValue = 0;
-        while(!ready){
+        while (!ready) {
 
             int count = 0;
             indexValue = 0;
-            for(FutureTask<String> futureTask: futureTaskList){
-                if(futureTask.isDone() & dones[indexValue] == 0){
+            for (FutureTask<String> futureTask : futureTaskList) {
+                if (futureTask.isDone() & dones[indexValue] == 0) {
                     writes[indexValue] = futureTask.get();
                     dones[indexValue] = 1;
                 }
                 indexValue++;
             }
 
-            for(int k=0; k<dones.length; k++){
-                if(dones[k] == 1){
+            for (int k = 0; k < dones.length; k++) {
+                if (dones[k] == 1) {
                     count++;
                 }
             }
 
-            if(count == futureTaskList.size()){
+            if (count == futureTaskList.size()) {
                 ready = true;
             }
 
 //            Thread.sleep(500);
         }
 
-        System.out.println("\n\n\n ====== DONE ====== ");
-        System.out.println("  time:" + (System.currentTimeMillis()-beginTime) + "ms\n\n");
+        LOG.debug("\n\n\n ====== DONE ====== ");
+        LOG.debug("  time:" + (System.currentTimeMillis() - beginTime) + "ms\n\n");
         executor.shutdown();
 
-        for(int i=0; i<writes.length; i++){
-            System.out.println("- " + writes[i]);
+        for (int i = 0; i < writes.length; i++) {
+            LOG.debug("- " + writes[i]);
         }
-        System.out.println("\n\n\n ====== DONE ====== \n\n");
-
-
-
-
-
+        LOG.debug("\n\n\n ====== DONE ====== \n\n");
     }
 
 
@@ -266,29 +245,29 @@ public class ClientServerTest {
         // Number of threads
         final int size = 20;
 
-        System.out.println("clientSimple1:" + clientSimple);
+        LOG.debug("clientSimple1:" + clientSimple);
 
         List<IServiceSimple> serviceSimpleList = new ArrayList<IServiceSimple>();
-        for(int i=0; i<size; i++){
+        for (int i = 0; i < size; i++) {
             IServiceSimple proxyService = clientSimple.getProxy(IServiceSimple.class);
-            System.out.println("proxyService:" + proxyService);
+            LOG.debug("proxyService:" + proxyService);
             serviceSimpleList.add(proxyService);
         }
 
         List<ClientCallable> clientCallableList = new ArrayList<ClientCallable>();
 
-        for(int i=0; i<size; i++){
-            clientCallableList.add(new ClientCallable(serviceSimpleList.get(i),i));
+        for (int i = 0; i < size; i++) {
+            clientCallableList.add(new ClientCallable(serviceSimpleList.get(i), i));
         }
 
         List<FutureTask<String>> futureTaskList = new ArrayList<FutureTask<String>>();
-        for(ClientCallable clientCallable: clientCallableList){
+        for (ClientCallable clientCallable : clientCallableList) {
             futureTaskList.add(new FutureTask<String>(clientCallable));
         }
 
         long beginTime = System.currentTimeMillis();
         ExecutorService executor = Executors.newFixedThreadPool(futureTaskList.size());
-        for(FutureTask<String> futureTask: futureTaskList){
+        for (FutureTask<String> futureTask : futureTaskList) {
             executor.execute(futureTask);
         }
 
@@ -297,56 +276,56 @@ public class ClientServerTest {
         String[] writes = new String[futureTaskList.size()];
 
         int indexValue = 0;
-        while(!ready){
+        while (!ready) {
 
             int count = 0;
             indexValue = 0;
-            for(FutureTask<String> futureTask: futureTaskList){
-                if(futureTask.isDone() & dones[indexValue] == 0){
+            for (FutureTask<String> futureTask : futureTaskList) {
+                if (futureTask.isDone() & dones[indexValue] == 0) {
                     writes[indexValue] = futureTask.get();
                     dones[indexValue] = 1;
                 }
                 indexValue++;
             }
 
-            for(int k=0; k<dones.length; k++){
-                if(dones[k] == 1){
+            for (int k = 0; k < dones.length; k++) {
+                if (dones[k] == 1) {
                     count++;
                 }
             }
 
-            if(count == futureTaskList.size()){
+            if (count == futureTaskList.size()) {
                 ready = true;
             }
 
 //            Thread.sleep(500);
         }
 
-        System.out.println("\n\n\n ====== DONE ====== ");
-        System.out.println("  time:" + (System.currentTimeMillis()-beginTime) + "ms\n\n");
+        LOG.debug("\n\n\n ====== DONE ====== ");
+        LOG.debug("  time:" + (System.currentTimeMillis() - beginTime) + "ms\n\n");
         executor.shutdown();
 
-        for(int i=0; i<writes.length; i++){
-            System.out.println("- " + writes[i]);
+        for (int i = 0; i < writes.length; i++) {
+            LOG.debug("- " + writes[i]);
         }
-        System.out.println("\n\n\n ====== DONE ====== \n\n");
+        LOG.debug("\n\n\n ====== DONE ====== \n\n");
 
         Thread.sleep(20000);
-        System.out.println("\n\n\n\n+++++++++++++++++++++++++");
-        System.out.println("New system:");
+        LOG.debug("\n\n\n\n+++++++++++++++++++++++++");
+        LOG.debug("New system:");
         IServiceSimple proxyService2 = clientSimple.getProxy(IServiceSimple.class);
-        proxyService2.functionNumber1("1","1");
+        proxyService2.functionNumber1("1", "1");
 
     }
 
 
-    class ClientCallable implements Callable<String>{
+    class ClientCallable implements Callable<String> {
 
         private IServiceSimple serviceSimple;
         private int number = 0;
         private String resultValue = "";
 
-        ClientCallable(IServiceSimple serviceSimple, int number){
+        ClientCallable(IServiceSimple serviceSimple, int number) {
             this.serviceSimple = serviceSimple;
             this.number = number;
         }
@@ -355,38 +334,38 @@ public class ClientServerTest {
         public String call() throws Exception {
 
             int currentValue = this.number;
-            if(this.number >= 5){
+            if (this.number >= 5) {
                 currentValue = this.number % 5;
             }
 
-            try{
-            switch (currentValue){
-                case 0:
+            try {
+                switch (currentValue) {
+                    case 0:
                         this.resultValue = this.serviceSimple.functionNumber1("1", "1");
                         break;
-                case 1:
+                    case 1:
                         this.resultValue = this.serviceSimple.functionNumber2("2", "2");
                         break;
-                case 2:
-                        this.resultValue = this.serviceSimple.functionNumber3("3","3");
+                    case 2:
+                        this.resultValue = this.serviceSimple.functionNumber3("3", "3");
                         break;
-                case 3:
-                        this.resultValue = this.serviceSimple.functionNumber4("4","4");
+                    case 3:
+                        this.resultValue = this.serviceSimple.functionNumber4("4", "4");
                         break;
-                case 4:
-                        this.resultValue = this.serviceSimple.functionNumber5("5","5");
+                    case 4:
+                        this.resultValue = this.serviceSimple.functionNumber5("5", "5");
                         break;
-                default:
+                    default:
                         this.resultValue = this.serviceSimple.functionNumber1("1", "1");
                         break;
-            }
+                }
 
-            }catch(Exception ex){
-                System.out.println("Callable exception");
+            } catch (Exception ex) {
+                LOG.debug("Callable exception");
                 ex.printStackTrace();
-                return "CL:" + (this.number+1) + " " + "EXCEPTION!!!!";
+                return "CL:" + (this.number + 1) + " " + "EXCEPTION!!!!";
             }
-            return "CL:" + (this.number+1) + " " + this.resultValue;
+            return "CL:" + (this.number + 1) + " " + this.resultValue;
         }
     }
 

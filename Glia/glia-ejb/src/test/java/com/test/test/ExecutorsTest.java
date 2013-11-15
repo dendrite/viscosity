@@ -1,5 +1,8 @@
 package com.test.test;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -9,6 +12,7 @@ import java.util.concurrent.*;
  */
 public class ExecutorsTest {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ExecutorsTest.class);
 
     public static void main(String... args) throws ExecutionException, InterruptedException {
 
@@ -19,42 +23,42 @@ public class ExecutorsTest {
 
 
         List<StringCallable> callableList = new ArrayList<StringCallable>();
-        for(int i=0; i<5; i++){
+        for (int i = 0; i < 5; i++) {
             callableList.add(new StringCallable(i + "" + i + "" + i));
         }
 
 
         List<FutureTask<String>> futureTaskList = new ArrayList<FutureTask<String>>();
-        for(StringCallable stringCallable: callableList){
+        for (StringCallable stringCallable : callableList) {
             futureTaskList.add(new FutureTask<String>(stringCallable));
         }
 
 
         long beginTime = System.currentTimeMillis();
         ExecutorService executor = Executors.newFixedThreadPool(futureTaskList.size());
-        for(FutureTask<String> futureTask: futureTaskList){
+        for (FutureTask<String> futureTask : futureTaskList) {
             executor.execute(futureTask);
         }
 
 
         boolean ready = false;
 
-        while(!ready){
+        while (!ready) {
 
             int count = 0;
-            for(FutureTask<String> futureTask: futureTaskList){
-                if(futureTask.isDone()){
-                    System.out.println("Value:" + futureTask.get());
+            for (FutureTask<String> futureTask : futureTaskList) {
+                if (futureTask.isDone()) {
+                    LOG.debug("Value:" + futureTask.get());
                     count++;
                 }
             }
 
-            if(count == futureTaskList.size()){
+            if (count == futureTaskList.size()) {
                 ready = true;
             }
 
         }
-        System.out.println("All DONE for:" + (System.currentTimeMillis()-beginTime));
+        LOG.debug("All DONE for:" + (System.currentTimeMillis() - beginTime));
 
         executor.shutdown();
     }

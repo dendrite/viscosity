@@ -17,6 +17,8 @@ import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.html.HTMLOptGroupElement;
 
 import javax.inject.Inject;
@@ -32,6 +34,8 @@ import java.util.concurrent.FutureTask;
  */
 @RunWith(Arquillian.class)
 public class MultipleRequestsForServerTest {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MultipleRequestsForServerTest.class);
 
     @Inject
     IServiceSimple simpleService;
@@ -88,21 +92,21 @@ public class MultipleRequestsForServerTest {
 
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 
-        System.out.println("archive:" + archive.toString(true));
+        LOG.debug("archive:" + archive.toString(true));
         return archive;
     }
 
 
     @Test
     public void testMetricsUpdateTime() throws InterruptedException {
-        System.out.println("Metrics update time:");
+        LOG.debug("Metrics update time:");
 
         int count = 0;
-        while(count < 50){
+        while (count < 50) {
             Thread.sleep(1000);
         }
 
-        System.out.println("Done test");
+        LOG.debug("Done test");
     }
 
     @Test
@@ -110,24 +114,24 @@ public class MultipleRequestsForServerTest {
         // Number of threads
         final int size = 20;
 
-        System.out.println("clientSimple1:" + clientSimple);
+        LOG.debug("clientSimple1:" + clientSimple);
 
         IServiceSimple proxyService = clientSimple.getProxy(IServiceSimple.class);
 
         List<ClientCallableForServer> clientCallableList = new ArrayList<ClientCallableForServer>();
 
-        for(int i=0; i<size; i++){
-            clientCallableList.add(new ClientCallableForServer(proxyService,i));
+        for (int i = 0; i < size; i++) {
+            clientCallableList.add(new ClientCallableForServer(proxyService, i));
         }
 
         List<FutureTask<String>> futureTaskList = new ArrayList<FutureTask<String>>();
-        for(ClientCallableForServer clientCallable: clientCallableList){
+        for (ClientCallableForServer clientCallable : clientCallableList) {
             futureTaskList.add(new FutureTask<String>(clientCallable));
         }
 
         long beginTime = System.currentTimeMillis();
         ExecutorService executor = Executors.newFixedThreadPool(futureTaskList.size());
-        for(FutureTask<String> futureTask: futureTaskList){
+        for (FutureTask<String> futureTask : futureTaskList) {
             executor.execute(futureTask);
         }
 
@@ -136,52 +140,52 @@ public class MultipleRequestsForServerTest {
         String[] writes = new String[futureTaskList.size()];
 
         int indexValue = 0;
-        while(!ready){
+        while (!ready) {
 
             int count = 0;
             indexValue = 0;
-            for(FutureTask<String> futureTask: futureTaskList){
-                if(futureTask.isDone() & dones[indexValue] == 0){
+            for (FutureTask<String> futureTask : futureTaskList) {
+                if (futureTask.isDone() & dones[indexValue] == 0) {
                     writes[indexValue] = futureTask.get();
                     dones[indexValue] = 1;
                 }
                 indexValue++;
             }
 
-            for(int k=0; k<dones.length; k++){
-                if(dones[k] == 1){
+            for (int k = 0; k < dones.length; k++) {
+                if (dones[k] == 1) {
                     count++;
                 }
             }
 
-            if(count == futureTaskList.size()){
+            if (count == futureTaskList.size()) {
                 ready = true;
             }
 
 //            Thread.sleep(500);
         }
 
-        System.out.println("\n\n\n ====== DONE ====== ");
-        System.out.println("  time:" + (System.currentTimeMillis()-beginTime) + "ms\n\n");
+        LOG.debug("\n\n\n ====== DONE ====== ");
+        LOG.debug("  time:" + (System.currentTimeMillis() - beginTime) + "ms\n\n");
         executor.shutdown();
 
-        for(int i=0; i<writes.length; i++){
-            System.out.println("- " + writes[i]);
+        for (int i = 0; i < writes.length; i++) {
+            LOG.debug("- " + writes[i]);
         }
-        System.out.println("\n\n\n ====== DONE ====== \n\n");
+        LOG.debug("\n\n\n ====== DONE ====== \n\n");
 
         Thread.sleep(20000);
-        System.out.println("\n\n\n\n+++++++++++++++++++++++++");
-        System.out.println("New system:");
+        LOG.debug("\n\n\n\n+++++++++++++++++++++++++");
+        LOG.debug("New system:");
         IServiceSimple proxyService2 = clientSimple.getProxy(IServiceSimple.class);
-        proxyService2.functionNumber1("1","1");
+        proxyService2.functionNumber1("1", "1");
 
 
-        System.out.println("\n\n\n\n===========================");
-        System.out.println("And just sleep for empty pool");
+        LOG.debug("\n\n\n\n===========================");
+        LOG.debug("And just sleep for empty pool");
         Thread.sleep(40000);
         IServiceSimple proxyService3 = clientSimple.getProxy(IServiceSimple.class);
-        proxyService3.functionNumber1("1","1");
+        proxyService3.functionNumber1("1", "1");
     }
 
     @Test
@@ -189,29 +193,29 @@ public class MultipleRequestsForServerTest {
         // Number of threads
         final int size = 30;
 
-        System.out.println("clientSimple1:" + clientSimple);
+        LOG.debug("clientSimple1:" + clientSimple);
 
         List<IServiceSimple> serviceSimpleList = new ArrayList<IServiceSimple>();
-        for(int i=0; i<size; i++){
+        for (int i = 0; i < size; i++) {
             IServiceSimple proxyService = clientSimple.getProxy(IServiceSimple.class);
-            System.out.println("proxyService:" + proxyService);
+            LOG.debug("proxyService:" + proxyService);
             serviceSimpleList.add(proxyService);
         }
 
         List<ClientCallableForServer> clientCallableList = new ArrayList<ClientCallableForServer>();
 
-        for(int i=0; i<size; i++){
-            clientCallableList.add(new ClientCallableForServer(serviceSimpleList.get(i),i));
+        for (int i = 0; i < size; i++) {
+            clientCallableList.add(new ClientCallableForServer(serviceSimpleList.get(i), i));
         }
 
         List<FutureTask<String>> futureTaskList = new ArrayList<FutureTask<String>>();
-        for(ClientCallableForServer clientCallable: clientCallableList){
+        for (ClientCallableForServer clientCallable : clientCallableList) {
             futureTaskList.add(new FutureTask<String>(clientCallable));
         }
 
         long beginTime = System.currentTimeMillis();
         ExecutorService executor = Executors.newFixedThreadPool(futureTaskList.size());
-        for(FutureTask<String> futureTask: futureTaskList){
+        for (FutureTask<String> futureTask : futureTaskList) {
             executor.execute(futureTask);
         }
 
@@ -220,45 +224,45 @@ public class MultipleRequestsForServerTest {
         String[] writes = new String[futureTaskList.size()];
 
         int indexValue = 0;
-        while(!ready){
+        while (!ready) {
 
             int count = 0;
             indexValue = 0;
-            for(FutureTask<String> futureTask: futureTaskList){
-                if(futureTask.isDone() & dones[indexValue] == 0){
+            for (FutureTask<String> futureTask : futureTaskList) {
+                if (futureTask.isDone() & dones[indexValue] == 0) {
                     writes[indexValue] = futureTask.get();
                     dones[indexValue] = 1;
                 }
                 indexValue++;
             }
 
-            for(int k=0; k<dones.length; k++){
-                if(dones[k] == 1){
+            for (int k = 0; k < dones.length; k++) {
+                if (dones[k] == 1) {
                     count++;
                 }
             }
 
-            if(count == futureTaskList.size()){
+            if (count == futureTaskList.size()) {
                 ready = true;
             }
 
 //            Thread.sleep(500);
         }
 
-        System.out.println("\n\n\n ====== DONE ====== ");
-        System.out.println("  time:" + (System.currentTimeMillis()-beginTime) + "ms\n\n");
+        LOG.debug("\n\n\n ====== DONE ====== ");
+        LOG.debug("  time:" + (System.currentTimeMillis() - beginTime) + "ms\n\n");
         executor.shutdown();
 
-        for(int i=0; i<writes.length; i++){
-            System.out.println("- " + writes[i]);
+        for (int i = 0; i < writes.length; i++) {
+            LOG.debug("- " + writes[i]);
         }
-        System.out.println("\n\n\n ====== DONE ====== \n\n");
+        LOG.debug("\n\n\n ====== DONE ====== \n\n");
 
         Thread.sleep(20000);
-        System.out.println("\n\n\n\n+++++++++++++++++++++++++");
-        System.out.println("New system:");
+        LOG.debug("\n\n\n\n+++++++++++++++++++++++++");
+        LOG.debug("New system:");
         IServiceSimple proxyService2 = clientSimple.getProxy(IServiceSimple.class);
-        proxyService2.functionNumber1("1","1");
+        proxyService2.functionNumber1("1", "1");
     }
 
     class ClientCallableForServer implements Callable<String> {
@@ -267,7 +271,7 @@ public class MultipleRequestsForServerTest {
         private int number = 0;
         private String resultValue = "";
 
-        ClientCallableForServer(IServiceSimple serviceSimple, int number){
+        ClientCallableForServer(IServiceSimple serviceSimple, int number) {
             this.serviceSimple = serviceSimple;
             this.number = number;
         }
@@ -276,12 +280,12 @@ public class MultipleRequestsForServerTest {
         public String call() throws Exception {
 
             int currentValue = this.number;
-            if(this.number >= 5){
+            if (this.number >= 5) {
                 currentValue = this.number % 5;
             }
 
-            try{
-                switch (currentValue){
+            try {
+                switch (currentValue) {
                     case 0:
                         this.resultValue = this.serviceSimple.functionNumber1("1", "1");
                         break;
@@ -302,15 +306,13 @@ public class MultipleRequestsForServerTest {
                         break;
                 }
 
-            }catch(Exception ex){
-                System.out.println("Callable exception");
-                ex.printStackTrace();
-                return "CL:" + (this.number+1) + " " + "EXCEPTION!!!!";
+            } catch (Exception ex) {
+                LOG.error("Callable exception", ex);
+                return "CL:" + (this.number + 1) + " " + "EXCEPTION!!!!";
             }
-            return "CL:" + (this.number+1) + " " + this.resultValue;
+            return "CL:" + (this.number + 1) + " " + this.resultValue;
         }
     }
-
 
 
 }
