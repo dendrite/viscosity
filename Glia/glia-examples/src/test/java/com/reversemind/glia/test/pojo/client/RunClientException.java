@@ -28,7 +28,9 @@ public class RunClientException {
         try {
             String simple = simplePojoProxy.createException("Simple");
         } catch (SimpleException ex) {
-            LOG.info("I've got an SimpleException:", ex);
+            LOG.error("I've got an SimpleException:", ex);
         }
+
+        client.shutdown();
     }
 }
