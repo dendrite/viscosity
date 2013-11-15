@@ -6,11 +6,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Date: 4/24/13
- * Time: 2:34 PM
- *
- * @author konilovsky
- * @since 1.0
+ * Copyright (c) 2013 Eugene Kalinin
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 public class GliaServerHandler extends SimpleChannelUpstreamHandler {
 
@@ -20,7 +28,7 @@ public class GliaServerHandler extends SimpleChannelUpstreamHandler {
     private boolean dropClientConnection = false;
     private Metrics metrics;
 
-    public GliaServerHandler(IGliaPayloadProcessor gliaPayloadWorker, Metrics metrics, boolean dropClientConnection){
+    public GliaServerHandler(IGliaPayloadProcessor gliaPayloadWorker, Metrics metrics, boolean dropClientConnection) {
         this.gliaPayloadWorker = gliaPayloadWorker;
         this.dropClientConnection = dropClientConnection;
         this.metrics = metrics;
@@ -40,20 +48,20 @@ public class GliaServerHandler extends SimpleChannelUpstreamHandler {
         // TODO what about delay + very long messages???
         long beginTime = System.currentTimeMillis();
         Object object = this.gliaPayloadWorker.process(messageEvent.getMessage());
-        if(this.metrics != null){
+        if (this.metrics != null) {
             this.metrics.addRequest((System.currentTimeMillis() - beginTime));
         }
         // send object to the client
         ChannelFuture channelFuture = messageEvent.getChannel().write(object);
 
-        if(!this.dropClientConnection){
+        if (!this.dropClientConnection) {
             // see here - http://netty.io/3.6/guide/
             // Close connection right after sending
             channelFuture.addListener(new ChannelFutureListener() {
                 public void operationComplete(ChannelFuture future) {
                     Channel channel = future.getChannel();
                     channel.close();
-                    }
+                }
             });
         }
     }

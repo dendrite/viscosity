@@ -5,12 +5,10 @@ import com.netflix.curator.framework.CuratorFramework;
 import com.netflix.curator.framework.CuratorFrameworkFactory;
 import com.netflix.curator.retry.RetryNTimes;
 import com.netflix.curator.utils.EnsurePath;
-import com.netflix.curator.x.discovery.ServiceDiscovery;
 import com.netflix.curator.x.discovery.ServiceInstance;
 import com.reversemind.glia.server.Metrics;
 import com.reversemind.glia.servicediscovery.serializer.InstanceSerializerFactory;
 import com.reversemind.glia.servicediscovery.serializer.ServerMetadata;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.LoggerFactory;
 
@@ -23,11 +21,19 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Date: 4/30/13
- * Time: 8:43 AM
- *
- * @author konilovsky
- * @since 1.0
+ * Copyright (c) 2013 Eugene Kalinin
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 public class ServiceDiscoverer implements Serializable, Closeable {
 

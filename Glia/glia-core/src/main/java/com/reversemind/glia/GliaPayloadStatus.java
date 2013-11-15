@@ -1,13 +1,19 @@
 package com.reversemind.glia;
 
-import java.io.Serializable;
-
 /**
- * Date: 4/24/13
- * Time: 3:04 PM
- *
- * @author konilovsky
- * @since 1.0
+ * Copyright (c) 2013 Eugene Kalinin
+ * <p/>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 public enum GliaPayloadStatus {
 
@@ -16,12 +22,12 @@ public enum GliaPayloadStatus {
     ERROR_PAYLOAD_UNKNOWN_METHOD("ERROR_PAYLOAD_UNKNOWN_METHOD", -111),                 // Unknown client payload
     ERROR_COULD_NOT_INIT_JNDI_CONTEXT("ERROR_COULD_NOT_INIT_JNDI_CONTEXT", -222),       // Unknown client payload
     ERROR_SERVER_TIMEOUT("ERROR_SERVER_TIMEOUT", -333),                                 // Unknown client payload
-    OK("OK",0);
+    OK("OK", 0);
 
     private String message;
     private int code;
 
-    GliaPayloadStatus(String message, int code){
+    GliaPayloadStatus(String message, int code) {
         this.message = message;
         this.code = code;
     }
@@ -69,7 +75,7 @@ public enum GliaPayloadStatus {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.message;
     }
 }

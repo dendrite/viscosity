@@ -1,8 +1,5 @@
 package com.netflix.curator.x.discovery;
 
-import com.netflix.curator.x.discovery.ServiceInstance;
-import com.netflix.curator.x.discovery.ServiceType;
-import com.netflix.curator.x.discovery.UriSpec;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
