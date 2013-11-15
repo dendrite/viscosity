@@ -58,7 +58,7 @@ public class GliaServerSpringContextLoader implements Serializable {
 
 
         GliaServerFactory.Builder builderSimple = (GliaServerFactory.Builder) applicationContext.getBean("serverBuilderSimple");
-        LOG.debug(builderSimple.port());
+        LOG.debug("" + builderSimple.port());
 
         IGliaServer serverSimple = builderSimple
                 .setAutoSelectPort(true)
