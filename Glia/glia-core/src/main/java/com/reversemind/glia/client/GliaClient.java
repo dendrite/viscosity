@@ -136,17 +136,17 @@ public class GliaClient implements IGliaClient, Serializable {
             try {
                 this.setGliaPayload(this.futureTask.get(this.futureTaskTimeOut, TimeUnit.MILLISECONDS));
             } catch (TimeoutException e) {
-                LOG.log(Level.WARNING, "TimeoutException futureTask == HERE", e);
+                LOG.warn("TimeoutException futureTask == HERE", e);
                 _throwable = new TimeoutException("TimeoutException futureTask == HERE");
                 this.futureTask.cancel(true);
             } catch (InterruptedException e) {
-                LOG.log(Level.WARNING, "InterruptedException futureTask == HERE", e);
+                LOG.warn("InterruptedException futureTask == HERE", e);
             } catch (ExecutionException e) {
-                LOG.log(Level.WARNING, "ExecutionException futureTask == HERE", e);
+                LOG.warn("ExecutionException futureTask == HERE", e);
             } catch (CancellationException ce) {
-                LOG.log(Level.WARNING, "Future task was Canceled - YES !!!");
+                LOG.warn("Future task was Canceled - YES !!!");
             } catch (Exception e) {
-                LOG.log(Level.WARNING, "GENERAL Exception futureTask == HERE", e);
+                LOG.warn("GENERAL Exception futureTask == HERE", e);
             }
         }
 

@@ -26,7 +26,7 @@ public class SigarCPU {
         }
 
         while (true) {
-            LOG.debug(sigar.getCpuPerc().getIdle());
+            LOG.debug("" + sigar.getCpuPerc().getIdle());
             Thread.sleep(300);
         }
     }

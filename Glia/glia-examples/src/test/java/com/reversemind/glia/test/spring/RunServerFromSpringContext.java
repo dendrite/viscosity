@@ -2,6 +2,8 @@ package com.reversemind.glia.test.spring;
 
 import com.reversemind.glia.server.GliaServer;
 import com.reversemind.glia.server.IGliaPayloadProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -17,6 +19,8 @@ import java.util.Set;
  * @since 1.0
  */
 public class RunServerFromSpringContext implements Serializable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RunServerFromSpringContext.class);
 
     public static void main(String... args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/glia-server-context.xml");

@@ -5,6 +5,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URLDecoder;
@@ -18,6 +20,7 @@ import java.net.URLDecoder;
  */
 public class go3 implements Serializable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(go3.class);
 
     public static void save(String fileName, String string) throws Exception {
 

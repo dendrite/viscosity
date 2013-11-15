@@ -5,6 +5,8 @@ import com.reversemind.glia.proxy.ProxyFactory;
 import com.reversemind.glia.test.json.Settings;
 import com.reversemind.glia.test.json.shared.IDoSomething;
 import com.reversemind.glia.test.json.shared.JSONBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +15,8 @@ import java.util.Set;
  *
  */
 public class RunJSONGliaClient {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RunJSONGliaClient.class);
 
     public static void main(String... args) throws Exception {
 

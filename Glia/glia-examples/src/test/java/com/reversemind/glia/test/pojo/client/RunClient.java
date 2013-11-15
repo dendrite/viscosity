@@ -29,7 +29,7 @@ public class RunClient {
 
         ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance().newProxyInstance(client, ISimplePojo.class);
 
-        List<PAddressNode> list = simplePojoProxy.searchAddress("Москва");
+        List<PAddressNode> list = simplePojoProxy.searchAddress("Moscow");
 
         if (list != null && list.size() > 0) {
             for (PAddressNode addressNode : list) {

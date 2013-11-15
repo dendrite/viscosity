@@ -3,6 +3,8 @@ package com.reversemind.glia.test.json.server;
 import com.reversemind.glia.test.json.Settings;
 import com.reversemind.glia.test.json.shared.IDoSomething;
 import com.reversemind.glia.test.json.shared.JSONBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,6 +14,8 @@ import java.util.Map;
  * POJO on server side to process remote client request through a IDoSomething interface call
  */
 public class ServerPojo implements IDoSomething {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ServerPojo.class);
 
     private static final Map<String, Object> ADDRESS_MAP = new HashMap<String, Object>() {
         {

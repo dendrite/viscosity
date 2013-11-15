@@ -4,6 +4,8 @@ import com.reversemind.glia.client.GliaClient;
 import com.reversemind.glia.proxy.ProxyFactory;
 import com.reversemind.glia.test.pojo.shared.ISimplePojo;
 import com.reversemind.glia.test.pojo.shared.PAddressNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.List;
  * @since 1.0
  */
 public class RunClientMulti implements Serializable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RunClientMulti.class);
 
     static GliaClient client;
 

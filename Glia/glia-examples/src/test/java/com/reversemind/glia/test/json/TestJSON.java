@@ -4,6 +4,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -13,11 +15,14 @@ import java.util.*;
  */
 public class TestJSON {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TestJSON.class);
+
     /**
      * Generate JSON string from Java Map and read a JSON string back into Map
      *
      * @throws IOException
      */
+
     @Ignore
     @Test
     public void testJSON() throws IOException {
@@ -38,7 +43,7 @@ public class TestJSON {
         addressMap.put("versions", list);
 
         String jsonString = mapper.writeValueAsString(addressMap);
-        LOG.debug(jsonString);
+        LOG.debug("" + jsonString);
 
 
         // Read JSON string back

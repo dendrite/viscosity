@@ -6,11 +6,15 @@ import com.reversemind.glia.server.IGliaPayloadProcessor;
 import com.reversemind.glia.server.IGliaServer;
 import com.reversemind.glia.test.json.Settings;
 import com.reversemind.glia.test.json.shared.IDoSomething;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public class RunJSONGliaServer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RunJSONGliaServer.class);
 
     public static void main(String... args) throws InterruptedException {
 
@@ -31,7 +35,7 @@ public class RunJSONGliaServer {
         // just wait for a minute 5 sec * 120 = 10 minutes
         while (count++ < 120) {
             Thread.sleep(5000);
-            LOG.debug(gliaServer.getMetrics());
+            LOG.debug("" + gliaServer.getMetrics());
         }
 
         gliaServer.shutdown();
