@@ -23,12 +23,13 @@ artifactId: glia-core
 
 version: 1.8.5-SNAPSHOT
 
-
 <dependency>
   <groupId>com.reversemind</groupId>
   <artifactId>glia-core</artifactId>
   <version>1.8.5-SNAPSHOT</version>
 </dependency>
+
+Stable is  1.8.1-SNAPSHOT - version
 
 
 #### Getting started
@@ -87,7 +88,7 @@ Atomikos - http://www.atomikos.com/
 
 
 !!!!!!!
-Trouble with Sigar under JBoss 7.1.1.Final
+Some troubles with Sigar under JBoss 7.1.1.Final
 
 
 * [DONE] Extra troubles zookeeper under JBoss - it's a real bug - !(resume - it's not a bug it's feature and works great with some log extra info)
@@ -97,8 +98,6 @@ https://issues.apache.org/jira/browse/ZOOKEEPER-1554
 
 * GliaServerEJBContainer - right now tested only for JBoss 7.1.1.Final - test dependency for different application servers (GlassFish, JBoss)
 
-
-* Some troubles with metrics update in zookeeper
 
 * Need Netflix Curator fake zookeeper instance - for Testing
 * What about Snappy-java
