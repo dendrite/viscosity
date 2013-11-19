@@ -1,34 +1,21 @@
-package com.reversemind.test.part02;
+package com.reversemind.test.CQL3;
 
 import com.google.common.collect.ImmutableMap;
 import com.netflix.astyanax.Keyspace;
 import com.netflix.astyanax.connectionpool.exceptions.ConnectionException;
-
-import java.io.Serializable;
+import com.reversemind.test.part02.*;
 
 /**
- * Date: 5/8/13
- * Time: 12:28 PM
- *
- * @author konilovsky
- * @since 1.0
+ * Created with IntelliJ IDEA.
+ * User: root
+ * Date: 11/19/13
+ * Time: 3:53 AM
+ * To change this template use File | Settings | File Templates.
  */
-public class CreateKeySpace implements Serializable {
+public class CreateKeySpace {
 
-    /**
-     *
-     * @param args
-     */
     public static void main(String... args) throws ConnectionException {
-
-
-//        CREATE KEYSPACE demospace WITH REPLICATION = {'class' : 'SimpleStrategy', 'replication_factor': 1};
-
-
-        // CQL
-        // CREATE KEYSPACE Excelsior WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 3};
-
-        Keyspace keyspace = GoCreate.getKeySpace("TWITTER");
+        Keyspace keyspace = GoCreate.getKeySpace("space2");
 
         // Using simple strategy
         keyspace.createKeyspace(ImmutableMap.<String, Object>builder()
