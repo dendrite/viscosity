@@ -1,6 +1,8 @@
 package com.reversemind.glia.server;
 
 import com.reversemind.glia.GliaPayload;
+import com.reversemind.glia.serialization.KryoObjectDecoder;
+import com.reversemind.glia.serialization.KryoObjectEncoder;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
@@ -11,6 +13,7 @@ import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.serialization.ClassResolvers;
 import org.jboss.netty.handler.codec.serialization.ObjectDecoder;
 import org.jboss.netty.handler.codec.serialization.ObjectEncoder;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
@@ -39,7 +42,7 @@ import java.util.concurrent.Executors;
  */
 public abstract class GliaServer implements IGliaServer, Serializable {
 
-    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(GliaServer.class);
+    private final static Logger LOG = LoggerFactory.getLogger(GliaServer.class);
 
     private String name;
     private String instanceName;
@@ -135,7 +138,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
             ServerSocket serverSocket = new ServerSocket(0);
             if (serverSocket.getLocalPort() == -1) {
                 System.exit(-100);
-                throw new RuntimeException("\n\nCould not start GliaServer 'cause no any available free port in system");
+                throw new RuntimeException("\n\nCould not start GliaServer there are no any free port in the system available");
             }
 
             int detectedPortNumber = serverSocket.getLocalPort();
@@ -216,8 +219,8 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         this.serverBootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {
                 return Channels.pipeline(
-                        new ObjectEncoder(),
-                        new ObjectDecoder(
+                        new KryoObjectEncoder(),
+                        new KryoObjectDecoder(
                                 ClassResolvers.cacheDisabled(getClass().getClassLoader())),
                         handler);
             }

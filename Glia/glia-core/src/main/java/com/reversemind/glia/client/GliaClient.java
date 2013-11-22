@@ -1,8 +1,13 @@
 package com.reversemind.glia.client;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.reversemind.glia.GliaPayload;
 import com.reversemind.glia.GliaPayloadBuilder;
 import com.reversemind.glia.GliaPayloadStatus;
+import com.reversemind.glia.serialization.KryoObjectDecoder;
+import com.reversemind.glia.serialization.KryoObjectEncoder;
+import com.reversemind.glia.serialization.KryoSerializer;
+import com.reversemind.glia.serialization.KryoSettings;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
@@ -15,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
+import java.util.*;
 import java.util.concurrent.*;
 
 /**
@@ -56,9 +62,13 @@ public class GliaClient implements IGliaClient, Serializable {
     private boolean running = false;
     private boolean occupied = false;
 
+    private final Kryo kryo = new KryoSettings().getKryo();
+    private KryoSerializer kryoSerializer;
+
     protected GliaClient() {
         this.port = 7000;
         this.host = "localhost";
+        this.kryoSerializer = new KryoSerializer(kryo);
     }
 
     public GliaClient(String host, int port) {
@@ -67,6 +77,7 @@ public class GliaClient implements IGliaClient, Serializable {
         this.gliaPayload = null;
         this.executor = this.getExecutor();
         LOG.warn("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
+        this.kryoSerializer = new KryoSerializer(kryo);
     }
 
     public GliaClient(String host, int port, long timeout) {
@@ -82,6 +93,7 @@ public class GliaClient implements IGliaClient, Serializable {
 
         this.executor = this.getExecutor();
         LOG.warn("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
+        this.kryoSerializer = new KryoSerializer(kryo);
     }
 
     /**
@@ -305,8 +317,8 @@ public class GliaClient implements IGliaClient, Serializable {
         ChannelPipelineFactory channelPipelineFactory = new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {
                 return Channels.pipeline(
-                        new ObjectEncoder(),
-                        new ObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader()))
+                        new KryoObjectEncoder(),
+                        new KryoObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader()))
                         ,
                         new SimpleChannelUpstreamHandler() {
 
@@ -439,7 +451,7 @@ public class GliaClient implements IGliaClient, Serializable {
         long countGoAway = 0;
         final long stepGoAway = 100; //ms
 
-        LOG.warn("Warming up 1.8.5-SNAPSHOT ...");
+        LOG.warn("Warming up 1.8.7-SNAPSHOT ...");
         while (goAway == false | countGoAway < (SERVER_CONNECTION_TIMEOUT / stepGoAway)) {
 
             Thread.sleep(stepGoAway);

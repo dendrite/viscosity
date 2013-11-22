@@ -41,9 +41,12 @@ public class RunClient {
         List<PAddressNode> list = simplePojoProxy.searchAddress("Moscow");
 
         if (list != null && list.size() > 0) {
-            for (PAddressNode addressNode : list) {
-                LOG.info("node:" + addressNode);
-            }
+//            int count = 0;
+//            for (PAddressNode addressNode : list) {
+//                if(count % 1000 == 0){
+//                    LOG.info("node:" + addressNode);
+//                }
+//            }
         }
         client.shutdown();
 
@@ -57,9 +60,12 @@ public class RunClient {
         list = simplePojoProxy.searchAddress("Moscow");
 
         if (list != null && list.size() > 0) {
-            for (PAddressNode addressNode : list) {
-                LOG.info("node:" + addressNode);
-            }
+//            int count = 0;
+//            for (PAddressNode addressNode : list) {
+//                if(count % 1000 == 0){
+//                    LOG.info("node:" + addressNode);
+//                }
+//            }
         }
 
         client.shutdown();
