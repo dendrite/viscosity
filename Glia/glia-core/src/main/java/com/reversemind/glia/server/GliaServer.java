@@ -1,8 +1,8 @@
 package com.reversemind.glia.server;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.reversemind.glia.GliaPayload;
-import com.reversemind.glia.serialization.KryoObjectDecoder;
-import com.reversemind.glia.serialization.KryoObjectEncoder;
+import com.reversemind.glia.serialization.*;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
@@ -60,6 +60,9 @@ public abstract class GliaServer implements IGliaServer, Serializable {
     private GliaPayload gliaPayload;
     private IGliaPayloadProcessor gliaPayloadWorker;
 
+    private final Kryo kryo = new KryoSettings().getKryo();
+    private KryoDeserializer kryoDeserializer;
+
     /**
      * @param builder
      */
@@ -93,6 +96,8 @@ public abstract class GliaServer implements IGliaServer, Serializable {
         this.setHost(this.getIpAddress());
 
         this.metrics = new Metrics();
+
+        this.kryoDeserializer = new KryoDeserializer(kryo);
     }
 
     private String getIpAddress() {
@@ -212,7 +217,8 @@ public abstract class GliaServer implements IGliaServer, Serializable {
                         Executors.newCachedThreadPool(),
                         Executors.newCachedThreadPool()));
 
-        this.handler = new GliaServerHandler(gliaPayloadWorker, metrics, keepClientAlive);
+        //this.handler = new GliaServerHandler(gliaPayloadWorker, metrics, keepClientAlive);
+        this.handler = new GliaServerHandler(gliaPayloadWorker, metrics, keepClientAlive, this.kryoDeserializer);
 
         // Set up the pipeline factory
         // TODO add Kryo serializer

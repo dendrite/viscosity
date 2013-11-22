@@ -1,9 +1,11 @@
 package com.reversemind.glia.server;
 
+import com.reversemind.glia.serialization.KryoDeserializer;
 import org.jboss.netty.channel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.IOException;
 
 /**
  * Copyright (c) 2013 Eugene Kalinin
@@ -22,16 +24,24 @@ import java.util.logging.Logger;
  */
 public class GliaServerHandler extends SimpleChannelUpstreamHandler {
 
-    private static final Logger LOG = Logger.getLogger(GliaServerHandler.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(GliaServerHandler.class.getName());
 
     private IGliaPayloadProcessor gliaPayloadWorker;
     private boolean dropClientConnection = false;
     private Metrics metrics;
+    private KryoDeserializer kryoDeserializer;
 
     public GliaServerHandler(IGliaPayloadProcessor gliaPayloadWorker, Metrics metrics, boolean dropClientConnection) {
         this.gliaPayloadWorker = gliaPayloadWorker;
         this.dropClientConnection = dropClientConnection;
         this.metrics = metrics;
+    }
+
+    public GliaServerHandler(IGliaPayloadProcessor gliaPayloadWorker, Metrics metrics, boolean dropClientConnection, KryoDeserializer kryoDeserializer) {
+        this.gliaPayloadWorker = gliaPayloadWorker;
+        this.dropClientConnection = dropClientConnection;
+        this.metrics = metrics;
+        this.kryoDeserializer = kryoDeserializer;
     }
 
     @Override
@@ -47,30 +57,36 @@ public class GliaServerHandler extends SimpleChannelUpstreamHandler {
 
         // TODO what about delay + very long messages???
         long beginTime = System.currentTimeMillis();
-        Object object = this.gliaPayloadWorker.process(messageEvent.getMessage());
+
+        Object object = null;
+        try {
+            object = this.gliaPayloadWorker.process(this.kryoDeserializer.deserialize((byte[]) messageEvent.getMessage()));
+        } catch (IOException e) {
+            LOG.error("KryoDeserializer needs for array", e);
+        }
         if (this.metrics != null) {
             this.metrics.addRequest((System.currentTimeMillis() - beginTime));
         }
-        // send object to the client
+
         ChannelFuture channelFuture = messageEvent.getChannel().write(object);
 
         if (!this.dropClientConnection) {
             // see here - http://netty.io/3.6/guide/
             // Close connection right after sending
-            channelFuture.addListener(new ChannelFutureListener() {
-                public void operationComplete(ChannelFuture future) {
-                    Channel channel = future.getChannel();
-                    channel.close();
-                }
-            });
+            if(channelFuture != null){
+                channelFuture.addListener(new ChannelFutureListener() {
+                    public void operationComplete(ChannelFuture future) {
+                        Channel channel = future.getChannel();
+                        channel.close();
+                    }
+                });
+            }
         }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) {
-        LOG.log(
-                Level.WARNING,
-                "Unexpected exception from downstream.",
+        LOG.warn("Unexpected exception from downstream.",
                 e.getCause());
         e.getChannel().close();
     }

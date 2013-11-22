@@ -208,7 +208,8 @@ public class GliaClient implements IGliaClient, Serializable {
 
                 // client is occupied
                 this.occupied = true;
-                this.channel.write(gliaPayloadSend);
+                this.channel.write(this.kryoSerializer.serialize(gliaPayloadSend));
+//                this.channel.write(gliaPayloadSend);
 
                 this.shutDownExecutor();
                 this.executor = this.getExecutor();
@@ -451,7 +452,7 @@ public class GliaClient implements IGliaClient, Serializable {
         long countGoAway = 0;
         final long stepGoAway = 100; //ms
 
-        LOG.warn("Warming up 1.8.7-SNAPSHOT ...");
+        LOG.warn("Warming up 1.8.9-SNAPSHOT ...");
         while (goAway == false | countGoAway < (SERVER_CONNECTION_TIMEOUT / stepGoAway)) {
 
             Thread.sleep(stepGoAway);
