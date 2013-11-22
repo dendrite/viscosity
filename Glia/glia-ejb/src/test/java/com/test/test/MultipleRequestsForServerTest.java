@@ -81,7 +81,7 @@ public class MultipleRequestsForServerTest {
 
                         .artifact("log4j:log4j:1.2.16")
 
-                        .artifact("com.reversemind:glia-core:1.8.7-SNAPSHOT")
+                        .artifact("com.reversemind:glia-core:1.8.9-SNAPSHOT")
 
                         .artifact("net.sf.dozer:dozer:5.4.0")
                         .artifact("com.google.code.gson:gson:2.2.4")

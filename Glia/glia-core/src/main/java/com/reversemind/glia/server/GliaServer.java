@@ -97,7 +97,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
 
         this.metrics = new Metrics();
 
-        this.kryoDeserializer = new KryoDeserializer(kryo);
+        this.kryoDeserializer = new KryoDeserializer(this.kryo);
     }
 
     private String getIpAddress() {
