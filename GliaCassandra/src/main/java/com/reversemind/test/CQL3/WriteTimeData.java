@@ -54,10 +54,10 @@ public class WriteTimeData {
 
         UUID timeUUID = TimeUUIDUtils.getMicrosTimeUUID(1000L);
 
-        int eventType  = 1;
-        int country = 2;
+        int eventType  = 5;
+        int country = 1;
         UUID user_id = UUID.randomUUID(); // UUID.fromString("b392d3ae-041c-4070-a84a-7eda534cc8c0");//
-        int userLevel = 101;
+        int userLevel = 105;
 
         System.out.println("timeUUID:" + timeUUID);
 
@@ -66,13 +66,17 @@ public class WriteTimeData {
                     .prepareQuery(CQL3_CF)
                     .withCql(INSERT_USER_STATEMENT)
                     .asPreparedStatement()
-
-                    .withStringValue(timeUUID.toString())
+//                    .withStringValue("TTT"timeUUID.toString())
+                    .withStringValue("TTT")
                     .withStringValue("" + eventType)
                     .withIntegerValue(country)
                     .withStringValue(user_id.toString())
                     .withIntegerValue(userLevel)
                     .execute();
+
+
+//        cqlsh:space2> select * from eventRecords where event_id = 'TTT2' and eventtype='5' and country=1 and userLevel=105;
+//        cqlsh:space2> select * from eventRecords where event_id = 'TTT2' and eventtype='5' and country=1 and userLevel=101;
 
 
 
