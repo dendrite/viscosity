@@ -12,11 +12,12 @@
     <container qualifier="jbossas-managed" default="true">
         <configuration>
             <!--I think it's a better practice just use a preconfigures JBoss-->
-            <!--<property name="jbossHome">/jbossas7_test</property>-->
-            <property name="jbossHome">/usr/jboss/test_jbossas7</property>
+            <property name="jbossHome">/jbossas7_test</property>
+            <!--<property name="jbossHome">/usr/jboss/test_jbossas7</property>-->
             <property name="outputToConsole">true</property>
 
-            <property name="javaVmArguments">-Xmx512m -Xmx2048m -XX:MaxPermSize=128m -Xverify:none -XX:+UseFastAccessorMethods</property>
+            <!--<property name="javaVmArguments">-Xms256m -Xmx1048m -XX:MaxPermSize=128m -Xverify:none -XX:+UseFastAccessorMethods</property>-->
+            <property name="javaVmArguments">-Xms256m -Xmx1048m</property>
 
             <property name="managementAddress">127.0.0.1</property>
             <property name="managementPort">29999</property>
