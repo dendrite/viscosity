@@ -10,25 +10,35 @@ import com.netflix.astyanax.serializers.StringSerializer;
 import com.netflix.astyanax.serializers.UUIDSerializer;
 import com.netflix.astyanax.util.TimeUUIDUtils;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
- * Created with IntelliJ IDEA.
- * User: dendrite
- * Date: 24.11.13
- * Time: 2:21
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class WriteTimeData {
 
-    public static void main(String... args) throws ConnectionException {
+    static ColumnFamily<String, String> CQL3_CF = ColumnFamily.newColumnFamily(
+            "Cql3CF",
+            StringSerializer.get(),
+            StringSerializer.get());
+
+    final static String INSERT_USER_STATEMENT = "INSERT INTO eventRecords " +
+            " (" +
+            "   event_id, " +
+            "   eventType, " +
+            "   country, " +
+            "   user_id, " +
+            "   userLevel" +
+            " ) " +
+            " VALUES " +
+            " (?, ?, ?, ?, ?);";
+
+    public static void main(String... args) throws ConnectionException, InterruptedException {
 
         Keyspace keyspace = GoCreate.getKeySpace("space2");
 
-        ColumnFamily<String, String> CQL3_CF = ColumnFamily.newColumnFamily(
-                "Cql3CF",
-                StringSerializer.get(),
-                StringSerializer.get());
+
 
 //
 //        .withCql("CREATE TABLE eventRecords (" +
@@ -39,40 +49,44 @@ public class WriteTimeData {
 //                " userLevel int, " +
 //                " PRIMARY KEY (event_id, eventType, country));")
 
-        final String INSERT_USER_STATEMENT = "INSERT INTO eventRecords " +
-                " (" +
-                "   event_id, " +
-                "   eventType, " +
-                "   country, " +
-                "   user_id, " +
-                "   userLevel" +
-                " ) " +
-                " VALUES " +
-                " (?, ?, ?, ?, ?);";
 
-        OperationResult<CqlResult<String, String>> result;
 
-        UUID timeUUID = TimeUUIDUtils.getMicrosTimeUUID(1000L);
+        OperationResult<CqlResult<UUID, String>> result;
 
+        UUID timeUUID = TimeUUIDUtils.getMicrosTimeUUID(new Date().getTime());
+        System.out.println("UUID time:" + timeUUID.toString());
         int eventType  = 5;
-        int country = 1;
+        int country = 2;
         UUID user_id = UUID.randomUUID(); // UUID.fromString("b392d3ae-041c-4070-a84a-7eda534cc8c0");//
-        int userLevel = 105;
+        int userLevel = 100;
 
         System.out.println("timeUUID:" + timeUUID);
 
+        putRow(keyspace, timeUUID, 5, 2, UUID.randomUUID(), 100);
+        putRow(keyspace, timeUUID, 5, 1, UUID.randomUUID(), 100);
+        putRow(keyspace, timeUUID, 5, 2, UUID.randomUUID(), 101);
+        putRow(keyspace, timeUUID, 5, 3, UUID.randomUUID(), 101);
+        putRow(keyspace, timeUUID, 5, 3, UUID.randomUUID(), 105);
+        putRow(keyspace, timeUUID, 5, 5, UUID.randomUUID(), 105);
 
-            result = keyspace
-                    .prepareQuery(CQL3_CF)
-                    .withCql(INSERT_USER_STATEMENT)
-                    .asPreparedStatement()
-//                    .withStringValue("TTT"timeUUID.toString())
-                    .withStringValue("TTT")
-                    .withStringValue("" + eventType)
-                    .withIntegerValue(country)
-                    .withStringValue(user_id.toString())
-                    .withIntegerValue(userLevel)
-                    .execute();
+        long bT = System.currentTimeMillis();
+        System.out.println("----");
+        for(int j=0; j<5; j++){
+
+            Long tt = new Date().getTime();
+            timeUUID = TimeUUIDUtils.getTimeUUID(tt);
+            System.out.println("UUID time:" + timeUUID.toString() + " -" + tt + "  time:" + new Date(tt));
+
+            for(int i=0; i<5; i++){
+                // 79d71c4e-2a6b-11b2-be1c-b870f4f31ee4
+               // putRow(keyspace, UUID.fromString("79d71c4e-2a6b-11b2-be1c-b870f4f31ee4"), 5, 10, UUID.randomUUID(), 105);
+                putRow(keyspace, timeUUID, 5, 10, UUID.randomUUID(), 105);
+            }
+            Thread.sleep(2000);
+        }
+
+        System.out.println("End:" + (System.currentTimeMillis() - bT));
+
 
 
 //        cqlsh:space2> select * from eventRecords where event_id = 'TTT2' and eventtype='5' and country=1 and userLevel=105;
@@ -91,6 +105,21 @@ public class WriteTimeData {
 //                    .execute();
 //        }
 
+    }
+
+
+    public static OperationResult<CqlResult<String, String>> putRow(Keyspace keyspace, UUID timeUUID, int eventType, int country, UUID userId, int userLevel) throws ConnectionException {
+        return keyspace
+                .prepareQuery(CQL3_CF)
+                .withCql(INSERT_USER_STATEMENT)
+                .asPreparedStatement()
+
+                .withUUIDValue(timeUUID)
+                .withIntegerValue(eventType)
+                .withIntegerValue(country)
+                .withUUIDValue(userId)
+                .withIntegerValue(userLevel)
+                .execute();
     }
 
 }

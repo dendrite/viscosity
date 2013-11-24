@@ -6,7 +6,10 @@ import com.netflix.astyanax.model.ColumnFamily;
 import com.netflix.astyanax.model.CqlResult;
 import com.netflix.astyanax.serializers.IntegerSerializer;
 import com.netflix.astyanax.serializers.StringSerializer;
+import com.netflix.astyanax.serializers.UUIDSerializer;
 import com.reversemind.test.part02.*;
+
+import java.util.UUID;
 
 /**
  *
@@ -27,14 +30,13 @@ public class CreateTable {
 //                .withCql("CREATE TABLE users (user_id int, screenName int, otherParameters int, PRIMARY KEY (user_id, screenName));")
 //                .execute();
 
-
         OperationResult<CqlResult<String, String>> result = keyspace
                 .prepareQuery(CQL3_CF)
                 .withCql("CREATE TABLE eventRecords (" +
-                        " event_id varchar, " +
-                        " eventType varchar, " +
+                        " event_id timeuuid, " +
+                        " eventType int, " +
                         " country int, " +
-                        " user_id varchar, " +
+                        " user_id uuid, " +
                         " userLevel int, " +
                         " PRIMARY KEY ((event_id, eventType, country), user_id));")
                 .execute();
