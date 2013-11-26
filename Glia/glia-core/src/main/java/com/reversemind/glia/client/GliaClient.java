@@ -208,7 +208,9 @@ public class GliaClient implements IGliaClient, Serializable {
 
                 // client is occupied
                 this.occupied = true;
-                this.channel.write(this.kryoSerializer.serialize(gliaPayloadSend));
+                if(this.kryoSerializer != null){
+                    this.channel.write(this.kryoSerializer.serialize(gliaPayloadSend));
+                }
 //                this.channel.write(gliaPayloadSend);
 
                 this.shutDownExecutor();

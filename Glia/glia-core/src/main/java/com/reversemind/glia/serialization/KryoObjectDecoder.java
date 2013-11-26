@@ -111,7 +111,7 @@ public class KryoObjectDecoder extends LengthFieldBasedFrameDecoder {
             ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
 
         if(buffer != null){
-            LOG.info("Buffer readable bytes:" + buffer.readableBytes());
+            LOG.debug("Buffer readable bytes:" + buffer.readableBytes());
         }
 
         ChannelBuffer frame = (ChannelBuffer) super.decode(ctx, channel, buffer);

@@ -73,12 +73,12 @@ public class KryoObjectEncoder extends OneToOneEncoder {
         oout.flush();
         oout.close();
 
-        LOG.info("Encode message:" + msg);
+        LOG.debug("Encode message:" + msg);
 
         ChannelBuffer encoded = bout.buffer();
         encoded.setInt(0, encoded.writerIndex() - 4);
 
-        LOG.info("Encode buffer index:" + encoded.writerIndex() + " capacity:" + encoded.capacity() + " readableBytes:" + encoded.readableBytes());
+        LOG.debug("Encode buffer index:" + encoded.writerIndex() + " capacity:" + encoded.capacity() + " readableBytes:" + encoded.readableBytes());
         return encoded;
     }
 
