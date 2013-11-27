@@ -1,15 +1,11 @@
-package com.reversemind.test.CQL3;
+package com.reversemind.storm.jetter.cassandra;
 
 import com.netflix.astyanax.Keyspace;
 import com.netflix.astyanax.connectionpool.OperationResult;
 import com.netflix.astyanax.model.ColumnFamily;
 import com.netflix.astyanax.model.CqlResult;
-import com.netflix.astyanax.serializers.IntegerSerializer;
 import com.netflix.astyanax.serializers.StringSerializer;
-import com.netflix.astyanax.serializers.UUIDSerializer;
-import com.reversemind.test.part02.*;
 
-import java.util.UUID;
 
 /**
  *
@@ -18,10 +14,10 @@ public class CreateTable {
 
     public static void main(String... args) throws Exception{
 
-        Keyspace keyspace = GoCreate.getKeySpace("jetter");
+        Keyspace keyspace = CassandraSettings.getKeySpace(CassandraSettings.KEY_SPACE);
 
         ColumnFamily<String, String> CQL3_CF = ColumnFamily.newColumnFamily(
-                "Cql3CF",
+                CassandraSettings.CQL_COLUMN_FAMILY,
                 StringSerializer.get(),
                 StringSerializer.get());
 //

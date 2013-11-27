@@ -1,21 +1,17 @@
-package com.reversemind.test.CQL3;
+package com.reversemind.storm.jetter.cassandra;
 
 import com.google.common.collect.ImmutableMap;
 import com.netflix.astyanax.Keyspace;
 import com.netflix.astyanax.connectionpool.exceptions.ConnectionException;
-import com.reversemind.test.part02.*;
+
 
 /**
- * Created with IntelliJ IDEA.
- * User: root
- * Date: 11/19/13
- * Time: 3:53 AM
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class CreateKeySpace {
 
     public static void main(String... args) throws ConnectionException {
-        Keyspace keyspace = GoCreate.getKeySpace("jetter");
+        Keyspace keyspace = CassandraSettings.getKeySpace();
 
         // Using simple strategy
         keyspace.createKeyspace(ImmutableMap.<String, Object>builder()

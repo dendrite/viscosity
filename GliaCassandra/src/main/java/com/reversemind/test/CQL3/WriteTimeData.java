@@ -23,7 +23,7 @@ public class WriteTimeData {
             StringSerializer.get(),
             StringSerializer.get());
 
-    final static String INSERT_USER_STATEMENT = "INSERT INTO eventRecords " +
+    final static String INSERT_USER_STATEMENT = "INSERT INTO events " +
             " (" +
             "   event_id, " +
             "   eventType, " +
@@ -49,6 +49,15 @@ public class WriteTimeData {
 //                " userLevel int, " +
 //                " PRIMARY KEY (event_id, eventType, country));")
 
+
+
+//        .withCql("CREATE TABLE events (" +
+//                " event_id timeuuid, " +
+//                " eventType varchar, " +
+//                " country varchar, " +
+//                " user_id uuid, " +
+//                " userLevel varchar, " +
+//                " PRIMARY KEY ((event_id, eventType, country), user_id));")
 
 
         OperationResult<CqlResult<UUID, String>> result;
@@ -123,5 +132,8 @@ public class WriteTimeData {
                 .withIntegerValue(userLevel)
                 .execute();
     }
+
+
+
 
 }

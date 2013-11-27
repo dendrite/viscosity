@@ -33,6 +33,22 @@ public class JSONBuilder {
         return "";
     }
 
+    public static <T> T object(String string, Class<T> clazz){
+        if(string != null && string.length()>0){
+            ObjectMapper mapper = new ObjectMapper();
+            Object _result = null;
+            try {
+                _result = mapper.readValue(string, clazz);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally{
+                return (T)_result;
+            }
+        }else{
+            return null;
+        }
+    }
+
     public static void main(String... args) {
         User user = new User();
         System.out.println(JSONBuilder.json(user));
@@ -48,6 +64,10 @@ public class JSONBuilder {
         event.setElements(elements);
 
         System.out.println("EVENT:" + JSONBuilder.json(event));
+
+        String json = JSONBuilder.json(event);
+        Event eventResult = JSONBuilder.object(json, Event.class);
+        System.out.println("eventResult:" + eventResult);
     }
 
 }

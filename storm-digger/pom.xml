@@ -8,6 +8,11 @@
     <name>storm-digger</name>
     <url>http://maven.apache.org</url>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <astyanax.version>1.56.37</astyanax.version>
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -29,6 +34,46 @@
             <!-- keep storm out of the jar-with-dependencies -->
             <!--<scope>provided</scope>-->
         </dependency>
+
+
+        <!--ASTYANAX-->
+        <dependency>
+            <groupId>com.netflix.astyanax</groupId>
+            <artifactId>astyanax-core</artifactId>
+            <version>${astyanax.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.netflix.astyanax</groupId>
+            <artifactId>astyanax-thrift</artifactId>
+            <version>${astyanax.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.netflix.astyanax</groupId>
+            <artifactId>astyanax-cassandra</artifactId>
+            <version>${astyanax.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.netflix.astyanax</groupId>
+            <artifactId>astyanax-queue</artifactId>
+            <version>${astyanax.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.netflix.astyanax</groupId>
+            <artifactId>astyanax-entity-mapper</artifactId>
+            <version>${astyanax.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.netflix.astyanax</groupId>
+            <artifactId>astyanax-recipes</artifactId>
+            <version>${astyanax.version}</version>
+        </dependency>
+
+
 
         <dependency>
             <groupId>junit</groupId>
