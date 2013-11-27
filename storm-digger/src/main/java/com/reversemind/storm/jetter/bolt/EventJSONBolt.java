@@ -24,6 +24,7 @@ public class EventJSONBolt extends BaseBasicBolt {
 
         if (eventJson != null && eventJson.length() > 0) {
             Event event = JSONBuilder.object(eventJson, Event.class);
+            System.out.println("Convert back object:" + event);
             if (event != null) {
                 basicOutputCollector.emit(new Values(event));
             } else {

@@ -21,19 +21,19 @@ public class Jetter {
 
         TopologyBuilder builder = new TopologyBuilder();
 
-        builder.setSpout(Jetter.SPOUT_EVENT_TUPLE_NAME, new HTTPSpout(), 1);
-        builder.setBolt("EVENT", new EventJSONBolt(), 1).shuffleGrouping(Jetter.SPOUT_EVENT_TUPLE_NAME);
-        builder.setBolt("count", new EventBolt(), 1).fieldsGrouping("EVENT", new Fields(Jetter.BOLT_EVENT_JSON_TUPLE_NAME));
+        builder.setSpout("spout", new HTTPSpout(1000L), 1);
+        builder.setBolt("EVENT", new EventJSONBolt(), 1).shuffleGrouping("spout");
+        builder.setBolt("count", new EventBolt(), 1).shuffleGrouping("EVENT");
 
         Config conf = new Config();
         conf.setDebug(true);
 
-        conf.setMaxTaskParallelism(10);
+        conf.setMaxTaskParallelism(1);
 
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("jetter-cassandra", conf, builder.createTopology());
 
-        Thread.sleep(2000);
+        Thread.sleep(3000);
 
         cluster.shutdown();
     }

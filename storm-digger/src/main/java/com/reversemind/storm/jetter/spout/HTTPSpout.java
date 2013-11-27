@@ -23,6 +23,13 @@ public class HTTPSpout extends BaseRichSpout {
 
     SpoutOutputCollector _collector;
     static long count = 0;
+    private String userId = UUID.randomUUID().toString();
+
+    private Long timeOut = 1000L;
+
+    public HTTPSpout(Long timeOut){
+        this.timeOut = timeOut;
+    }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
@@ -36,10 +43,9 @@ public class HTTPSpout extends BaseRichSpout {
 
     @Override
     public void nextTuple() {
-        Utils.sleep(1000);
-
+        count++;
         Event event = new Event();
-        event.setUser(new User(UUID.randomUUID().toString(), "User Name_" + count, new Country("" + (count / 10), "c_name_" + (count / 10L))));
+        event.setUser(new User(this.getUserId(), "User Name_" + count, new Country("" + (count / 10), "c_name_" + (count / 10L))));
         event.setTimeStamp(System.currentTimeMillis());
         List<EventElement> elements = event.getElements();
         elements.add(new EventElement(EventType.INSTALL, "" + JSONBuilder.dateFormatTillMillis.format(new Date())));
@@ -47,6 +53,14 @@ public class HTTPSpout extends BaseRichSpout {
         event.setElements(elements);
 
         System.out.println("SPOUT send:" + JSONBuilder.json(event));
+        Utils.sleep(timeOut);
         _collector.emit(new Values(JSONBuilder.json(event)));
+    }
+
+    private String getUserId(){
+        if(count % 10 == 0){
+            userId = UUID.randomUUID().toString();
+        }
+        return userId;
     }
 }

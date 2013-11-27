@@ -20,7 +20,7 @@ public class EventBolt extends BaseBasicBolt {
     @Override
     public void execute(Tuple tuple, BasicOutputCollector basicOutputCollector) {
         System.out.println("SOURCE = " + tuple.getSourceComponent() + "=" + tuple.getSourceStreamId());
-        System.out.println("tuple string:" + tuple.getValue(0));
+        System.out.println("tuple Value:" + tuple.getValue(0));
 
         Object object = tuple.getValue(0);
 
@@ -29,6 +29,7 @@ public class EventBolt extends BaseBasicBolt {
                 try {
                     System.out.println("GET EVENT OBJECT FROM JSON:" + ((Event)object));
                     WriteEvents.insertRow((Event)object);
+                    basicOutputCollector.emit(new Values(object));
                 } catch (ConnectionException e) {
                     e.printStackTrace();
                 }
@@ -36,7 +37,6 @@ public class EventBolt extends BaseBasicBolt {
                 System.out.println("Object is not Event");
             }
         }
-        basicOutputCollector.emit(new Values(null));
     }
 
     @Override

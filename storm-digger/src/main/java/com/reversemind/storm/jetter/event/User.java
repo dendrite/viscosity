@@ -11,7 +11,7 @@ public class User implements Serializable {
 
     private String id;
     private String name;
-    @JsonIgnore
+//    @JsonIgnore
     private Country country;
 
     public User() {
