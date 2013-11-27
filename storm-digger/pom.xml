@@ -31,4 +31,13 @@
     <!--</repository>-->
     <!--</repositories>-->
 
+
+    <build>
+        <resources>
+            <resource>
+                <directory>${basedir}/multilang</directory>
+            </resource>
+        </resources>
+    </build>
+
 </project>

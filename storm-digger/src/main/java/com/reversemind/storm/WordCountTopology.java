@@ -17,7 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ *
  * This topology demonstrates Storm's stream groupings and multilang capabilities.
+ *
  */
 public class WordCountTopology {
   public static class SplitSentence extends ShellBolt implements IRichBolt {
@@ -62,7 +64,6 @@ public class WordCountTopology {
     TopologyBuilder builder = new TopologyBuilder();
 
     builder.setSpout("spout", new RandomSentenceSpout(), 5);
-
     builder.setBolt("split", new SplitSentence(), 8).shuffleGrouping("spout");
     builder.setBolt("count", new WordCount(), 12).fieldsGrouping("split", new Fields("word"));
 
@@ -81,7 +82,7 @@ public class WordCountTopology {
       LocalCluster cluster = new LocalCluster();
       cluster.submitTopology("word-count", conf, builder.createTopology());
 
-      Thread.sleep(10000);
+      Thread.sleep(30000);
 
       cluster.shutdown();
     }
