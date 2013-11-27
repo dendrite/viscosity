@@ -10,10 +10,18 @@
 
     <dependencies>
 
+        <!--<dependency>-->
+            <!--<groupId>storm</groupId>-->
+            <!--<artifactId>storm-core</artifactId>-->
+            <!--<version>0.9.0-rc3</version>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>storm</groupId>
-            <artifactId>storm-core</artifactId>
-            <version>0.9.0-rc3</version>
+            <artifactId>storm</artifactId>
+            <version>0.8.2</version>
+            <!-- keep storm out of the jar-with-dependencies -->
+            <!--<scope>provided</scope>-->
         </dependency>
 
         <dependency>
