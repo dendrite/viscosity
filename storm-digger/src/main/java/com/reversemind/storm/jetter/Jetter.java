@@ -33,7 +33,7 @@ public class Jetter {
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("jetter-cassandra", conf, builder.createTopology());
 
-        Thread.sleep(3000);
+        Thread.sleep(10000);
 
         cluster.shutdown();
     }
