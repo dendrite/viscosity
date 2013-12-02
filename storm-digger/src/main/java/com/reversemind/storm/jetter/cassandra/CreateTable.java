@@ -34,7 +34,7 @@ public class CreateTable {
                         " country varchar, " +
                         " user_id uuid, " +
                         " userLevel varchar, " +
-                        " PRIMARY KEY ((event_id, eventType, country), user_id));")
+                        " PRIMARY KEY (event_id, eventType, country, user_id));")
                 .execute();
 
         // CREATE INDEX idx_user ON users (user_id);

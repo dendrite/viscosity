@@ -22,7 +22,8 @@ import java.util.UUID;
 public class HTTPSpout extends BaseRichSpout {
 
     SpoutOutputCollector _collector;
-    static long count = 0;
+    static long count = 1;
+    static long timestamp = 0;
     private String userId = UUID.randomUUID().toString();
 
     private Long timeOut = 1000L;
@@ -46,7 +47,7 @@ public class HTTPSpout extends BaseRichSpout {
         count++;
         Event event = new Event();
         event.setUser(new User(this.getUserId(), "User Name_" + count, new Country("" + (count / 10), "c_name_" + (count / 10L))));
-        event.setTimeStamp(System.currentTimeMillis());
+        event.setTimeStamp(this.getTime());
         List<EventElement> elements = event.getElements();
         elements.add(new EventElement(EventType.INSTALL, "" + JSONBuilder.dateFormatTillMillis.format(new Date())));
         elements.add(new EventElement(EventType.CHANGED_LEVEL, "" + 1));
@@ -57,10 +58,20 @@ public class HTTPSpout extends BaseRichSpout {
         _collector.emit(new Values(JSONBuilder.json(event)));
     }
 
+    private Long getTime(){
+        if(timestamp % 10 == 0){
+            timestamp = System.currentTimeMillis();
+        }
+        System.out.println("TIME:" + timestamp + " " + new Date(timestamp));
+        return timestamp;
+    }
     private String getUserId(){
         if(count % 10 == 0){
             userId = UUID.randomUUID().toString();
         }
+        userId = UUID.randomUUID().toString();
+        System.out.println("Return userId:" + userId);
+
         return userId;
     }
 }

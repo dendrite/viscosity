@@ -21,7 +21,7 @@ public class Jetter {
 
         TopologyBuilder builder = new TopologyBuilder();
 
-        builder.setSpout("spout", new HTTPSpout(1000L), 1);
+        builder.setSpout("spout", new HTTPSpout(50L), 1);
         builder.setBolt("EVENT", new EventJSONBolt(), 1).shuffleGrouping("spout");
         builder.setBolt("count", new EventBolt(), 1).shuffleGrouping("EVENT");
 
@@ -33,7 +33,7 @@ public class Jetter {
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology("jetter-cassandra", conf, builder.createTopology());
 
-        Thread.sleep(10000);
+        Thread.sleep(30000);
 
         cluster.shutdown();
     }
