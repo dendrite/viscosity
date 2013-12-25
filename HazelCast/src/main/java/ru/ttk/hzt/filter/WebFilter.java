@@ -1,6 +1,7 @@
 package ru.ttk.hzt.filter;
 
 import com.google.common.io.Closeables;
+import com.hazelcast.core.IMap;
 import com.netflix.curator.framework.CuratorFramework;
 import com.netflix.curator.framework.CuratorFrameworkFactory;
 import com.netflix.curator.retry.ExponentialBackoffRetry;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -68,6 +70,9 @@ public class WebFilter implements Filter {
         }
     }
 
+    private Map<String, Object> getClusterMap() {
+        return null;
+    }
 
 
 
@@ -76,8 +81,15 @@ public class WebFilter implements Filter {
 
 
 
+    private static class LocalEntry {
+        private Object value;
+        volatile boolean dirty = false;
+        volatile boolean reload = false;
+        boolean removed = false;
+    }
 
     private class ZookeeperHttpSession implements HttpSession {
+        private final Map<String, LocalEntry> localCache;
 
         volatile boolean valid = true;
         final String id;
@@ -88,6 +100,7 @@ public class WebFilter implements Filter {
             this.id = id;
             this.originalSession = originalSession;
             this.webFilter = webFilter;
+            this.localCache = new ConcurrentHashMap<String, LocalEntry>();
         }
 
         @Override
@@ -157,12 +170,22 @@ public class WebFilter implements Filter {
 
         @Override
         public void removeAttribute(String name) {
-            //To change body of implemented methods use File | Settings | File Templates.
+            if (deferredWrite) {
+                LocalEntry entry = localCache.get(name);
+                if (entry != null) {
+                    entry.value = null;
+                    entry.removed = true;
+                    // dirty needs to be set as last value for memory visibility reasons!
+                    entry.dirty = true;
+                }
+            } else {
+                getClusterMap().delete(buildAttributeName(name));
+            }
         }
 
         @Override
         public void removeValue(String name) {
-            //To change body of implemented methods use File | Settings | File Templates.
+            removeAttribute(name);
         }
 
         @Override
