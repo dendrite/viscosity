@@ -38,6 +38,7 @@
             <param-value>true</param-value>
         </init-param>
     </filter>
+
     <filter-mapping>
         <filter-name>hazelcast-filter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -49,6 +50,5 @@
     <listener>
         <listener-class>com.hazelcast.web.SessionListener</listener-class>
     </listener>
-
 
 </web-app>
