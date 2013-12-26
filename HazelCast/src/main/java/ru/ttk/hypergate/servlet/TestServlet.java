@@ -38,6 +38,7 @@ public class TestServlet extends HttpServlet {
 
         // Старт HTTP сессии
         HttpSession session = request.getSession(true);
+//        HttpSession session = request.getSession(false);
         session.setAttribute("parameter", parameter);
 
         response.setContentType("text/html;charset=UTF-8");

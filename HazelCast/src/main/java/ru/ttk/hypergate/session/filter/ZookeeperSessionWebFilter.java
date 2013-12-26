@@ -38,6 +38,7 @@ public class ZookeeperSessionWebFilter implements Filter {
     private String sessionCookieDomain = null;
     private boolean sessionCookieHttpOnly = false;
     private boolean sessionCookieSecure = false;
+    private String zooKeeperMapPath = "/zookeeper.map.default";
 
     private static final LocalEntry NULL_ENTRY = new LocalEntry();
 
@@ -70,7 +71,12 @@ public class ZookeeperSessionWebFilter implements Filter {
             connectionString = zooKeeperHost;
         }
 
-        deferredWrite = true;
+        zooKeeperMapPath = getParam("zookeeper-map-path");
+        if (zooKeeperMapPath == null) {
+            zooKeeperMapPath = "/baloo.session.map.EMPTY";
+        }
+
+        deferredWrite = false;
 
         System.setProperty(DebugUtils.PROPERTY_DONT_LOG_CONNECTION_ISSUES, "true");
         // Zookeeper Curator
@@ -99,7 +105,7 @@ public class ZookeeperSessionWebFilter implements Filter {
 
         curatorClientInstance.start();
 
-        zooKeeperHashMap = new ZooKeeperHashMap(curatorClientInstance);
+        zooKeeperHashMap = new ZooKeeperHashMap(curatorClientInstance, zooKeeperMapPath);
 
     }
 

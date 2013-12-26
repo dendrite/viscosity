@@ -13,7 +13,7 @@
         <!-- Name of the distributed map storing your web session objects -->
         <init-param>
             <param-name>zookeeper-map-path</param-name>
-            <param-value>/baloo.session.map</param-value>
+            <param-value>/baloo.session.map.test002</param-value>
         </init-param>
 
         <init-param>

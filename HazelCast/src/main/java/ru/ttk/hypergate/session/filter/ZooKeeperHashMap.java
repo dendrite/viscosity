@@ -12,28 +12,33 @@ import java.util.*;
  */
 public class ZooKeeperHashMap extends HashMap<String, Object> implements Serializable, IZooKeeperMap {
 
-    private static final String PARENT_PATH = "/zookeeper.map";
+//    private static final String PARENT_PATH = "/zookeeper.map";
     private static final String PATH_SEPARATOR = "/";
 
     private CuratorFramework curatorFramework;
+    private String parentMapPath;
 
-    public ZooKeeperHashMap(int initialCapacity, float loadFactor, CuratorFramework curatorFramework) {
+    public ZooKeeperHashMap(int initialCapacity, float loadFactor, CuratorFramework curatorFramework, String parentMapPath) {
         super(initialCapacity, loadFactor);
         this.curatorFramework = curatorFramework;
+        this.parentMapPath = parentMapPath;
     }
 
-    public ZooKeeperHashMap(int initialCapacity, CuratorFramework curatorFramework) {
+    public ZooKeeperHashMap(int initialCapacity, CuratorFramework curatorFramework, String parentMapPath) {
         super(initialCapacity);
         this.curatorFramework = curatorFramework;
+        this.parentMapPath = parentMapPath;
     }
 
-    public ZooKeeperHashMap(CuratorFramework curatorFramework) {
+    public ZooKeeperHashMap(CuratorFramework curatorFramework, String parentMapPath) {
         this.curatorFramework = curatorFramework;
+        this.parentMapPath = parentMapPath;
     }
 
-    public ZooKeeperHashMap(Map<? extends String, ? extends Object> m, CuratorFramework curatorFramework) {
+    public ZooKeeperHashMap(Map<? extends String, ? extends Object> m, CuratorFramework curatorFramework, String parentMapPath) {
         super(m);
         this.curatorFramework = curatorFramework;
+        this.parentMapPath = parentMapPath;
     }
 
     private String path(String parentPath, String key) {
@@ -41,10 +46,10 @@ public class ZooKeeperHashMap extends HashMap<String, Object> implements Seriali
     }
 
     private String path(String key) {
-        return PARENT_PATH + PATH_SEPARATOR + key;
+        return parentMapPath + PATH_SEPARATOR + key;
     }
     private String path() {
-        return PARENT_PATH;
+        return parentMapPath;
     }
 
     private void save(java.lang.String parentPath, String name, Object object) throws Exception {
@@ -87,7 +92,7 @@ public class ZooKeeperHashMap extends HashMap<String, Object> implements Seriali
         Object returnObject = super.put(key, value);
 
         try {
-            this.save(PARENT_PATH, key, value);
+            this.save(parentMapPath, key, value);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Could not save value");
@@ -102,10 +107,27 @@ public class ZooKeeperHashMap extends HashMap<String, Object> implements Seriali
         // if not in local cache
         if (returnObject == null) {
             try {
-                returnObject = this.read(PARENT_PATH, key);
+                returnObject = this.read(parentMapPath, key);
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("COULD NOT FIND OBJECT FOR PATH:" + this.path(key));
+            }
+        }
+
+        return returnObject;
+    }
+
+    @Override
+    public Object get(Object key) {
+        Object returnObject = super.get(key);
+
+        // if not in local cache
+        if (returnObject == null) {
+            try {
+                returnObject = this.read(parentMapPath, key.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("COULD NOT FIND OBJECT FOR PATH:" + this.path(key.toString()));
             }
         }
 

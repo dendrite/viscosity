@@ -12,6 +12,7 @@ import org.junit.Test;
 import ru.ttk.hypergate.session.filter.ZooKeeperHashMap;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class TestZooKeeperHashMap {
 
     @Test
     public void testPutZooKeeperHashMap(){
-        ZooKeeperHashMap zooKeeperHashMap = new ZooKeeperHashMap(client);
+        ZooKeeperHashMap zooKeeperHashMap = new ZooKeeperHashMap(client, "/test.path." + new Date().getTime());
 
 
         List<OtherSimpleDTO> list = new ArrayList<OtherSimpleDTO>();
@@ -41,7 +42,7 @@ public class TestZooKeeperHashMap {
     @Test
     public void testGetZooKeeperHashMap(){
 
-        ZooKeeperHashMap zooKeeperHashMap = new ZooKeeperHashMap(client);
+        ZooKeeperHashMap zooKeeperHashMap = new ZooKeeperHashMap(client, "/test.path." + new Date().getTime());
         SimpleDTO simpleDTO = (SimpleDTO) zooKeeperHashMap.get("simpleDTO");
 
         System.out.println(simpleDTO.getId());
