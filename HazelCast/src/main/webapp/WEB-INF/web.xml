@@ -13,13 +13,13 @@
         <!-- Name of the distributed map storing your web session objects -->
         <init-param>
             <param-name>zookeeper-map-path</param-name>
-            <param-value>/baloo.session.map.test002</param-value>
+            <param-value>/D_80</param-value>
         </init-param>
 
         <init-param>
             <param-name>zookeeper-host</param-name>
-            <!--<param-value>10.110.56.20:2181</param-value>-->
-            <param-value>localhost:2181</param-value>
+            <param-value>10.110.56.20:2181</param-value>
+            <!--<param-value>localhost:2181</param-value>-->
         </init-param>
 
 
@@ -44,6 +44,13 @@
             <param-name>debug</param-name>
             <param-value>true</param-value>
         </init-param>
+
+        <init-param>
+            <param-name>cookie-domain</param-name>
+            <!--<param-value>localhost</param-value>-->
+            <param-value>kttk-jbt1app1.transtk.ru</param-value>
+        </init-param>
+
     </filter>
 
     <filter-mapping>

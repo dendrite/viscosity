@@ -78,6 +78,15 @@ public class ZookeeperSessionWebFilter implements Filter {
 
         deferredWrite = false;
 
+
+        String cookieDomain = getParam("cookie-domain");
+        if (cookieDomain != null) {
+            sessionCookieDomain = cookieDomain;
+        }
+
+
+
+
         System.setProperty(DebugUtils.PROPERTY_DONT_LOG_CONNECTION_ISSUES, "true");
         // Zookeeper Curator
         ExponentialBackoffRetry retryPolicy = new ExponentialBackoffRetry(1000, 3); // new RetryOneTime(1)
@@ -683,6 +692,10 @@ public class ZookeeperSessionWebFilter implements Filter {
         if ("".equals(path)) {
             path = "/";
         }
+
+        // FORCE TO USE FOR ALL APPLICATIONS
+        path = "/";
+
         sessionCookie.setPath(path);
         sessionCookie.setMaxAge(-1);
         if (sessionCookieDomain != null) {
