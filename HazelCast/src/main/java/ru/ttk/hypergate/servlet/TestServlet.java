@@ -1,4 +1,4 @@
-package ru.ttk.hzt.servlet;
+package ru.ttk.hypergate.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

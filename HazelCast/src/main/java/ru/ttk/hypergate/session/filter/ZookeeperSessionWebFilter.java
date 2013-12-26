@@ -1,4 +1,4 @@
-package ru.ttk.hzt.filter;
+package ru.ttk.hypergate.session.filter;
 
 import com.google.common.io.Closeables;
 import com.netflix.curator.framework.CuratorFramework;
@@ -41,11 +41,34 @@ public class ZookeeperSessionWebFilter implements Filter {
 
     private static final LocalEntry NULL_ENTRY = new LocalEntry();
 
+    private static ZooKeeperHashMap zooKeeperHashMap;
+
+    private Properties properties;
+    protected FilterConfig filterConfig;
+
+
+    public ZookeeperSessionWebFilter() {
+    }
+
+    public ZookeeperSessionWebFilter(Properties properties) {
+        this();
+        this.properties = properties;
+    }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        this.filterConfig = filterConfig;
         this.servletContext = filterConfig.getServletContext();
 
+        if (properties == null) {
+            properties = new Properties();
+        }
+
+        String connectionString = null;
+        String zooKeeperHost = getParam("zookeeper-host");
+        if (zooKeeperHost != null) {
+            connectionString = zooKeeperHost;
+        }
 
         deferredWrite = true;
 
@@ -56,22 +79,27 @@ public class ZookeeperSessionWebFilter implements Filter {
         int connectionTimeoutMs = new Timing().connection();
         int sessionTimeoutMs = new Timing().session();
 
-        String host = "localhost";
-        int port = 2181;
-        String connectionString = host + ":" + port;
+
+        if(connectionString == null){
+            String host = "localhost";
+            int port = 2181;
+            connectionString = host + ":" + port;
+        }
 
         Timing timing = new Timing();
         System.out.println("timing.session() - " + timing.session());
         System.out.println("timing.connection() - " + timing.connection());
 
-//        curatorClientInstance = CuratorFrameworkFactory.builder()
-//                .connectString(connectionString)
-//                .retryPolicy(retryPolicy)
-//                .connectionTimeoutMs(connectionTimeoutMs)
-//                .sessionTimeoutMs(sessionTimeoutMs)
-//                .build();
-//
-//        curatorClientInstance.start();
+        curatorClientInstance = CuratorFrameworkFactory.builder()
+                .connectString(connectionString)
+                .retryPolicy(retryPolicy)
+                .connectionTimeoutMs(connectionTimeoutMs)
+                .sessionTimeoutMs(sessionTimeoutMs)
+                .build();
+
+        curatorClientInstance.start();
+
+        zooKeeperHashMap = new ZooKeeperHashMap(curatorClientInstance);
 
     }
 
@@ -154,25 +182,29 @@ public class ZookeeperSessionWebFilter implements Filter {
         return zookeeperSession;
     }
 
+    private String extractAttributeKey(String key) {
+        return key.substring(key.indexOf(ZOOKEEPER_SESSION_ATTRIBUTE_SEPARATOR) + ZOOKEEPER_SESSION_ATTRIBUTE_SEPARATOR.length());
+    }
+
     private void loadZooKeeperSession(ZookeeperHttpSession zooKeeperSession) {
-//        Set<Map.Entry<String, Object>> entrySet = getZooKeeperMap().entrySet(new SessionAttributePredicate(zooKeeperSession.getId()));
-//
-//        Map<String, LocalEntry> cache = zooKeeperSession.localCache;
-//
-//        for (Map.Entry<String, Object> entry : entrySet) {
-//
-//            String attributeKey = extractAttributeKey(entry.getKey());
-//            LocalEntry cacheEntry = cache.get(attributeKey);
-//            if (cacheEntry == null) {
-//                cacheEntry = new LocalEntry();
-//                cache.put(attributeKey, cacheEntry);
-//            }
-//
-//            System.out.println("Storing " + attributeKey + " on session " + zooKeeperSession.getId());
-//
-//            cacheEntry.value = entry.getValue();
-//            cacheEntry.dirty = false;
-//        }
+        Set<Map.Entry<String, Object>> entrySet = getZooKeeperMap().entrySet(zooKeeperSession.getId());
+
+        Map<String, LocalEntry> cache = zooKeeperSession.localCache;
+
+        for (Map.Entry<String, Object> entry : entrySet) {
+
+            String attributeKey = extractAttributeKey(entry.getKey());
+            LocalEntry cacheEntry = cache.get(attributeKey);
+            if (cacheEntry == null) {
+                cacheEntry = new LocalEntry();
+                cache.put(attributeKey, cacheEntry);
+            }
+
+            System.out.println("Storing " + attributeKey + " on session " + zooKeeperSession.getId());
+
+            cacheEntry.value = entry.getValue();
+            cacheEntry.dirty = false;
+        }
     }
 
     public static void destroyOriginalSession(HttpSession originalSession) {
@@ -192,8 +224,8 @@ public class ZookeeperSessionWebFilter implements Filter {
         }
     }
 
-    private IZooKeeperMap<String, Object> getZooKeeperMap() {
-        return new ZooKeeperMap();
+    private IZooKeeperMap getZooKeeperMap() {
+        return zooKeeperHashMap;
     }
 
 
@@ -207,7 +239,7 @@ public class ZookeeperSessionWebFilter implements Filter {
         // #GLOBAL
         if (removeGlobalSession) {
             System.out.println("Destroying cluster session: " + session.getId() + " => Ignore-timeout: true");
-            IZooKeeperMap<String, Object> zooKeeperMap = this.getZooKeeperMap();
+            IZooKeeperMap zooKeeperMap = this.getZooKeeperMap();
             zooKeeperMap.delete(session.getId());
         }
     }
@@ -458,7 +490,7 @@ public class ZookeeperSessionWebFilter implements Filter {
 
         @Override
         public Object getAttribute(String name) {
-            IZooKeeperMap<String, Object> zooKeeperMap = getZooKeeperMap();
+            IZooKeeperMap zooKeeperMap = getZooKeeperMap();
 
             // #GLOBAL
             if (deferredWrite) {
@@ -589,7 +621,7 @@ public class ZookeeperSessionWebFilter implements Filter {
         }
 
         private void sessionDeferredWrite() {
-            IZooKeeperMap<String, Object> zooKeeperMap = getZooKeeperMap();
+            IZooKeeperMap zooKeeperMap = getZooKeeperMap();
 
             if (deferredWrite) {
 
@@ -660,4 +692,13 @@ public class ZookeeperSessionWebFilter implements Filter {
         requestWrapper.response.addCookie(sessionCookie);
     }
 
+
+
+    private String getParam(String name) {
+        if (properties != null && properties.containsKey(name)) {
+            return properties.getProperty(name);
+        } else {
+            return filterConfig.getInitParameter(name);
+        }
+    }
 }

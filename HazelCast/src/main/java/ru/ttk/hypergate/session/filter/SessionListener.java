@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package ru.ttk.hzt.filter;
+package ru.ttk.hypergate.session.filter;
 
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 public class SessionListener implements HttpSessionListener {
+
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
     }
 
