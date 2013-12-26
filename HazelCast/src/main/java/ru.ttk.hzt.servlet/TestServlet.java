@@ -48,7 +48,9 @@ public class TestServlet extends HttpServlet {
             out.println("<title>Заголовок</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Пример сервлета" + parameter + "</h1>");
+            out.println("<h1>Ответ сервлета: parameter:" + parameter + " " +
+                    " attribute:" + TTT +
+                    " </h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
