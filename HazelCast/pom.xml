@@ -9,6 +9,15 @@
     <url>http://maven.apache.org</url>
     <dependencies>
 
+        <!--CORRECT JAVA OBJECT SIZE-->
+        <!--https://github.com/jbellis/jamm.git-->
+        <dependency>
+            <groupId>com.github.stephenc</groupId>
+            <artifactId>jamm</artifactId>
+            <version>0.2.5</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -24,9 +33,9 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>org.apache.curator</groupId>-->
-            <!--<artifactId>apache-curator</artifactId>-->
-            <!--<version>2.3.0</version>-->
+        <!--<groupId>org.apache.curator</groupId>-->
+        <!--<artifactId>apache-curator</artifactId>-->
+        <!--<version>2.3.0</version>-->
         <!--</dependency>-->
 
         <dependency>
@@ -69,5 +78,44 @@
     </dependencies>
     <build>
         <finalName>hzt</finalName>
+        <plugins>
+            <!-- copies java agent dependency into the target directory -->
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>2.8</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.github.stephenc</groupId>
+                                    <artifactId>jamm</artifactId>
+                                    <version>0.2.5</version>
+                                    <type>jar</type>
+                                    <outputDirectory>${project.build.directory}</outputDirectory>
+                                    <destFileName>jamm.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- executes test with java agent options of the JVM -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>2.14</version>
+                <configuration>
+                    <argLine>-javaagent:${project.build.directory}/jamm.jar</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

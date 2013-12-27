@@ -56,6 +56,9 @@ public class ZooKeeperHashMap extends HashMap<String, Object> implements Seriali
 
         byte[] data = SerializationUtils.serialize((Serializable) object);
 
+        if(data != null)
+        System.out.println("DATA SIZE for name:" + name + " " + data.length);
+
         if (curatorFramework.checkExists().forPath(parentPath) == null) {
             curatorFramework.create().forPath(parentPath);
         }
