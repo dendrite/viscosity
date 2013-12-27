@@ -9,6 +9,14 @@
     <url>http://maven.apache.org</url>
     <dependencies>
 
+        <!--KRYO FAST & COMPACT SERIALIZER-->
+        <dependency>
+            <groupId>com.esotericsoftware.kryo</groupId>
+            <artifactId>kryo</artifactId>
+            <version>2.22</version>
+        </dependency>
+
+
         <!--CORRECT JAVA OBJECT SIZE-->
         <!--https://github.com/jbellis/jamm.git-->
         <dependency>

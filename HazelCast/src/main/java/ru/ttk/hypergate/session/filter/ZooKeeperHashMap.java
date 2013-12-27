@@ -1,7 +1,11 @@
 package ru.ttk.hypergate.session.filter;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.netflix.curator.framework.CuratorFramework;
 import org.apache.commons.lang3.SerializationUtils;
+import ru.ttk.hypergate.serializer.KryoDeserializer;
+import ru.ttk.hypergate.serializer.KryoSerializer;
+import ru.ttk.hypergate.serializer.KryoSettings;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -18,27 +22,40 @@ public class ZooKeeperHashMap extends HashMap<String, Object> implements Seriali
     private CuratorFramework curatorFramework;
     private String parentMapPath;
 
+    private final Kryo kryo = new KryoSettings().getKryo();
+    private KryoSerializer kryoSerializer;
+    private KryoDeserializer kryoDeserializer;
+
+
     public ZooKeeperHashMap(int initialCapacity, float loadFactor, CuratorFramework curatorFramework, String parentMapPath) {
         super(initialCapacity, loadFactor);
         this.curatorFramework = curatorFramework;
         this.parentMapPath = parentMapPath;
+        this.kryoSerializer = new KryoSerializer(this.kryo);
+        this.kryoDeserializer = new KryoDeserializer(this.kryo);
     }
 
     public ZooKeeperHashMap(int initialCapacity, CuratorFramework curatorFramework, String parentMapPath) {
         super(initialCapacity);
         this.curatorFramework = curatorFramework;
         this.parentMapPath = parentMapPath;
+        this.kryoSerializer = new KryoSerializer(this.kryo);
+        this.kryoDeserializer = new KryoDeserializer(this.kryo);
     }
 
     public ZooKeeperHashMap(CuratorFramework curatorFramework, String parentMapPath) {
         this.curatorFramework = curatorFramework;
         this.parentMapPath = parentMapPath;
+        this.kryoSerializer = new KryoSerializer(this.kryo);
+        this.kryoDeserializer = new KryoDeserializer(this.kryo);
     }
 
     public ZooKeeperHashMap(Map<? extends String, ? extends Object> m, CuratorFramework curatorFramework, String parentMapPath) {
         super(m);
         this.curatorFramework = curatorFramework;
         this.parentMapPath = parentMapPath;
+        this.kryoSerializer = new KryoSerializer(this.kryo);
+        this.kryoDeserializer = new KryoDeserializer(this.kryo);
     }
 
     private String path(String parentPath, String key) {
@@ -54,7 +71,8 @@ public class ZooKeeperHashMap extends HashMap<String, Object> implements Seriali
 
     private void save(java.lang.String parentPath, String name, Object object) throws Exception {
 
-        byte[] data = SerializationUtils.serialize((Serializable) object);
+        //byte[] data = SerializationUtils.serialize((Serializable) object);
+        byte[] data = this.kryoSerializer.serialize(object);
 
         if(data != null)
         System.out.println("DATA SIZE for name:" + name + " " + data.length);
@@ -76,7 +94,8 @@ public class ZooKeeperHashMap extends HashMap<String, Object> implements Seriali
             throw new IOException("Path:" + this.path(parentPath, name) + " is not exist");
         }
         byte[] data = curatorFramework.getData().forPath(this.path(parentPath, name));
-        return SerializationUtils.deserialize(data);
+        // return SerializationUtils.deserialize(data);
+        return this.kryoDeserializer.deserialize(data);
     }
 
     private Object read(String name) throws Exception {
@@ -84,7 +103,8 @@ public class ZooKeeperHashMap extends HashMap<String, Object> implements Seriali
             throw new IOException("Path:" + this.path(name) + " is not exist");
         }
         byte[] data = curatorFramework.getData().forPath(this.path(name));
-        return SerializationUtils.deserialize(data);
+        //return SerializationUtils.deserialize(data);
+        return this.kryoDeserializer.deserialize(data);
     }
 
     private boolean isPathExist(String path) throws Exception {
