@@ -1,6 +1,7 @@
 package ru.ttk.hypergate.session.filter;
 
 import com.google.common.io.Closeables;
+import com.hazelcast.core.IMap;
 import com.netflix.curator.framework.CuratorFramework;
 import com.netflix.curator.framework.CuratorFrameworkFactory;
 import com.netflix.curator.retry.ExponentialBackoffRetry;
@@ -223,11 +224,12 @@ public class ZookeeperSessionWebFilter implements Filter {
     }
 
     public static void destroyOriginalSession(HttpSession originalSession) {
+        System.out.println("GOING TO DESTROY SESSION!!!!!!!!");
         String zookeeperSessionId = mapOriginalSessions.remove(originalSession.getId());
         if (zookeeperSessionId != null) {
             ZookeeperHttpSession zookeeperSession = mapSessions.remove(zookeeperSessionId);
             if (zookeeperSession != null) {
-                zookeeperSession.zookeeperSessionWebFilter.destroySession(zookeeperSession, false);
+                zookeeperSession.zookeeperSessionWebFilter.destroySession(zookeeperSession, true);
             }
         }
     }
@@ -613,6 +615,7 @@ public class ZookeeperSessionWebFilter implements Filter {
         @Override
         public void invalidate() {
             this.originalSession.invalidate();
+            destroySession(this, true);
         }
 
         @Override

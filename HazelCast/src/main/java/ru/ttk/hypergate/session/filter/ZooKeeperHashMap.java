@@ -69,6 +69,10 @@ public class ZooKeeperHashMap extends HashMap<String, Object> implements Seriali
         return parentMapPath;
     }
 
+    private void deleteFromZookeeper(String path) throws Exception {
+        curatorFramework.delete().forPath(path);
+    }
+
     private void save(java.lang.String parentPath, String name, Object object) throws Exception {
 
         //byte[] data = SerializationUtils.serialize((Serializable) object);
@@ -173,7 +177,20 @@ public class ZooKeeperHashMap extends HashMap<String, Object> implements Seriali
 
     @Override
     public void delete(String key) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        Object returnObject = super.get(key);
+        if(returnObject != null){
+            super.remove(key);
+        }
+
+        try {
+            System.out.println("\n\n\n\n\n  GOING TO DELETE  a key: "+ key +"\n\n\n\n");
+            if(this.isPathExist(this.path(key))){
+                this.deleteFromZookeeper(this.path(key));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("");
+        }
     }
 
     private Map<String, Object> childrenWhereKeyLike(String keyLike) throws Exception {
@@ -208,19 +225,5 @@ public class ZooKeeperHashMap extends HashMap<String, Object> implements Seriali
         Map<String, Object> map = new HashMap<String, Object>();
         return map.entrySet();
     }
-//
-//    @Override
-//    public void delete(Object key) {
-//        //To change body of implemented methods use File | Settings | File Templates.
-//    }
-//
-//    @Override
-//    public Object put(Object key, Object value) {
-//        return null;  //To change body of implemented methods use File | Settings | File Templates.
-//    }
-//
-//    @Override
-//    public void putAll(Map m) {
-//        //To change body of implemented methods use File | Settings | File Templates.
-//    }
+
 }
