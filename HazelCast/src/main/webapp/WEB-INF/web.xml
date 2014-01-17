@@ -5,7 +5,6 @@
          version="3.0">
     <display-name>Archetype Created Web Application</display-name>
 
-
     <filter>
         <filter-name>zookeeper-filter</filter-name>
         <filter-class>ru.ttk.hypergate.session.filter.ZookeeperSessionWebFilter</filter-class>
