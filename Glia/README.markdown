@@ -21,15 +21,15 @@ groupId: com.reversemind
 
 artifactId: glia-core
 
-version: 1.8.9-SNAPSHOT
+version: 1.9.0-SNAPSHOT
 
 <dependency>
   <groupId>com.reversemind</groupId>
   <artifactId>glia-core</artifactId>
-  <version>1.8.9-SNAPSHOT</version>
+  <version>1.9.0-SNAPSHOT</version>
 </dependency>
 
-Stable is  1.8.1-SNAPSHOT - version
+Stable is  1.8.9-SNAPSHOT - version
 
 
 #### Getting started
@@ -58,6 +58,8 @@ The use and distribution terms for this software are covered by the Apache Licen
  limitations under the License.
 
 #### TODO
+
+* What about methods with collections types
 
 * What about transactions??? Atmicos + Spring - it's an interesting solution
 

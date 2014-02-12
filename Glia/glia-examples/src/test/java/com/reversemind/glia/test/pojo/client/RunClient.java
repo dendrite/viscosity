@@ -8,6 +8,7 @@ import com.reversemind.glia.test.pojo.shared.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +32,7 @@ public class RunClient {
     private final static Logger LOG = LoggerFactory.getLogger(RunClient.class);
 
     public static void main(String... args) throws Exception {
+
         LOG.info("Run Client");
 
         GliaClient client = new GliaClient(Settings.SERVER_HOST, Settings.SERVER_PORT);
@@ -38,37 +40,62 @@ public class RunClient {
 
         ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance().newProxyInstance(client, ISimplePojo.class);
 
-        List<PAddressNode> list = simplePojoProxy.searchAddress("Moscow");
+//        simplePojoProxy.searchAddress("123");
 
-        if (list != null && list.size() > 0) {
-            int count = 0;
-            for (PAddressNode addressNode : list) {
-                if(count++ % 10000 == 0){
-                    LOG.info("node:" + addressNode);
-                }
-            }
-        }
-        client.shutdown();
+
+        List<String> list = new ArrayList<String>();
+        list.add("1");
+        list.add("12");
+        list.add("123");
+        list.add("1234");
+
+        List<PAddressNode> result = simplePojoProxy.searchAddress2("12", list);
+
+        LOG.info("gogo - " + result);
 
         Thread.sleep(2000);
-
-        LOG.info("Restart client");
-        client.restart();
-
-        Thread.sleep(100);
-
-        list = simplePojoProxy.searchAddress("Moscow");
-
-        if (list != null && list.size() > 0) {
-            int count = 0;
-            for (PAddressNode addressNode : list) {
-                if(count++ % 10000 == 0){
-                    LOG.info("node:" + addressNode);
-                }
-            }
-        }
-
         client.shutdown();
+
+
+
+//        LOG.info("Run Client");
+//
+//        GliaClient client = new GliaClient(Settings.SERVER_HOST, Settings.SERVER_PORT);
+//        client.start();
+//
+//        ISimplePojo simplePojoProxy = (ISimplePojo) ProxyFactory.getInstance().newProxyInstance(client, ISimplePojo.class);
+//
+//        List<PAddressNode> list = simplePojoProxy.searchAddress("Moscow");
+//
+//        if (list != null && list.size() > 0) {
+//            int count = 0;
+//            for (PAddressNode addressNode : list) {
+//                if(count++ % 10000 == 0){
+//                    LOG.info("node:" + addressNode);
+//                }
+//            }
+//        }
+//        client.shutdown();
+//
+//        Thread.sleep(2000);
+//
+//        LOG.info("Restart client");
+//        client.restart();
+//
+//        Thread.sleep(100);
+//
+//        list = simplePojoProxy.searchAddress("Moscow");
+//
+//        if (list != null && list.size() > 0) {
+//            int count = 0;
+//            for (PAddressNode addressNode : list) {
+//                if(count++ % 10000 == 0){
+//                    LOG.info("node:" + addressNode);
+//                }
+//            }
+//        }
+//
+//        client.shutdown();
 
     }
 

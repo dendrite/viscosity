@@ -12,6 +12,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -51,6 +52,8 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
         typeMap.put(char.class.getCanonicalName(), Character.class);
         typeMap.put(byte.class.getCanonicalName(), Byte.class);
         typeMap.put(short.class.getCanonicalName(), Short.class);
+        typeMap.put(List.class.getCanonicalName(), List.class);
+        typeMap.put(ArrayList.class.getCanonicalName(), ArrayList.class);
     }
 
     @Override
@@ -289,11 +292,26 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
                             if (arguments[i] == null) {
                                 count--;
-                            } else if (compareTypeName != null && arguments[i] != null && compareTypeName.equals(arguments[i].getClass().getCanonicalName())) {
+                            } else if ( compareTypeName != null
+                                        && arguments[i] != null
+                                        && compareTypeName.equals(arguments[i].getClass().getCanonicalName())) {
+                                count--;
+                            } else if( compareTypeName != null
+                                    && arguments[i] != null
+                                    && arguments[i].getClass().getCanonicalName().equals(ArrayList.class.getCanonicalName())
+                                    && compareTypeName.equals(List.class.getCanonicalName())) {
                                 count--;
                             }
 
                         }
+
+//                        Type[] tp = method.getGenericParameterTypes();
+//                        for(int i=0; i< arguments.length; i++){
+////                            LOG.debug("generic type = " + i + " -- " + ((ParameterizedTypeImpl) tp[i]).getRawType());
+//                            LOG.debug("generic type = " + i + " -- " + tp[i]);
+//                        }
+
+
                         if (count == 0) {
                             selectedMethod = method;
                             break;

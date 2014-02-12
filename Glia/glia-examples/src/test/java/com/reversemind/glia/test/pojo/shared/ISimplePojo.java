@@ -22,5 +22,7 @@ import java.util.List;
 public interface ISimplePojo extends Serializable {
     public List<PAddressNode> searchAddress(String query);
 
+    public List<PAddressNode> searchAddress2(String vv, List<String> query);
+
     public String createException(String query) throws SimpleException;
 }
