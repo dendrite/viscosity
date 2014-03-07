@@ -2,9 +2,11 @@ package com.reversemind.glia.serialization;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Output;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Copyright (c) 2013 Eugene Kalinin
+ * Copyright (c) 2013-2014 Eugene Kalinin
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +21,10 @@ import com.esotericsoftware.kryo.io.Output;
  * limitations under the License.
  */
 public class KryoSerializer {
-    Kryo _kryo;
+
+    private final static Logger LOG = LoggerFactory.getLogger(KryoSerializer.class);
+
+            Kryo _kryo;
     Output _kryoOut;
 
     public KryoSerializer(Kryo kryo) {
@@ -29,21 +34,29 @@ public class KryoSerializer {
     }
 
     public byte[] serialize(Object obj) {
-        if (obj == null) {
-            return new byte[0];
+        byte[] _result = new byte[0];
+
+        try {
+            if (obj == null) {
+                return new byte[0];
+            }
+
+            if (this._kryo == null) {
+                return new byte[0];
+            }
+
+            if (_kryoOut == null) {
+                _kryoOut = new Output(2000, 2000000000);
+            } else {
+                _kryoOut.clear();
+            }
+
+            _kryo.writeClassAndObject(_kryoOut, obj);
+            _result = _kryoOut.toBytes();
+        } catch (Exception ex) {
+            LOG.error("Could not to serialize object:" + obj, ex);
         }
 
-        if (this._kryo == null) {
-            return new byte[0];
-        }
-
-        if (_kryoOut == null) {
-            _kryoOut = new Output(2000, 2000000000);
-        } else {
-            _kryoOut.clear();
-        }
-
-        _kryo.writeClassAndObject(_kryoOut, obj);
-        return _kryoOut.toBytes();
+        return _result;
     }
 }
