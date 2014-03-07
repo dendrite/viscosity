@@ -29,7 +29,20 @@ public class KryoSerializer {
     }
 
     public byte[] serialize(Object obj) {
-        _kryoOut.clear();
+        if (obj == null) {
+            return new byte[0];
+        }
+
+        if (this._kryo == null) {
+            return new byte[0];
+        }
+
+        if (_kryoOut == null) {
+            _kryoOut = new Output(2000, 2000000000);
+        } else {
+            _kryoOut.clear();
+        }
+
         _kryo.writeClassAndObject(_kryoOut, obj);
         return _kryoOut.toBytes();
     }

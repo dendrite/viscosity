@@ -1,12 +1,12 @@
 package com.reversemind.glia.servicediscovery;
 
 import com.google.common.base.Throwables;
-import com.netflix.curator.framework.CuratorFramework;
-import com.netflix.curator.utils.ZKPaths;
-import com.netflix.curator.x.discovery.JsonServiceInstance;
-import com.netflix.curator.x.discovery.ServiceDiscovery;
-import com.netflix.curator.x.discovery.ServiceDiscoveryBuilder;
-import com.netflix.curator.x.discovery.ServiceInstance;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.utils.ZKPaths;
+import org.apache.curator.x.discovery.JsonServiceInstance;
+import org.apache.curator.x.discovery.ServiceDiscovery;
+import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
+import org.apache.curator.x.discovery.ServiceInstance;
 import com.reversemind.glia.servicediscovery.serializer.InstanceSerializerFactory;
 import com.reversemind.glia.servicediscovery.serializer.ServerMetadata;
 import org.apache.log4j.Logger;
@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Copyright (c) 2013 Eugene Kalinin
+ * Copyright (c) 2013-2014 Eugene Kalinin
  * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

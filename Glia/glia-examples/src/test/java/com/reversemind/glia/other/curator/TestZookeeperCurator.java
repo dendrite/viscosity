@@ -1,10 +1,10 @@
 package com.reversemind.glia.other.curator;
 
-import com.netflix.curator.framework.CuratorFramework;
-import com.netflix.curator.framework.CuratorFrameworkFactory;
-import com.netflix.curator.retry.ExponentialBackoffRetry;
-import com.netflix.curator.retry.RetryNTimes;
-import com.netflix.curator.utils.EnsurePath;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.apache.curator.retry.RetryNTimes;
+import org.apache.curator.utils.EnsurePath;
 import org.apache.zookeeper.CreateMode;
 import org.junit.Ignore;
 import org.junit.Test;

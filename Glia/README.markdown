@@ -21,15 +21,15 @@ groupId: com.reversemind
 
 artifactId: glia-core
 
-version: 1.9.0-SNAPSHOT
+version: 1.9.2-SNAPSHOT
 
 <dependency>
   <groupId>com.reversemind</groupId>
   <artifactId>glia-core</artifactId>
-  <version>1.9.0-SNAPSHOT</version>
+  <version>1.9.2-SNAPSHOT</version>
 </dependency>
 
-Stable is  1.8.9-SNAPSHOT - version
+Stable is  1.9.2-SNAPSHOT - version
 
 
 #### Getting started

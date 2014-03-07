@@ -1,11 +1,11 @@
 package com.reversemind.glia.servicediscovery;
 
 import com.google.common.base.Throwables;
-import com.netflix.curator.framework.CuratorFramework;
-import com.netflix.curator.framework.CuratorFrameworkFactory;
-import com.netflix.curator.retry.RetryNTimes;
-import com.netflix.curator.utils.EnsurePath;
-import com.netflix.curator.x.discovery.ServiceInstance;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.RetryNTimes;
+import org.apache.curator.utils.EnsurePath;
+import org.apache.curator.x.discovery.ServiceInstance;
 import com.reversemind.glia.server.Metrics;
 import com.reversemind.glia.servicediscovery.serializer.InstanceSerializerFactory;
 import com.reversemind.glia.servicediscovery.serializer.ServerMetadata;
@@ -52,7 +52,7 @@ public class ServiceDiscoverer implements Serializable, Closeable {
 
     public ServiceDiscoverer(String zookeeperConnectionString, String basePath) {
         curatorFramework = CuratorFrameworkFactory.builder()
-                .connectionTimeoutMs(1000)
+                .connectionTimeoutMs(2000)
                 .retryPolicy(new RetryNTimes(10, 500))
                 .connectString(zookeeperConnectionString)
                 .build();

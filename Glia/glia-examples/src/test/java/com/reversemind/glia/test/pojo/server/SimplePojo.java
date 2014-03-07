@@ -47,7 +47,7 @@ public class SimplePojo implements ISimplePojo, Serializable {
     }
 
     @Override
-    public List<PAddressNode> searchAddress2(String vv, List<String> query) {
+    public List<PAddressNode> searchAddress(String vv, List<String> query) {
         LOG.info("LIST QUERY:" + query);
         LOG.info("Correctly detected method");
 

@@ -30,6 +30,9 @@ public class KryoDeserializer {
     }
 
     public Object deserialize(byte[] ser) throws IOException {
+        if(ser == null){
+            return null;
+        }
         // https://groups.google.com/forum/?fromgroups=#!topic/kryo-users/jU0XSDkrKkY
         /*
             protected <T> T deserialize( final byte[] in, final Class<T> clazz ) {

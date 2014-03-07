@@ -292,11 +292,11 @@ public class GliaPayloadProcessor implements IGliaPayloadProcessor, Serializable
 
                             if (arguments[i] == null) {
                                 count--;
-                            } else if ( compareTypeName != null
-                                        && arguments[i] != null
-                                        && compareTypeName.equals(arguments[i].getClass().getCanonicalName())) {
+                            } else if (compareTypeName != null
+                                    && arguments[i] != null
+                                    && compareTypeName.equals(arguments[i].getClass().getCanonicalName())) {
                                 count--;
-                            } else if( compareTypeName != null
+                            } else if (compareTypeName != null
                                     && arguments[i] != null
                                     && arguments[i].getClass().getCanonicalName().equals(ArrayList.class.getCanonicalName())
                                     && compareTypeName.equals(List.class.getCanonicalName())) {

@@ -49,7 +49,7 @@ public class RunClient {
         list.add("123");
         list.add("1234");
 
-        List<PAddressNode> result = simplePojoProxy.searchAddress2("12", list);
+        List<PAddressNode> result = simplePojoProxy.searchAddress("12", list);
 
         LOG.info("gogo - " + result);
 
