@@ -52,7 +52,7 @@ public class ServiceDiscoverer implements Serializable, Closeable {
 
     public ServiceDiscoverer(String zookeeperConnectionString, String basePath) {
         curatorFramework = CuratorFrameworkFactory.builder()
-                .connectionTimeoutMs(2000)
+                .connectionTimeoutMs(30000)
                 .retryPolicy(new RetryNTimes(10, 500))
                 .connectString(zookeeperConnectionString)
                 .build();

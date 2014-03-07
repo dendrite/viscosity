@@ -24,7 +24,7 @@ public class KryoSerializer {
 
     private final static Logger LOG = LoggerFactory.getLogger(KryoSerializer.class);
 
-            Kryo _kryo;
+    Kryo _kryo;
     Output _kryoOut;
 
     public KryoSerializer(Kryo kryo) {
@@ -38,11 +38,11 @@ public class KryoSerializer {
 
         try {
             if (obj == null) {
-                return new byte[0];
+                return _result;
             }
 
             if (this._kryo == null) {
-                return new byte[0];
+                return _result;
             }
 
             if (_kryoOut == null) {
