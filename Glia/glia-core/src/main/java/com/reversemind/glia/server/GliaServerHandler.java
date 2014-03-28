@@ -29,7 +29,7 @@ public class GliaServerHandler extends SimpleChannelUpstreamHandler {
     private IGliaPayloadProcessor gliaPayloadWorker;
     private boolean dropClientConnection = false;
     private Metrics metrics;
-    private KryoDeserializer kryoDeserializer;
+//    private KryoDeserializer kryoDeserializer;
 
     public GliaServerHandler(IGliaPayloadProcessor gliaPayloadWorker, Metrics metrics, boolean dropClientConnection) {
         this.gliaPayloadWorker = gliaPayloadWorker;
@@ -37,12 +37,12 @@ public class GliaServerHandler extends SimpleChannelUpstreamHandler {
         this.metrics = metrics;
     }
 
-    public GliaServerHandler(IGliaPayloadProcessor gliaPayloadWorker, Metrics metrics, boolean dropClientConnection, KryoDeserializer kryoDeserializer) {
-        this.gliaPayloadWorker = gliaPayloadWorker;
-        this.dropClientConnection = dropClientConnection;
-        this.metrics = metrics;
-        this.kryoDeserializer = kryoDeserializer;
-    }
+//    public GliaServerHandler(IGliaPayloadProcessor gliaPayloadWorker, Metrics metrics, boolean dropClientConnection, KryoDeserializer kryoDeserializer) {
+//        this.gliaPayloadWorker = gliaPayloadWorker;
+//        this.dropClientConnection = dropClientConnection;
+//        this.metrics = metrics;
+//        this.kryoDeserializer = kryoDeserializer;
+//    }
 
     @Override
     public void handleUpstream(ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
@@ -58,12 +58,13 @@ public class GliaServerHandler extends SimpleChannelUpstreamHandler {
         // TODO what about delay + very long messages???
         long beginTime = System.currentTimeMillis();
 
-        Object object = null;
-        try {
-            object = this.gliaPayloadWorker.process(this.kryoDeserializer.deserialize((byte[]) messageEvent.getMessage()));
-        } catch (IOException e) {
-            LOG.error("KryoDeserializer needs for array", e);
-        }
+        Object object = this.gliaPayloadWorker.process(messageEvent.getMessage());
+//        Object object = null;
+//        try {
+//            object = this.gliaPayloadWorker.process(this.kryoDeserializer.deserialize((byte[]) messageEvent.getMessage()));
+//        } catch (IOException e) {
+//            LOG.error("KryoDeserializer needs for array", e);
+//        }
         if (this.metrics != null) {
             this.metrics.addRequest((System.currentTimeMillis() - beginTime));
         }

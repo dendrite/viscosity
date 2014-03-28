@@ -60,8 +60,8 @@ public abstract class GliaServer implements IGliaServer, Serializable {
     private GliaPayload gliaPayload;
     private IGliaPayloadProcessor gliaPayloadWorker;
 
-    private final Kryo kryo = new KryoSettings().getKryo();
-    private KryoDeserializer kryoDeserializer;
+//    private final Kryo kryo = new KryoSettings().getKryo();
+//    private KryoDeserializer kryoDeserializer;
 
     /**
      * @param builder
@@ -97,7 +97,7 @@ public abstract class GliaServer implements IGliaServer, Serializable {
 
         this.metrics = new Metrics();
 
-        this.kryoDeserializer = new KryoDeserializer(this.kryo);
+//        this.kryoDeserializer = new KryoDeserializer(this.kryo);
     }
 
     private String getIpAddress() {
@@ -217,20 +217,30 @@ public abstract class GliaServer implements IGliaServer, Serializable {
                         Executors.newCachedThreadPool(),
                         Executors.newCachedThreadPool()));
 
-        //this.handler = new GliaServerHandler(gliaPayloadWorker, metrics, keepClientAlive);
-        this.handler = new GliaServerHandler(gliaPayloadWorker, metrics, keepClientAlive, this.kryoDeserializer);
+        this.handler = new GliaServerHandler(gliaPayloadWorker, metrics, keepClientAlive);
+//        this.handler = new GliaServerHandler(gliaPayloadWorker, metrics, keepClientAlive, this.kryoDeserializer);
 
         // Set up the pipeline factory
         // TODO add Kryo serializer
+//        this.serverBootstrap.setPipelineFactory(new ChannelPipelineFactory() {
+//            public ChannelPipeline getPipeline() throws Exception {
+//                return Channels.pipeline(
+//                        new KryoObjectEncoder(),
+//                        new KryoObjectDecoder(
+//                                ClassResolvers.cacheDisabled(getClass().getClassLoader())),
+//                        handler);
+//            }
+//        });
         this.serverBootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {
                 return Channels.pipeline(
-                        new KryoObjectEncoder(),
-                        new KryoObjectDecoder(
+                        new ObjectEncoder(),
+                        new ObjectDecoder(
                                 ClassResolvers.cacheDisabled(getClass().getClassLoader())),
                         handler);
             }
         });
+
 
         // Bind and start to accept incoming connections.
         this.serverBootstrap.bind(new InetSocketAddress(port));

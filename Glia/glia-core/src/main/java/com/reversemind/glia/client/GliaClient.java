@@ -62,13 +62,13 @@ public class GliaClient implements IGliaClient, Serializable {
     private boolean running = false;
     private boolean occupied = false;
 
-    private final Kryo kryo = new KryoSettings().getKryo();
-    private KryoSerializer kryoSerializer;
+//    private final Kryo kryo = new KryoSettings().getKryo();
+//    private KryoSerializer kryoSerializer;
 
     protected GliaClient() {
         this.port = 7000;
         this.host = "localhost";
-        this.kryoSerializer = new KryoSerializer(kryo);
+//        this.kryoSerializer = new KryoSerializer(kryo);
     }
 
     public GliaClient(String host, int port) {
@@ -77,7 +77,7 @@ public class GliaClient implements IGliaClient, Serializable {
         this.gliaPayload = null;
         this.executor = this.getExecutor();
         LOG.warn("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
-        this.kryoSerializer = new KryoSerializer(kryo);
+//        this.kryoSerializer = new KryoSerializer(kryo);
     }
 
     public GliaClient(String host, int port, long timeout) {
@@ -93,7 +93,7 @@ public class GliaClient implements IGliaClient, Serializable {
 
         this.executor = this.getExecutor();
         LOG.warn("\n\n GliaClient started \n for server:" + host + ":" + port + "\n\n");
-        this.kryoSerializer = new KryoSerializer(kryo);
+//        this.kryoSerializer = new KryoSerializer(kryo);
     }
 
     /**
@@ -208,10 +208,10 @@ public class GliaClient implements IGliaClient, Serializable {
 
                 // client is occupied
                 this.occupied = true;
-                if(this.kryoSerializer != null){
-                    this.channel.write(this.kryoSerializer.serialize(gliaPayloadSend));
-                }
-//                this.channel.write(gliaPayloadSend);
+//                if(this.kryoSerializer != null){
+//                    this.channel.write(this.kryoSerializer.serialize(gliaPayloadSend));
+//                }
+                this.channel.write(gliaPayloadSend);
 
                 this.shutDownExecutor();
                 this.executor = this.getExecutor();
@@ -317,11 +317,12 @@ public class GliaClient implements IGliaClient, Serializable {
 
         this.clientBootstrap = new ClientBootstrap(channelFactory);
 
+
         ChannelPipelineFactory channelPipelineFactory = new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {
                 return Channels.pipeline(
-                        new KryoObjectEncoder(),
-                        new KryoObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader()))
+                        new ObjectEncoder(),
+                        new ObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader()))
                         ,
                         new SimpleChannelUpstreamHandler() {
 
@@ -359,6 +360,49 @@ public class GliaClient implements IGliaClient, Serializable {
                 );
             }
         };
+
+//        ChannelPipelineFactory channelPipelineFactory = new ChannelPipelineFactory() {
+//            public ChannelPipeline getPipeline() throws Exception {
+//                return Channels.pipeline(
+//                        new KryoObjectEncoder(),
+//                        new KryoObjectDecoder(ClassResolvers.cacheDisabled(getClass().getClassLoader()))
+//                        ,
+//                        new SimpleChannelUpstreamHandler() {
+//
+//                            @Override
+//                            public void handleUpstream(ChannelHandlerContext ctx, ChannelEvent e) throws Exception {
+//                                if (e instanceof ChannelStateEvent && ((ChannelStateEvent) e).getState() != ChannelState.INTEREST_OPS) {
+//                                    LOG.info(e.toString());
+//                                }
+//                                super.handleUpstream(ctx, e);
+//                            }
+//
+//                            @Override
+//                            public void channelConnected(ChannelHandlerContext ctx, ChannelStateEvent event) {
+//                                channel = event.getChannel();
+//                                // Send the first message
+//                                // channel.write(firstMessage);
+//                            }
+//
+//                            @Override
+//                            public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
+//                                // Get
+//                                serverListener(e.getMessage());
+//                                ctx.sendUpstream(e);
+//
+//                                //e.getChannel().write(e.getStatus());
+//                                //e.getChannel().close();
+//                            }
+//
+//                            @Override
+//                            public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) {
+//                                LOG.warn("Unexpected exception from downstream.", e.getCause());
+//                                e.getChannel().close();
+//                            }
+//                        }
+//                );
+//            }
+//        };
 
         // Set up the pipeline factory.
         this.clientBootstrap.setPipelineFactory(channelPipelineFactory);
@@ -454,7 +498,7 @@ public class GliaClient implements IGliaClient, Serializable {
         long countGoAway = 0;
         final long stepGoAway = 100; //ms
 
-        LOG.warn("Warming up 1.9.2-SNAPSHOT ...");
+        LOG.warn("Warming up 1.9.3-SNAPSHOT ...");
         while (goAway == false | countGoAway < (SERVER_CONNECTION_TIMEOUT / stepGoAway)) {
 
             Thread.sleep(stepGoAway);
