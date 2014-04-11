@@ -35,8 +35,8 @@ public class PureJavaEjbClient {
         jndiProperties.put("jboss.naming.client.ejb.context", true);
 
         // needed for remote access - remember to run add-user.bat
-        jndiProperties.put(Context.SECURITY_PRINCIPAL, "kalinin@transtk.ru");
-        jndiProperties.put(Context.SECURITY_CREDENTIALS, "Rtls1q2w3e4r3e");
+        jndiProperties.put(Context.SECURITY_PRINCIPAL, "user.name@transtk.ru");
+        jndiProperties.put(Context.SECURITY_CREDENTIALS, "password");
     }
 
     public void doLookups() {

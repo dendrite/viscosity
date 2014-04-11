@@ -38,14 +38,6 @@ public class PojoToEjbLookup implements Serializable {
         // !!!!! it's property important for JBoss 7.1.1
         jndiProperties.put("jboss.naming.client.ejb.context", true);
 
-//        jndiProperties.put("remote.connections", "default");
-//        jndiProperties.put("remote.connectionprovider.create.options.org.xnio.Options.SSL_ENABLED", "false");
-//        jndiProperties.put("remote.connection.default.connect.options.org.xnio.Options.SASL_POLICY_NOANONYMOUS", "false");
-
-//
-//        jndiProperties.put(Context.SECURITY_PRINCIPAL, "kalinin@transtk.ru");
-//        jndiProperties.put(Context.SECURITY_CREDENTIALS, "Rtls1q2w3e4r3e");
-
 
         final Context context = new InitialContext(jndiProperties);
 
