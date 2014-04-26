@@ -1,6 +1,7 @@
 package ru.ttk.camel;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.ejb.EjbComponent;
 import org.apache.camel.impl.DefaultCamelContext;
@@ -20,10 +21,11 @@ public class CamelSQL {
         camelContext.addRoutes(new RouteBuilder() {
             public void configure() {
 
-                from("stream:in?promptMessage=Press ENTER to start")
+//                from("stream:in?promptMessage=Press ENTER to start")
+                from("timer://foo?repeatCount=1")
                         .bean(new SuperTime(),"time")
                         .to("stream:out")
-
+//                        .log(LoggingLevel.INFO,"ddddd")
                         .loop(5)
                             .transform(body().append("B"))
                             .to("stream:out")

@@ -1,0 +1,40 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/cache
+        http://www.springframework.org/schema/cache/spring-cache.xsd
+        http://camel.apache.org/schema/spring
+        http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <bean id="superTime" class="ru.ttk.camel.SuperTime" />
+    <camelContext xmlns="http://camel.apache.org/schema/spring">
+        <route>
+            <!--<from uri="stream:in?promptMessage=Press ENTER to start"/>-->
+            <from uri="timer://foo?repeatCount=1"/>
+            <log  message="ru.ttk?level=DEBUG" />
+            <bean ref="superTime" method="time" />
+            <to uri="stream:out" />
+            <log  message="ru.ttk?level=DEBUG" />
+            <loop>
+                <constant>5</constant>
+                <transform>
+                    <simple>${in.body} B</simple>
+                </transform>
+                <to uri="stream:out" />
+            </loop>
+            <bean ref="superTime" method="time" />
+            <to uri="stream:out" />
+        </route>
+    </camelContext>
+</beans>
