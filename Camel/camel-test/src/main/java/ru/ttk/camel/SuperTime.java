@@ -1,5 +1,7 @@
 package ru.ttk.camel;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 /**
  */
 public  class SuperTime {
@@ -17,6 +19,16 @@ public  class SuperTime {
         prevTime = nowTime;
 
         return out;
+    }
+
+    public void process(SamplePojo samplePojo){
+        System.out.println("processed SamplePojo:" + samplePojo);
+    }
+
+    public String emitJson() throws Exception{
+        ObjectMapper mapper = new ObjectMapper();
+
+        return mapper.writeValueAsString(new SamplePojo("name", 101));
     }
 }
 

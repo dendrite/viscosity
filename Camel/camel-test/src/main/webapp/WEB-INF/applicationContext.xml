@@ -18,11 +18,17 @@
         http://camel.apache.org/schema/spring/camel-spring.xsd">
 
     <bean id="superTime" class="ru.ttk.camel.SuperTime" />
+
     <camelContext xmlns="http://camel.apache.org/schema/spring">
+        <dataFormats>
+            <!-- here we define a Json data format with the id jack and that it should use the TestPojo as the class type when
+                 doing unmarshal. The unmarshalTypeName is optional, if not provided Camel will use a Map as the type -->
+            <json id="jack" library="Jackson" unmarshalTypeName="ru.ttk.camel.SamplePojo"/>
+        </dataFormats>
         <route>
             <!--<from uri="stream:in?promptMessage=Press ENTER to start"/>-->
             <from uri="timer://foo?repeatCount=1"/>
-            <log  message="ru.ttk?level=DEBUG" />
+            <log  message="1111" loggingLevel="INFO" />
             <bean ref="superTime" method="time" />
             <to uri="stream:out" />
             <log  message="ru.ttk?level=DEBUG" />
@@ -35,6 +41,11 @@
             </loop>
             <bean ref="superTime" method="time" />
             <to uri="stream:out" />
+            <bean ref="superTime" method="emitJson" />
+            <!--<to uri="bean:superTime?method=emitJson" />-->
+            <log message="Get from emitJson = ${body}" />
+            <unmarshal ref="jack"/>
+            <to uri="bean:superTime?method=process" />
         </route>
     </camelContext>
 </beans>
